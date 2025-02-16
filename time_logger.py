@@ -122,7 +122,6 @@ def main():
     category_map = {row["window"]: row["category"] for _, row in df.iterrows()}
     start_time = time.time()
     session_start = start_time
-    time_print = 1
     active_window = None
     log = []
 
