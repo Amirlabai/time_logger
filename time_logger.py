@@ -190,7 +190,7 @@ def show_graph(df):
         info_frame.pack(pady=(5, 0))
 
         info_label = ttk.Label(info_frame,
-                               text=f"Total Days: {total_days} | Total Study Hours: {total_study_hours:.2f} | Productivity: {productivity:.1f}%",
+                               text=f"Total Days: {total_days} | Total Study Hours: {total_study_hours:.2f} | Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)",
                                font=("Helvetica", 12))
         info_label.pack()
 
