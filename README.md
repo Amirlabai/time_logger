@@ -20,5 +20,5 @@ the category you assign to it, start and end times, and calculates the percentag
 You can install the necessary libraries using pip:
 
 ```bash
-pip install pandas psutil pywin32 tkinter time win32gui win32process os matplotlib.pyplot matplotlib.backends.backend_tkagg traceback threading
+pip install pandas etc...
 ```
