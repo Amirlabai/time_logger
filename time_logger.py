@@ -1,60 +1,65 @@
 import time
-from logging import exception
 import pandas as pd
 import psutil
 import win32gui
 import win32process
 import os
 import tkinter as tk
-from tkinter import simpledialog, ttk
+from tkinter import simpledialog, ttk, messagebox
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import traceback
+import sys
+import datetime
+import threading
 
 CSV_FILE = "time_log.csv"
 CATEGORIES = set()
 
-def check_if_file_is_open():
-    """Checks if the CSV file is open and attempts to close it."""
+def check_if_file_is_open():  # Same as before
     try:
         if os.path.exists(CSV_FILE):
-            # Try to open the file in exclusive write mode to check if it's open
-            with open(CSV_FILE, "a"): #Try to open in append mode
+            with open(CSV_FILE, "a"):
                 pass
-        return True # File is not open or was successfully opened
-
-    except PermissionError: # File is open elsewhere
-        print(f"The file '{CSV_FILE}' is currently open.")
-        return False  # Indicate that the file couldn't be closed
-    except Exception as e: # Catch any other exception
-        print(f"An error occurred while checking/closing the file: {e}")
+        return True
+    except PermissionError:
+        messagebox.showerror("File Error", f"The file '{CSV_FILE}' is currently open. Please close it and try again.")
+        return False
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {e}")
         return False
 
 
-def get_active_window():
+def get_active_window(): # Same as before
     hwnd = win32gui.GetForegroundWindow()
-    _, pid = win32process.GetWindowThreadProcessId(hwnd)
     try:
+        _, pid = win32process.GetWindowThreadProcessId(hwnd)
         process = psutil.Process(pid)
-        return process.name().replace(".exe", "")  # Get base program name
+        return process.name().replace(".exe", "")
     except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
         return "Unknown"
-    except Exception as e:
+    except Exception:
         return "Unknown"
 
+def load_existing_data(): # Same as before
+    try:
+        if os.path.exists(CSV_FILE):
+            df = pd.read_csv(CSV_FILE)
+            CATEGORIES.update(df['category'].unique())
+            return df
+        return pd.DataFrame(columns=["date", "window", "category", "start_time", "end_time", "total_time", "percent"])
+    except pd.errors.EmptyDataError:
+        return pd.DataFrame(columns=["date", "window", "category", "start_time", "end_time", "total_time", "percent"])
+    except Exception as e:
+        messagebox.showerror("Error Loading Data", f"Error loading data: {e}")
+        return pd.DataFrame(columns=["date", "window", "category", "start_time", "end_time", "total_time", "percent"])
 
-def load_existing_data():
-    if os.path.exists(CSV_FILE):
-        df = pd.read_csv(CSV_FILE)
-        CATEGORIES.update(df['category'].unique())  # Load existing categories
-        return df
-    return pd.DataFrame(columns=["date", "window", "category", "start_time", "end_time", "total_time", "percent"])
 
-
-def get_category(window_name):
+def get_category(window_name): # Same as before
     root = tk.Tk()
-    root.withdraw()  # Hide the root window
+    root.withdraw()
 
-    category_window = tk.Toplevel(root)  # Create a new top-level window
+    category_window = tk.Toplevel(root)
     category_window.title("Category Input")
 
     ttk.Label(category_window, text=f"Enter category for '{window_name}':").pack(pady=5)
@@ -71,28 +76,33 @@ def get_category(window_name):
         new_category = new_category_entry.get().strip()
 
         if selected_category:
-            category_window.destroy()
-            root.category_result = selected_category  # Store the result
+            root.category_result = selected_category
         elif new_category:
-            CATEGORIES.add(new_category)  # Add new category
-            category_window.destroy()
+            CATEGORIES.add(new_category)
             root.category_result = new_category
         else:
-            print("Please select or enter a category.")
+            messagebox.showwarning("Warning", "Please select or enter a category.")
+            return
+        category_window.destroy()
+
+    def quit_program():
+        root.destroy()
+        sys.exit()
 
     ttk.Button(category_window, text="Submit", command=submit_category).pack(pady=5)
+    ttk.Button(category_window, text="Quit", command=quit_program).pack(pady=5)
 
-    category_window.grab_set()  # Make the dialog modal
-    category_window.wait_window(category_window)  # Wait for the user to close the window
+    category_window.grab_set()
+    category_window.wait_window(category_window)
 
-    result = getattr(root, 'category_result', "Misc")  # Default to "Misc" if nothing is set
-    root.destroy()  # Cleanup the hidden root window
-    return result
+    return getattr(root, 'category_result', "Misc")
 
 
-def calculate_session_percentages(df):
-    """Calculates the percentage of time spent in each window for each session."""
-    df['date'] = pd.to_datetime(df['date'])  # Ensure date is datetime object
+def calculate_session_percentages(df): # Same as before
+    if df.empty:
+        return df
+
+    df['date'] = pd.to_datetime(df['date'])
     df['start_time'] = pd.to_datetime(df['start_time'], format='%H:%M:%S').dt.time
     df['end_time'] = pd.to_datetime(df['end_time'], format='%H:%M:%S').dt.time
 
@@ -209,63 +219,120 @@ def show_graph(df):
 
 show_graph.is_open = False # Initialize the flag
 
-
 def main():
     if not check_if_file_is_open():
         return
 
-    df = load_existing_data()
-    category_map = {row["window"]: row["category"] for _, row in df.iterrows()}
     start_time = time.time()
     session_start = start_time
     active_window = None
+
+    root = tk.Tk()  # Create Tk window *first*
+    root.title("Time Tracker")
+    root.withdraw()  # Hide the main window initially
+
+    # Tkinter window elements (same as before)
+    categories_label = ttk.Label(root, text="Available Categories:")
+    categories_label.pack(pady=5)
+
+    categories_listbox = tk.Listbox(root, height=5)
+    categories_listbox.pack(pady=5)
+
+    running_time_label = ttk.Label(root, text="Running Time: 00:00:00")
+    running_time_label.pack(pady=5)
+    current_window_label = ttk.Label(root, text="Current Window: None")  # Label for current window
+    current_window_label.pack(pady=5)
+
+    def update_running_time():
+        nonlocal session_start, active_window  # active_window is now nonlocal
+        time_frame = int(time.time() - session_start)
+        hours, remainder = divmod(time_frame, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        running_time_label.config(text=f"Running Time: {hours:02}:{minutes:02}:{seconds:02}")
+
+        current_window_label.config(text=f"Current Window: {active_window or 'None'}") # Update current window
+
+        root.after(1000, update_running_time)
+
+    update_running_time()
+
+    df = load_existing_data()  # Load data *after* creating the Tk window
+    CATEGORIES.update(df['category'].unique())  # Update categories after loading
+    for cat in CATEGORIES:  # Populate listbox after categories are loaded
+        categories_listbox.insert(tk.END, cat)
+    category_map = {row["window"]: row["category"] for _, row in df.iterrows()}  # Now create category_map
+
+    running = True  # Flag to control the main loop
+
     log = []
 
-    root = tk.Tk()  # Create the root window (important!)
-    root.withdraw()  # Hide the root window
-
-    try:
-        while True:
-            new_window = get_active_window()
-
-            if new_window and new_window != active_window:
-                if active_window:
-                    end_time = time.time()
-                    total_time = (end_time - start_time)
-                    log.append([time.strftime('%Y-%m-%d'), active_window, category_map[active_window],
-                                time.strftime('%H:%M:%S', time.localtime(start_time)),
-                                time.strftime('%H:%M:%S', time.localtime(end_time)), round(total_time/60,2)])
-
-                if new_window not in category_map:
-                    category = get_category(new_window)
-                    if category:
-                        category_map[new_window] = category
-                active_window = new_window
-                start_time = time.time()
-            get_time(session_start, new_window, category_map)
-            time.sleep(1)
-
-    except KeyboardInterrupt:
+    def close_program():
+        nonlocal running,active_window, start_time, log, df
         if active_window:
             end_time = time.time()
             total_time = end_time - start_time
-            log.append([time.strftime('%Y-%m-%d'), active_window, category_map[active_window],
+            log.append([time.strftime('%Y-%m-%d'), active_window, category_map.get(active_window, "Misc"),
                         time.strftime('%H:%M:%S', time.localtime(start_time)),
-                        time.strftime('%H:%M:%S', time.localtime(end_time)), round(total_time/60,2)])
+                        time.strftime('%H:%M:%S', time.localtime(end_time)), round(total_time / 60, 2)])
 
         new_df = pd.DataFrame(log, columns=["date", "window", "category", "start_time", "end_time", "total_time"])
         df = pd.concat([df, new_df], ignore_index=True)
-
-        df = calculate_session_percentages(df) # Calculate percentages after the session
+        df = calculate_session_percentages(df)
         df.to_csv(CSV_FILE, index=False)
         print("\nSession saved to CSV.")
-        #os.startfile(CSV_FILE)
-        show_graph(df)
-        root.mainloop()
-        while show_graph.is_open:  # Keep the main thread alive until the graph window is closed
-            time.sleep(0.1)  # Check the flag periodically
-        print("Exiting...")
-        root.destroy()
+        show_graph(df)  # Show the graph
+        if messagebox.askyesno("Confirm Exit", "Are you sure you want to close the program?"):  # Confirmation dialog
+            if show_graph.is_open:  # Check if the graph window is still open
+                graph_window = [w for w in tk.Toplevel.winfo_children(root) if isinstance(w, tk.Toplevel)][
+                    0]  # Get the graph window
+                graph_window.destroy()  # Close the graph window
+                show_graph.is_open = False
+            running = False
+            root.destroy()
+            root.quit()
+            #sys.exit()
+        else:  # If user clicks "No", close the graph window but don't exit the program
+            if show_graph.is_open:  # Check if the graph window is still open
+                graph_window = [w for w in tk.Toplevel.winfo_children(root) if isinstance(w, tk.Toplevel)][
+                    0]  # Get the graph window
+                graph_window.destroy()  # Close the graph window
+                show_graph.is_open = False
+
+    close_button = ttk.Button(root, text="Close Time Tracker", command=close_program)
+    close_button.pack(pady=10)
+
+    root.after(100, lambda: root.deiconify())
+
+    def window_tracker():  # Function for the separate thread
+        nonlocal running, active_window, start_time, log, category_map
+        try:
+            while running:
+                new_window = get_active_window()
+
+                if new_window and new_window != active_window:
+                    if active_window:
+                        end_time = time.time()
+                        total_time = (end_time - start_time)
+                        log.append([time.strftime('%Y-%m-%d'), active_window, category_map.get(active_window, "Misc"),
+                                    time.strftime('%H:%M:%S', time.localtime(start_time)),
+                                    time.strftime('%H:%M:%S', time.localtime(end_time)), round(total_time / 60, 2)])
+
+                    if new_window not in category_map:
+                        category = get_category(new_window)
+                        if category:
+                            category_map[new_window] = category
+                    active_window = new_window
+                    start_time = time.time()
+                time.sleep(1)
+        except Exception as e:
+            print(f"Error in window_tracker thread: {e}")
+            traceback.print_exc()
+
+    thread = threading.Thread(target=window_tracker)  # Create the thread
+    thread.daemon = True  # Allow the main thread to exit even if this thread is running
+    thread.start()  # Start the thread
+
+    root.mainloop()  # Mainloop is here and it runs concurrently with the thread
 
 
 if __name__ == "__main__":
