@@ -1,6 +1,5 @@
 import time
 from logging import exception
-
 import pandas as pd
 import psutil
 import win32gui
@@ -91,7 +90,6 @@ def get_category(window_name):
     return result
 
 
-
 def calculate_session_percentages(df):
     """Calculates the percentage of time spent in each window for each session."""
     df['date'] = pd.to_datetime(df['date'])  # Ensure date is datetime object
@@ -120,6 +118,7 @@ def get_time(session_start, new_window, category_map):
     minutes, seconds = divmod(remainder, 60)
 
     print(f"{new_window} | {category_map[new_window]} | {hours:02}:{minutes:02}:{seconds:02}")
+
 
 def show_graph(df):
     if df.empty:
@@ -210,6 +209,7 @@ def show_graph(df):
 
 show_graph.is_open = False # Initialize the flag
 
+
 def main():
     if not check_if_file_is_open():
         return
@@ -270,4 +270,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
