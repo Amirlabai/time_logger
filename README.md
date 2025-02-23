@@ -6,19 +6,19 @@ the category you assign to it, start and end times, and calculates the percentag
 ## Features
 
 *   **Automatic Window Detection:** Monitors the currently active window (application).
-*   **Category Assignment:** Prompts you to assign categories to applications.  It remembers these categories for future use.
+*   **Category Assignment:** Prompts you to assign categories to applications.  It remembers these categories for future use(for some odd reason it does remeber but cant submit selection from the drop down menu).
 *   **Time Logging:** Records the start and end times for each window activation.
 *   **Session-Based Percentage Calculation:** Calculates the percentage of time spent in each application *per day* (session).  Percentages are calculated *after* the logging session is complete for accurate daily totals.
-*   **CSV Output:** Saves the logged data to a CSV file (specified by the user).
-*   **File Selection:** Allows the user to choose the CSV file to use via a file dialog.
-*   **Error Handling:** Attempts to handle cases where the CSV file is already open.
+*   **CSV Output:** Saves the logged data to a CSV file (specified by the user). To rest either move or delete the CSV file, program creats it.
+*   **Error Handling:** Attempts to handle cases where the CSV file is already open. Must be closed to open through script
 
 ## Requirements
 
 *   Python 3
-*   Libraries: `pandas`, `psutil`, `pywin32`, `tkinter`
+*   Libraries: `pandas`, `psutil`, `pywin32`, `tkinter`, `time`, `win32gui`, `win32process`, `os`, `matplotlib.pyplot`, `matplotlib.backends.backend_tkagg`, `traceback`, `threading`
 
 You can install the necessary libraries using pip:
 
 ```bash
-pip install pandas psutil pywin32
+pip install pandas psutil pywin32 tkinter time win32gui win32process os matplotlib.pyplot matplotlib.backends.backend_tkagg traceback threading
+```
