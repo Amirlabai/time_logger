@@ -6,11 +6,12 @@ the category you assign to it, start and end times, and calculates the percentag
 ## Features
 
 *   **Automatic Window Detection:** Monitors the currently active window (application).
-*   **Category Assignment:** Prompts you to assign categories to applications.  It remembers these categories for future use(for some odd reason it does remeber but cant submit selection from the drop down menu).
+*   **Category Assignment:** Prompts you to assign categories to applications.  It remembers these categories for future use(for some odd reason it does remember but cant submit selection from the drop down menu).
 *   **Time Logging:** Records the start and end times for each window activation.
 *   **Session-Based Percentage Calculation:** Calculates the percentage of time spent in each application *per day* (session).  Percentages are calculated *after* the logging session is complete for accurate daily totals.
-*   **CSV Output:** Saves the logged data to a CSV file (specified by the user). To rest either move or delete the CSV file, program creats it.
+*   **CSV Output:** Saves the logged data to a CSV file (specified by the user). To rest either move or delete the CSV file, program creates it.
 *   **Error Handling:** Attempts to handle cases where the CSV file is already open. Must be closed to open through script
+*   **Graph Plot:** Shows session percentage along with total time spent. Graph window has on top total span of days and it calculates productivity
 
 ## Requirements
 
