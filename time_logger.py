@@ -16,7 +16,7 @@ import threading
 CSV_FILE = "time_log.csv"
 CATEGORIES = set()
 
-def check_if_file_is_open():  # Same as before
+def check_if_file_is_open():
     try:
         if os.path.exists(CSV_FILE):
             with open(CSV_FILE, "a"):
@@ -30,7 +30,7 @@ def check_if_file_is_open():  # Same as before
         return False
 
 
-def get_active_window(): # Same as before
+def get_active_window():
     hwnd = win32gui.GetForegroundWindow()
     try:
         _, pid = win32process.GetWindowThreadProcessId(hwnd)
@@ -41,7 +41,8 @@ def get_active_window(): # Same as before
     except Exception:
         return "Unknown"
 
-def load_existing_data(): # Same as before
+
+def load_existing_data():
     try:
         if os.path.exists(CSV_FILE):
             df = pd.read_csv(CSV_FILE)
@@ -55,7 +56,7 @@ def load_existing_data(): # Same as before
         return pd.DataFrame(columns=["date", "window", "category", "start_time", "end_time", "total_time", "percent"])
 
 
-def get_category(window_name): # Same as before
+def get_category(window_name):
     root = tk.Tk()
     root.withdraw()
 
@@ -87,10 +88,8 @@ def get_category(window_name): # Same as before
 
     def quit_program():
         root.destroy()
-        sys.exit()
 
     ttk.Button(category_window, text="Submit", command=submit_category).pack(pady=5)
-    ttk.Button(category_window, text="Quit", command=quit_program).pack(pady=5)
 
     category_window.grab_set()
     category_window.wait_window(category_window)
@@ -98,7 +97,7 @@ def get_category(window_name): # Same as before
     return getattr(root, 'category_result', "Misc")
 
 
-def calculate_session_percentages(df): # Same as before
+def calculate_session_percentages(df):
     if df.empty:
         return df
 
@@ -151,6 +150,21 @@ def show_graph(df):
         total_time_all = df["total_time"].sum()  # Total time across all data
         total_time_today = df_today["total_time"].sum()  # Today's total time
 
+        # Calculate total days
+        total_days = df["date"].nunique()
+
+        # Calculate total study hours
+        df["date"] = pd.to_datetime(df["date"])  # Make sure 'date' is datetime
+        df_study = df[df["category"] == "study"]  # Filter for 'study' category
+        total_study_hours = df_study["total_time"].sum() if not df_study.empty else 0  # Handle case where no study data
+        total_study_hours = total_study_hours / 60  # converet to hours
+
+        # Calculate productivity (using total study hours)
+        if total_days * 24 > 0:
+            productivity = (total_study_hours / (total_days * 24 * (2/3))) * 100 if total_study_hours > 0 else 0  # Handle 0 study hours
+        else:
+            productivity = 0
+
         # Group by category and compute percentages
         category_time_today = df_today.groupby("category")["total_time"].sum()
         category_time_all = df.groupby("category")["total_time"].sum()
@@ -170,6 +184,15 @@ def show_graph(df):
         # Create a new Tkinter window
         graph_window = tk.Toplevel()
         graph_window.title("Category Percentage Comparison")
+
+        # Display information at the top
+        info_frame = ttk.Frame(graph_window)
+        info_frame.pack(pady=(5, 0))
+
+        info_label = ttk.Label(info_frame,
+                               text=f"Total Days: {total_days} | Total Study Hours: {total_study_hours:.2f} | Productivity: {productivity:.1f}%",
+                               font=("Helvetica", 12))
+        info_label.pack()
 
         # Create figure and canvas
         fig, ax = plt.subplots(figsize=(12, 6))
@@ -226,12 +249,17 @@ def main():
     start_time = time.time()
     session_start = start_time
     active_window = None
+    perv_window = None
 
-    root = tk.Tk()  # Create Tk window *first*
+    root = tk.Tk()  # Create Tk window
+
+    # Set minimum width and height
+    root.minsize(width=300, height=200)  # Adjust values as needed
+
     root.title("Time Tracker")
     root.withdraw()  # Hide the main window initially
 
-    # Tkinter window elements (same as before)
+    # Tkinter window elements
     categories_label = ttk.Label(root, text="Available Categories:")
     categories_label.pack(pady=5)
 
@@ -240,31 +268,40 @@ def main():
 
     running_time_label = ttk.Label(root, text="Running Time: 00:00:00")
     running_time_label.pack(pady=5)
-    current_window_label = ttk.Label(root, text="Current Window: None")  # Label for current window
+
+    current_window_label = ttk.Label(root, text="Current Window: None")
     current_window_label.pack(pady=5)
 
     def update_running_time():
-        nonlocal session_start, active_window  # active_window is now nonlocal
+        nonlocal session_start, perv_window, active_window 
         time_frame = int(time.time() - session_start)
         hours, remainder = divmod(time_frame, 3600)
         minutes, seconds = divmod(remainder, 60)
         running_time_label.config(text=f"Running Time: {hours:02}:{minutes:02}:{seconds:02}")
-
-        current_window_label.config(text=f"Current Window: {active_window or 'None'}") # Update current window
-
+        try:
+            current_window_label.config(text=f"Current Window: {perv_window or 'None'}") # Update current window
+        except:
+            current_window_label.config(text=f"Current Window: {active_window or 'None'}")  # Update current window
         root.after(1000, update_running_time)
 
     update_running_time()
 
-    df = load_existing_data()  # Load data *after* creating the Tk window
-    CATEGORIES.update(df['category'].unique())  # Update categories after loading
-    for cat in CATEGORIES:  # Populate listbox after categories are loaded
-        categories_listbox.insert(tk.END, cat)
-    category_map = {row["window"]: row["category"] for _, row in df.iterrows()}  # Now create category_map
+    df = load_existing_data()  # Load data after creating the Tk window
+
+    # Calculate counts of unique categories
+    category_counts = df['category'].value_counts()
+
+    for category, count in category_counts.items():
+        categories_listbox.insert(tk.END, f"{category} ({count})")  # Format with count
+
+    category_map = {row["window"]: row["category"] for _, row in df.iterrows()}
 
     running = True  # Flag to control the main loop
 
     log = []
+
+    def get_graph():
+        show_graph(df)
 
     def close_program():
         nonlocal running,active_window, start_time, log, df
@@ -279,24 +316,18 @@ def main():
         df = pd.concat([df, new_df], ignore_index=True)
         df = calculate_session_percentages(df)
         df.to_csv(CSV_FILE, index=False)
-        print("\nSession saved to CSV.")
-        show_graph(df)  # Show the graph
+        
         if messagebox.askyesno("Confirm Exit", "Are you sure you want to close the program?"):  # Confirmation dialog
             if show_graph.is_open:  # Check if the graph window is still open
-                graph_window = [w for w in tk.Toplevel.winfo_children(root) if isinstance(w, tk.Toplevel)][
-                    0]  # Get the graph window
+                graph_window = [w for w in tk.Toplevel.winfo_children(root) if isinstance(w, tk.Toplevel)][0]  # Get the graph window
                 graph_window.destroy()  # Close the graph window
                 show_graph.is_open = False
             running = False
             root.destroy()
             root.quit()
-            #sys.exit()
-        else:  # If user clicks "No", close the graph window but don't exit the program
-            if show_graph.is_open:  # Check if the graph window is still open
-                graph_window = [w for w in tk.Toplevel.winfo_children(root) if isinstance(w, tk.Toplevel)][
-                    0]  # Get the graph window
-                graph_window.destroy()  # Close the graph window
-                show_graph.is_open = False
+
+    graph_button = ttk.Button(root, text="Show Graph", command=get_graph)
+    graph_button.pack(pady=10)
 
     close_button = ttk.Button(root, text="Close Time Tracker", command=close_program)
     close_button.pack(pady=10)
@@ -304,13 +335,14 @@ def main():
     root.after(100, lambda: root.deiconify())
 
     def window_tracker():  # Function for the separate thread
-        nonlocal running, active_window, start_time, log, category_map
+        nonlocal running, active_window, start_time, log, category_map, perv_window
         try:
             while running:
                 new_window = get_active_window()
 
                 if new_window and new_window != active_window:
                     if active_window:
+                        perv_window = active_window
                         end_time = time.time()
                         total_time = (end_time - start_time)
                         log.append([time.strftime('%Y-%m-%d'), active_window, category_map.get(active_window, "Misc"),
@@ -321,6 +353,7 @@ def main():
                         category = get_category(new_window)
                         if category:
                             category_map[new_window] = category
+                    perv_window = active_window
                     active_window = new_window
                     start_time = time.time()
                 time.sleep(1)
