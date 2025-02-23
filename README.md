@@ -3,6 +3,8 @@
 This Python script tracks the time you spend in different applications on your computer and categorizes that time. It logs the active window (application), 
 the category you assign to it, start and end times, and calculates the percentage of time spent in each application within a session (a day).  The data is saved to a CSV file.
 
+Note: For best results have a designated window for breaks, even if your computer sleeps when inactive. For laptops closing the screen can be categorized as break also along with sleep.
+
 ## Features
 
 *   **Automatic Window Detection:** Monitors the currently active window (application).
