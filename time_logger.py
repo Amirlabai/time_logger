@@ -5,16 +5,22 @@ import win32gui
 import win32process
 import os
 import tkinter as tk
-from tkinter import simpledialog, ttk, messagebox
+from tkinter import ttk, messagebox
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import traceback
-import sys
-import datetime
+from PIL import Image, ImageTk
 import threading
 
 CSV_FILE = "time_log.csv"
 CATEGORIES = set()
+
+
+def get_rgb(rgb):
+    """translates an rgb tuple of int to a tkinter friendly color code
+    """
+    return "#%02x%02x%02x" % rgb
+
 
 def check_if_file_is_open():
     try:
@@ -130,6 +136,9 @@ def get_time(session_start, new_window, category_map):
 
 
 def show_graph(df):
+    windowBg = get_rgb((30, 30, 30))
+    buttonBg = get_rgb((50, 50, 50))
+    activeButtonBg = get_rgb((25, 35, 50))
     if df.empty:
         print("No data to display.")
         return
@@ -161,7 +170,8 @@ def show_graph(df):
 
         # Calculate productivity (using total study hours)
         if total_days * 24 > 0:
-            productivity = (total_study_hours / (total_days * 24 * (2/3))) * 100 if total_study_hours > 0 else 0  # Handle 0 study hours
+            productivity = (total_study_hours / (
+                        total_days * 24 * (2 / 3))) * 100 if total_study_hours > 0 else 0  # Handle 0 study hours
         else:
             productivity = 0
 
@@ -183,19 +193,22 @@ def show_graph(df):
 
         # Create a new Tkinter window
         graph_window = tk.Toplevel()
+        graph_window.configure(bg=windowBg)
         graph_window.title("Category Percentage Comparison")
 
         # Display information at the top
-        info_frame = ttk.Frame(graph_window)
-        info_frame.pack(pady=(5, 0))
+        info_frame = tk.Frame(graph_window, bg=buttonBg)
+        #info_frame = tk.Frame(graph_window)
+        info_frame.pack(pady=(5, 5))
 
-        info_label = ttk.Label(info_frame,
-                               text=f"Total Days: {total_days} | Total Study Hours: {total_study_hours:.2f} | Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)",
-                               font=("Helvetica", 12))
+        info_label = tk.Label(info_frame,
+                               text=f"Today Session: {round(total_time_today/60,2)} | Total Days: {total_days} | Total Study Hours: {total_study_hours:.2f} | Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)",
+                               font=("Helvetica", 12),bg=windowBg,fg="white")
         info_label.pack()
 
         # Create figure and canvas
-        fig, ax = plt.subplots(figsize=(12, 6))
+        fig, ax = plt.subplots(figsize=(12, 6),facecolor=buttonBg)
+        #plt.figure(facecolor=windowBg)
         canvas = FigureCanvasTkAgg(fig, master=graph_window)
         canvas.get_tk_widget().pack()
 
@@ -210,18 +223,22 @@ def show_graph(df):
 
         # Add values on top of today's bars
         for i, v in enumerate(category_percentage_today):
-            ax.text(x_positions[i], v + 1, f"{v:.1f}%", ha='center', fontsize=10, fontweight='bold')
+            ax.text(x_positions[i], v + 1, f"{v:.1f}%", ha='center', fontsize=10, fontweight='bold',color="white")
 
         # Add values on top of overall bars
         for i, v in enumerate(category_percentage_all):
-            ax.text(x_positions[i] + bar_width, v + 1, f"{v:.1f}%", ha='center', fontsize=10, fontweight='bold')
+            ax.text(x_positions[i] + bar_width, v + 1, f"{v:.1f}%", ha='center', fontsize=10, fontweight='bold',color="white")
 
         # Labels and formatting
-        ax.set_ylabel("Percentage (%)")
-        ax.set_xlabel("Categories")
-        ax.set_title("Category Percentage (Today vs Overall)")
+        ax.set_facecolor(windowBg)
+        ax.set_ylabel("Percentage (%)",color="white")
+        ax.set_xlabel("Categories",color="white")
+        ax.set_title("Category Percentage (Today vs Overall)",fontweight='bold',color="white")
         ax.set_xticks([x + bar_width / 2 for x in x_positions])
-        ax.set_xticklabels(x_labels, rotation=25, ha="right", fontsize=10)
+        ax.set_xticklabels(x_labels, rotation=25, ha="right", fontsize=10,color="white")
+        ax.tick_params(axis='y', colors='white')
+        ax.yaxis.label.set_color('white')  # ensure y axis label is white
+        ax.xaxis.label.set_color('white')
         ax.legend()
 
         fig.tight_layout()
@@ -232,7 +249,8 @@ def show_graph(df):
             graph_window.destroy()
             show_graph.is_open = False
 
-        close_button = ttk.Button(graph_window, text="Close", command=close_graph)
+        close_button = tk.Button(graph_window, text="Close", command=close_graph, bg=buttonBg, fg="white", font=("Arial", "10", "bold"),
+                             activebackground=activeButtonBg, activeforeground="white", borderwidth=2)
         close_button.pack(pady=5)
 
         show_graph.is_open = True
@@ -240,19 +258,26 @@ def show_graph(df):
     except Exception as e:
         print(f"Error showing graph: {e}")
 
-show_graph.is_open = False # Initialize the flag
+
+show_graph.is_open = False  # Initialize the flag
+
 
 def main():
+    windowBg = get_rgb((30, 30, 30))
+    buttonBg = get_rgb((50, 50, 50))
+    activeButtonBg = get_rgb((25, 35, 50))
+
     if not check_if_file_is_open():
         return
 
     start_time = time.time()
     session_start = start_time
+    total_time = 0
     active_window = None
     perv_window = None
 
     root = tk.Tk()  # Create Tk window
-
+    root.configure(bg=windowBg)
     # Set minimum width and height
     root.minsize(width=300, height=200)  # Adjust values as needed
 
@@ -260,26 +285,26 @@ def main():
     root.withdraw()  # Hide the main window initially
 
     # Tkinter window elements
-    categories_label = ttk.Label(root, text="Available Categories:")
+    categories_label = tk.Label(root, text="Available Categories:", bg=windowBg, fg="white",font=("Arial", "16", "bold"))
     categories_label.pack(pady=5)
 
     categories_listbox = tk.Listbox(root, height=5)
     categories_listbox.pack(pady=5)
 
-    running_time_label = ttk.Label(root, text="Running Time: 00:00:00")
+    running_time_label = tk.Label(root, text="Running Time: 00:00:00", bg=windowBg, fg="white",font=("Arial", "12", "bold"))
     running_time_label.pack(pady=5)
 
-    current_window_label = ttk.Label(root, text="Current Window: None")
+    current_window_label = tk.Label(root, text="Current Window: None", bg=windowBg, fg="white",font=("Arial", "12", "bold"))
     current_window_label.pack(pady=5)
 
     def update_running_time():
-        nonlocal session_start, perv_window, active_window 
+        nonlocal session_start, perv_window, active_window
         time_frame = int(time.time() - session_start)
         hours, remainder = divmod(time_frame, 3600)
         minutes, seconds = divmod(remainder, 60)
-        running_time_label.config(text=f"Running Time: {hours:02}:{minutes:02}:{seconds:02}")
+        running_time_label.config(text=f"Program Running Time: {hours:02}:{minutes:02}:{seconds:02}")
         try:
-            current_window_label.config(text=f"Current Window: {perv_window or 'None'}") # Update current window
+            current_window_label.config(text=f"Current Window: {perv_window or 'None'}")  # Update current window
         except:
             current_window_label.config(text=f"Current Window: {active_window or 'None'}")  # Update current window
         root.after(1000, update_running_time)
@@ -301,10 +326,24 @@ def main():
     log = []
 
     def get_graph():
+        nonlocal df, log
+        if active_window:
+            end_time = time.time()
+            total_time = end_time - start_time
+            log.append([time.strftime('%Y-%m-%d'), active_window, category_map.get(active_window, "Misc"),
+                        time.strftime('%H:%M:%S', time.localtime(start_time)),
+                        time.strftime('%H:%M:%S', time.localtime(end_time)), round(total_time / 60, 2)])
+
+        new_df = pd.DataFrame(log, columns=["date", "window", "category", "start_time", "end_time", "total_time"])
+        df = pd.concat([df, new_df], ignore_index=True)
+        df = calculate_session_percentages(df)
+        log = []
         show_graph(df)
 
+
+
     def close_program():
-        nonlocal running,active_window, start_time, log, df
+        nonlocal running, active_window, start_time, log, df
         if active_window:
             end_time = time.time()
             total_time = end_time - start_time
@@ -316,21 +355,28 @@ def main():
         df = pd.concat([df, new_df], ignore_index=True)
         df = calculate_session_percentages(df)
         df.to_csv(CSV_FILE, index=False)
-        
+
         if messagebox.askyesno("Confirm Exit", "Are you sure you want to close the program?"):  # Confirmation dialog
             if show_graph.is_open:  # Check if the graph window is still open
-                graph_window = [w for w in tk.Toplevel.winfo_children(root) if isinstance(w, tk.Toplevel)][0]  # Get the graph window
+                graph_window = [w for w in tk.Toplevel.winfo_children(root) if isinstance(w, tk.Toplevel)][
+                    0]  # Get the graph window
                 graph_window.destroy()  # Close the graph window
                 show_graph.is_open = False
             running = False
             root.destroy()
             root.quit()
 
-    graph_button = ttk.Button(root, text="Show Graph", command=get_graph)
-    graph_button.pack(pady=10)
+    # Frame for the first two buttons to allow centering
+    button_frame = tk.Frame(root,bg=buttonBg)
+    button_frame.pack(pady=(10, 5))  # Add some padding around the frame
 
-    close_button = ttk.Button(root, text="Close Time Tracker", command=close_program)
-    close_button.pack(pady=10)
+    graph_button = tk.Button(button_frame, text="Show Graph", command=get_graph, bg=buttonBg, fg="white", font=("Arial", "10", "bold"),
+                             activebackground=activeButtonBg, activeforeground="white", borderwidth=2)
+    graph_button.pack()
+
+    close_button = tk.Button(root, text="Close Time Tracker", command=close_program, bg=get_rgb((200,30,30)), fg="white", font=("Arial", "10", "bold"),
+                           activebackground=get_rgb((100,50,50)), activeforeground="white", borderwidth=2)
+    close_button.pack(pady=(5, 10))
 
     root.after(100, lambda: root.deiconify())
 
