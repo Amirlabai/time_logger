@@ -21,6 +21,9 @@ def get_rgb(rgb):
     """
     return "#%02x%02x%02x" % rgb
 
+windowBg = get_rgb((30, 30, 30))
+buttonBg = get_rgb((50, 50, 50))
+activeButtonBg = get_rgb((25, 35, 50))
 
 def check_if_file_is_open():
     try:
@@ -67,35 +70,39 @@ def get_category(window_name):
     root.withdraw()
 
     category_window = tk.Toplevel(root)
+    category_window.configure(bg=windowBg)
     category_window.title("Category Input")
 
-    ttk.Label(category_window, text=f"Enter category for '{window_name}':").pack(pady=5)
+    tk.Label(category_window, text=f"Enter category for '{window_name}':",bg=windowBg,fg="white",font=("Arial", "10", "bold") ).pack(pady=5)
 
     category_var = tk.StringVar()
     category_dropdown = ttk.Combobox(category_window, textvariable=category_var, values=list(CATEGORIES))
     category_dropdown.pack(pady=5)
 
-    new_category_entry = ttk.Entry(category_window)
+    new_category_entry = tk.Entry(category_window,bg=buttonBg,fg="white")
     new_category_entry.pack(pady=5)
 
     def submit_category():
-        selected_category = category_var.get().strip()
+        selected_category = category_dropdown.get()
         new_category = new_category_entry.get().strip()
 
         if selected_category:
             root.category_result = selected_category
+            category_window.destroy()
         elif new_category:
             CATEGORIES.add(new_category)
             root.category_result = new_category
         else:
             messagebox.showwarning("Warning", "Please select or enter a category.")
+            category_window.deiconify()
             return
         category_window.destroy()
 
     def quit_program():
         root.destroy()
 
-    ttk.Button(category_window, text="Submit", command=submit_category).pack(pady=5)
+    tk.Button(category_window, text="Submit", command=submit_category, bg=windowBg,fg="white",font=("Arial", "10", "bold"),
+              activebackground=activeButtonBg, activeforeground="white", borderwidth=2).pack(pady=5)
 
     category_window.grab_set()
     category_window.wait_window(category_window)
