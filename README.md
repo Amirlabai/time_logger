@@ -16,9 +16,9 @@ Note: For best results have a designated window for breaks, even if your compute
 *   **Graph Plot:** Shows session percentage along with total time spent. Graph window has on top total span of days and it calculates productivity
 
 ## Requirements
-
+win32gui is pywin32
 *   Python 3
-*   Libraries: `pandas`, `psutil`, `pywin32`, `tkinter`, `time`, `win32gui`, `win32process`, `os`, `matplotlib.pyplot`, `matplotlib.backends.backend_tkagg`, `traceback`, `threading`
+*   Libraries: `pandas`, `psutil`, `pywin32`, `tkinter`, `time`, `win32process`, `os`, `matplotlib.pyplot`, `matplotlib.backends.backend_tkagg`, `traceback`, `threading`
 
 You can install the necessary libraries using pip:
 
