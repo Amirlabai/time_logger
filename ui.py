@@ -17,27 +17,27 @@ class TimeTrackerUI:
         self.root.minsize(width=300, height=200)
         self.root.withdraw()
 
-        categories_label = tk.Label(self.root, text="Available Categories:", bg=self.theme.windowBg(), fg="white", font=("Arial", "16", "bold"))
+        categories_label = tk.Label(self.root, text="Available Categories:", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "16", "bold"))
         categories_label.pack(pady=5)
 
         self.categories_listbox = tk.Listbox(self.root, height=5, bg=self.theme.buttonBg(), fg="white")
         self.categories_listbox.pack(pady=5)
         self.update_category_list()
 
-        self.running_time_label = tk.Label(self.root, text="Running Time: 00:00:00", bg=self.theme.windowBg(), fg="white", font=("Arial", "12", "bold"))
+        self.running_time_label = tk.Label(self.root, text="Running Time: 00:00:00", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold"))
         self.running_time_label.pack(pady=5)
 
-        self.current_window_label = tk.Label(self.root, text="Current Window: None", bg=self.theme.windowBg(), fg="white", font=("Arial", "12", "bold"))
+        self.current_window_label = tk.Label(self.root, text="Current Window: None", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold"))
         self.current_window_label.pack(pady=5)
 
         button_frame = tk.Frame(self.root, bg=self.theme.buttonBg())
         button_frame.pack(pady=(10, 5))
 
-        graph_button = tk.Button(button_frame, text="Show Graph", command=self.get_graph, bg=self.theme.buttonBg(), fg="white", font=("Arial", "10", "bold"),
+        graph_button = tk.Button(button_frame, text="Show Graph", command=self.get_graph, bg=self.theme.buttonBg(), fg="white", font=("Helvetica", "10", "bold"),
                                  activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
         graph_button.pack()
 
-        close_button = tk.Button(self.root, text="Close Time Tracker", command=self.close_program, bg=self.theme.closeButtonBg(), fg="white", font=("Arial", "10", "bold"),
+        close_button = tk.Button(self.root, text="Close Time Tracker", command=self.close_program, bg=self.theme.closeButtonBg(), fg="white", font=("Helvetica", "10", "bold"),
                                activebackground=self.theme.closeActiveButtonBg(), activeforeground="white", borderwidth=2)
         close_button.pack(pady=(5, 10))
 

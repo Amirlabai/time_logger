@@ -10,6 +10,14 @@ class GraphDisplay:
         self.is_open = False
 
     def show_graph(self, df):
+        def get_top_ten(df):
+            try:
+                value_counts = df['window'].value_counts()
+                top_10 = value_counts.head(10)
+                return top_10
+            except KeyError:
+                return f"no data found in DataFrame."
+        
         if df.empty:
             print("No data to display.")
             return
@@ -54,9 +62,18 @@ class GraphDisplay:
                                    font=("Helvetica", 12), bg=self.theme.windowBg(), fg="white")
             info_label.pack()
 
-            fig, ax = plt.subplots(figsize=(12, 6), facecolor=self.theme.buttonBg())
-            canvas = FigureCanvasTkAgg(fig, master=graph_window)
-            canvas.get_tk_widget().pack()
+            Graph_frame = tk.Frame(graph_window, bg=self.theme.buttonBg())
+            Graph_frame.pack(pady=(5, 5),padx=5)
+
+            top_ten = get_top_ten(df)
+            top_ten_label = tk.Label(Graph_frame,
+                                   text=f"{top_ten}", anchor='n',justify='left',
+                                   font=("Helvetica", 12), bg=self.theme.buttonBg(), fg="white")
+            top_ten_label.grid(row=0,column=0)
+
+            fig, ax = plt.subplots(figsize=(9,5), facecolor=self.theme.buttonBg())
+            canvas = FigureCanvasTkAgg(fig, master=Graph_frame)
+            canvas.get_tk_widget().grid(row=0,column=1)
 
             bar_width = 0.4
             x_labels = list(category_percentage_today.index)
@@ -97,3 +114,5 @@ class GraphDisplay:
 
         except Exception as e:
             print(f"Error showing graph: {e}")
+    
+    

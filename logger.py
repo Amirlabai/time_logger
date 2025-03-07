@@ -76,12 +76,19 @@ class Logger:
         category_window.title("Category Input")
 
         tk.Label(category_window, text=f"Enter category for '{window_name}':", bg=self.theme.windowBg(), fg="white",
-                 font=("Arial", "10", "bold")).pack(pady=5)
+                 font=("Helvetica", "16", "bold")).pack(pady=5)
+        
+        tk.Label(category_window, text=f"Available categories:", bg=self.theme.windowBg(), fg="white",
+                 font=("Helvetica", "10", "bold")).pack(pady=5)
+
 
         category_var = tk.StringVar()
-        category_dropdown = ttk.Combobox(category_window, textvariable=category_var, values=list(self.CATEGORIES))
+        category_dropdown = ttk.Combobox(category_window, textvariable=category_var, values=list(self.CATEGORIES),state="readonly")
         category_dropdown.pack(pady=5)
 
+        tk.Label(category_window, text=f"OR \n Enter manualy:", bg=self.theme.windowBg(), fg="white",
+                 font=("Helvetica", "10", "bold")).pack(pady=5)
+        
         new_category_entry = tk.Entry(category_window, bg=self.theme.buttonBg(), fg="white")
         new_category_entry.pack(pady=5)
 
@@ -105,7 +112,7 @@ class Logger:
             root.destroy()
 
         submit_button = tk.Button(category_window, text="Submit", command=submit_category, bg=self.theme.buttonBg(),
-                                  fg="white", font=("Arial", "10", "bold"),
+                                  fg="white", font=("Helvetica", "10", "bold"),
                                   activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
         submit_button.pack(pady=5)
 

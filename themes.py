@@ -2,7 +2,7 @@ class Theme:
     def __init__(self):
         self.__windowBg = (30, 30, 30)
         self.__buttonBg = (50, 50, 50)
-        self.__activeButtonBg = (25, 35, 50)
+        self.__activeButtonBg = (95, 95, 95)
         self.__closeButtonBg = (200,30,30)
         self.__closeActiveButtonBg = (100,50,50)
 
