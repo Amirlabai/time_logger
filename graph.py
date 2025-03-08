@@ -9,12 +9,19 @@ class GraphDisplay:
         self.theme = theme
         self.is_open = False
 
+    
+
     def show_graph(self, df):
+        def format_with_hours(value):
+            """Formats a time value to include "hours"."""
+            return f"{round(value,2)} hours"
+    
         def get_top_ten(df):
             try:
-                value_counts = df['window'].value_counts()
+                value_counts = df.groupby("window")["total_time"].sum()
                 top_10 = value_counts.head(10)
-                return top_10
+                formatted_top_10 = top_10.apply(format_with_hours)
+                return formatted_top_10.to_string()
             except KeyError:
                 return f"no data found in DataFrame."
         
@@ -62,18 +69,24 @@ class GraphDisplay:
                                    font=("Helvetica", 12), bg=self.theme.windowBg(), fg="white")
             info_label.pack()
 
-            Graph_frame = tk.Frame(graph_window, bg=self.theme.buttonBg())
-            Graph_frame.pack(pady=(5, 5),padx=5)
+            sub_info_frame = tk.Frame(graph_window, bg=self.theme.buttonBg())
+            sub_info_frame.pack(pady=(5, 5),padx=10)
 
+            top_ten_frame = tk.Frame(sub_info_frame, bg=self.theme.activeButtonBg(),borderwidth=0)
+            top_ten_frame.grid(row=0,column=0,pady=7,padx=7)
+
+            Graph_frame = tk.Frame(sub_info_frame, bg=self.theme.buttonBg())
+            Graph_frame.grid(row=0,column=1,rowspan=2,pady=7,padx=7)
+            
             top_ten = get_top_ten(df)
-            top_ten_label = tk.Label(Graph_frame,
+            top_ten_label = tk.Label(top_ten_frame,
                                    text=f"{top_ten}", anchor='n',justify='left',
-                                   font=("Helvetica", 12), bg=self.theme.buttonBg(), fg="white")
-            top_ten_label.grid(row=0,column=0)
+                                   font=("Helvetica", 12,"bold"), bg=self.theme.buttonBg(), fg="white")
+            top_ten_label.grid(row=0,column=0,padx=2,pady=2)          
 
             fig, ax = plt.subplots(figsize=(9,5), facecolor=self.theme.buttonBg())
             canvas = FigureCanvasTkAgg(fig, master=Graph_frame)
-            canvas.get_tk_widget().grid(row=0,column=1)
+            canvas.get_tk_widget().grid(row=0,column=2,rowspan=2,pady=7,padx=7)
 
             bar_width = 0.4
             x_labels = list(category_percentage_today.index)
