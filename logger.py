@@ -11,7 +11,7 @@ class Logger:
         self.csv_file = csv_file
         self.theme = Theme()
         self.df = self.load_existing_data()
-        self.category_map = {row["window"]: row["category"] for _, row in self.df.iterrows()}
+        self.category_map = {row["program"]: row["category"] for _, row in self.df.iterrows()}
         self.log = []
         self.CATEGORIES = set(self.df['category'].unique())
 
@@ -22,23 +22,23 @@ class Logger:
                 #self.CATEGORIES.update(df['category'].unique())
                 return df
             return pd.DataFrame(
-                columns=["date", "window", "category", "start_time", "end_time", "total_time", "percent"])
+                columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
         except pd.errors.EmptyDataError:
             return pd.DataFrame(
-                columns=["date", "window", "category", "start_time", "end_time", "total_time", "percent"])
+                columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
         except Exception as e:
             messagebox.showerror("Error Loading Data", f"Error loading data: {e}")
             return pd.DataFrame(
-                columns=["date", "window", "category", "start_time", "end_time", "total_time", "percent"])
+                columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
 
-    def log_activity(self, window, start_time, end_time, total_time):
-        self.log.append([time.strftime('%Y-%m-%d'), window, self.category_map.get(window, "Misc"),
+    def log_activity(self,program, window, start_time, end_time, total_time):
+        self.log.append([time.strftime('%Y-%m-%d'),program, window, self.category_map.get(program, "Misc"),
                          time.strftime('%H:%M:%S', time.localtime(start_time)),
                          time.strftime('%H:%M:%S', time.localtime(end_time)), round(total_time / 60, 2)])
         self.save_log_to_csv()
 
     def save_log_to_csv(self):
-        new_df = pd.DataFrame(self.log, columns=["date", "window", "category", "start_time", "end_time", "total_time"])
+        new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
         self.df = pd.concat([self.df, new_df], ignore_index=True)
         self.df = self.calculate_session_percentages(self.df)
         self.df.to_csv(self.csv_file, index=False)

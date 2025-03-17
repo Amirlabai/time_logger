@@ -14,14 +14,17 @@ class GraphDisplay:
     def show_graph(self, df):
         def format_with_hours(value):
             """Formats a time value to include "hours"."""
-            return f"{round(value,2)} hours"
+            if value < 60:
+                return f"{round(value,2)} minutes"
+            else:
+                return f"{round(value/60,2)} hours"
     
         def get_top_ten(df):
             try:
-                value_counts = df.groupby("window")["total_time"].sum()
-                top_10 = value_counts.head(10)
-                formatted_top_10 = top_10.apply(format_with_hours)
-                return formatted_top_10.to_string()
+                value_counts = df.groupby(["program", "category"])["total_time"].sum()
+                top_10 = value_counts.sort_values(ascending=False).head(10)
+                top_10_df = top_10.reset_index(name="Total Time")
+                return top_10_df
             except KeyError:
                 return f"no data found in DataFrame."
         
@@ -41,10 +44,10 @@ class GraphDisplay:
             total_time_all = df["total_time"].sum()
             total_time_today = df_today["total_time"].sum()
             total_days = df["date"].nunique()
-            df_study = df[df["category"] == "study"]
-            total_study_hours = df_study["total_time"].sum() if not df_study.empty else 0
-            total_study_hours = total_study_hours / 60
-            productivity = (total_study_hours / (total_days * 24 * (2 / 3))) * 100 if total_study_hours > 0 and total_days * 24 > 0 else 0
+            df_work = df[df["category"] == "work"]
+            total_work_hours = df_work["total_time"].sum() if not df_work.empty else 0
+            total_work_hours = total_work_hours / 60
+            productivity = (total_work_hours / (total_days * 24 * (2 / 3))) * 100 if total_work_hours > 0 and total_days * 24 > 0 else 0
 
             category_time_today = df_today.groupby("category")["total_time"].sum()
             category_time_all = df.groupby("category")["total_time"].sum()
@@ -65,7 +68,7 @@ class GraphDisplay:
             info_frame.pack(pady=(5, 5))
 
             info_label = tk.Label(info_frame,
-                                   text=f"Today Session: {round(total_time_today/60,2)} | Total Days: {total_days} | Total Study Hours: {total_study_hours:.2f} | Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)",
+                                   text=f"Today Session: {round(total_time_today/60,2)} | Total Days: {total_days} | Total Work Hours: {total_work_hours:.2f} | Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)",
                                    font=("Helvetica", 12), bg=self.theme.windowBg(), fg="white")
             info_label.pack()
 
@@ -79,10 +82,39 @@ class GraphDisplay:
             Graph_frame.grid(row=0,column=1,rowspan=2,pady=7,padx=7)
             
             top_ten = get_top_ten(df)
-            top_ten_label = tk.Label(top_ten_frame,
-                                   text=f"{top_ten}", anchor='n',justify='left',
-                                   font=("Helvetica", 12,"bold"), bg=self.theme.buttonBg(), fg="white")
-            top_ten_label.grid(row=0,column=0,padx=2,pady=2)          
+
+            if isinstance(top_ten, pd.DataFrame): # Check if get_top_ten returned a dataframe
+                # Create labels for each row
+                program_label = tk.Label(top_ten_frame, text='program', anchor='w', justify='left',
+                                            font=("Helvetica", 14, "bold"), bg=self.theme.activeButtonBg(), fg="white")
+                program_label.grid(row=0, columnspan=2, column=0, padx=2, pady=2, sticky='w')
+
+                category_label = tk.Label(top_ten_frame, text='category', anchor='w', justify='left',
+                                        font=("Helvetica", 12, "bold"), bg=self.theme.activeButtonBg(), fg="white")
+                category_label.grid(row=0, column=2, padx=2, pady=2, sticky='w')
+
+                time_label = tk.Label(top_ten_frame, text='Total Time', anchor='w', justify='left',
+                                    font=("Helvetica", 12, "bold"), bg=self.theme.activeButtonBg(), fg="white")
+                time_label.grid(row=0, column=3, padx=2, pady=2, sticky='w')
+                for index, row in top_ten.iterrows():
+                    program_label = tk.Label(top_ten_frame, text=row['program'], anchor='w', justify='left',
+                                            font=("Helvetica", 12, "bold"), bg=self.theme.activeButtonBg(), fg="white")
+                    program_label.grid(row=index+1, columnspan=2, column=0, padx=2, pady=2, sticky='w')
+
+                    category_label = tk.Label(top_ten_frame, text=row['category'], anchor='w', justify='left',
+                                            font=("Helvetica", 12, "bold"), bg=self.theme.activeButtonBg(), fg="white")
+                    category_label.grid(row=index+1, column=2, padx=2, pady=2, sticky='w')
+
+                    time_label = tk.Label(top_ten_frame, text=format_with_hours(row['Total Time']), anchor='w', justify='left',
+                                        font=("Helvetica", 12, "bold"), bg=self.theme.activeButtonBg(), fg="white")
+                    time_label.grid(row=index+1, column=3, padx=2, pady=2, sticky='w')
+            else:
+                print("error")
+                # Handle the case where get_top_ten returned an error message
+                top_ten_label = tk.Label(top_ten_frame,
+                                            text=f"{top_ten.to_string()}", anchor='n', justify='left',
+                                            font=("Helvetica", 12, "bold"), bg=self.theme.buttonBg(), fg="white")
+                top_ten_label.grid(row=0, column=0, padx=2, pady=2)
 
             fig, ax = plt.subplots(figsize=(9,5), facecolor=self.theme.buttonBg())
             canvas = FigureCanvasTkAgg(fig, master=Graph_frame)
