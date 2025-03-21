@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pandas as pd
@@ -40,12 +41,15 @@ class GraphDisplay:
             if df_today.empty:
                 print("No data for today.")
                 return
-
+            
+            category_var = tk.StringVar()
+            
             total_time_all = df["total_time"].sum()
+            
             total_time_today = df_today["total_time"].sum()
             total_days = df["date"].nunique()
-            df_work = df[df["category"] == "work"]
-            total_work_hours = df_work["total_time"].sum() if not df_work.empty else 0
+            df_filter = df[df["category"] == category_var.get()]
+            total_work_hours = df_filter["total_time"].sum() if not df_filter.empty else 0
             total_work_hours = total_work_hours / 60
             productivity = (total_work_hours / (total_days * 24 * (2 / 3))) * 100 if total_work_hours > 0 and total_days * 24 > 0 else 0
 
@@ -67,10 +71,33 @@ class GraphDisplay:
             info_frame = tk.Frame(graph_window, bg=self.theme.buttonBg())
             info_frame.pack(pady=(5, 5))
 
+            def update_header():
+                total_time_today = df_today["total_time"].sum()
+                total_days = df["date"].nunique()
+                df_filter = df[df["category"] == category_var.get()]
+                total_work_hours = df_filter["total_time"].sum() if not df_filter.empty else 0
+                total_work_hours = total_work_hours / 60
+                productivity = (total_work_hours / (total_days * 24 * (2 / 3))) * 100 if total_work_hours > 0 and total_days * 24 > 0 else 0
+                info_label.config(text=f"Today Session: {round(total_time_today/60,2)} | Total Days: {total_days} | Total {category_var.get()} Hours: {total_work_hours:.2f} | Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)")
+            
+            def on_catagory_change(event):
+                nonlocal df, df_filter
+                selected_value = category_dropdown.get()
+                category_var.set(selected_value)
+                df_filter = df[df["category"] == category_var.get()]
+                update_header()
+
+            category_dropdown = ttk.Combobox(
+                info_frame, textvariable=category_var, values=list(self.logger.get_CATEGORIES()),state="readonly"   
+            )
+            category_dropdown.grid(row=0,column=0,padx=10)
+
+            category_dropdown.bind("<<ComboboxSelected>>", on_catagory_change)
+
             info_label = tk.Label(info_frame,
-                                   text=f"Today Session: {round(total_time_today/60,2)} | Total Days: {total_days} | Total Work Hours: {total_work_hours:.2f} | Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)",
-                                   font=("Helvetica", 12), bg=self.theme.windowBg(), fg="white")
-            info_label.pack()
+                                    text=f"Today Session: {round(total_time_today/60,2)} | Total Days: {total_days} | Total {category_var.get()} Hours: {total_work_hours:.2f} | Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)",
+                                    font=("Helvetica", 12), bg=self.theme.windowBg(), fg="white")
+            info_label.grid(row=0,column=1,padx=10)
 
             sub_info_frame = tk.Frame(graph_window, bg=self.theme.buttonBg())
             sub_info_frame.pack(pady=(5, 5),padx=10)

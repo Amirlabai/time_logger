@@ -15,6 +15,8 @@ class Logger:
         self.log = []
         self.CATEGORIES = set(self.df['category'].unique())
 
+    def get_CATEGORIES(self):
+        return self.CATEGORIES
     def load_existing_data(self):
         try:
             if os.path.exists(self.csv_file):
