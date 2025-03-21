@@ -21,7 +21,9 @@ class WindowTracker:
         try:
             _, pid = win32process.GetWindowThreadProcessId(hwnd)
             process = psutil.Process(pid)
-            return process.name().replace(".exe", "")
+            app_name = process.name().replace(".exe", "")
+            window_title = win32gui.GetWindowText(hwnd)
+            return app_name, window_title
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
             return "Unknown"
         except Exception:
@@ -30,19 +32,19 @@ class WindowTracker:
     def track_windows(self):
         try:
             while self.running:
-                new_window = self.get_active_window()
-                if new_window and new_window != self.active_window:
+                program_name,window_name = self.get_active_window()
+                if program_name and program_name != self.active_window:
                     if self.active_window:
                         end_time = time.time()
                         total_time = end_time - self.start_time
-                        self.log_activity(self.active_window, self.start_time, end_time, total_time)
+                        self.log_activity(self.active_window,window_name, self.start_time, end_time, total_time)
                         self.perv_window = self.active_window
-                    if new_window not in self.category_map:
-                        category = self.get_category(new_window)
+                    if program_name not in self.category_map:
+                        category = self.get_category(program_name)
                         if category:
-                            self.category_map[new_window] = category
+                            self.category_map[program_name] = category
                     self.perv_window = self.active_window
-                    self.active_window = new_window
+                    self.active_window = program_name
                     self.start_time = time.time()
                 time.sleep(1)
         except Exception as e:
