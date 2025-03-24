@@ -6,6 +6,7 @@ from ui import TimeTrackerUI
 from graph import GraphDisplay
 from themes import Theme
 from utils import check_if_file_is_open
+import time
 
 
 def main():
@@ -23,10 +24,11 @@ def main():
 
     def on_closing():
         """Handles the window close event."""
-        if messagebox.askokcancel("Quit", "Do you want to quit?"):
-            tracker.stop_tracking()  # Stop the tracker
+        #if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            #tracker.stop_tracking()  # Stop the tracker
+        ui.close_program()
+            #time.sleep(1)
             # Perform any other cleanup (e.g., saving data, closing files)
-            root.destroy()  # Close the window
 
     root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the close event
 

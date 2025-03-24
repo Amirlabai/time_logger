@@ -1,6 +1,0 @@
-date,window,category,start_time,end_time,total_time,percent
-00/01/1900,Code,misc,00:00:00,00:00:01,0.02,1.96%
-00/01/1900,explorer,misc,00:00:00,00:00:01,0.02,1.96%
-00/01/1900,python,misc,00:00:00,00:00:01,0.03,3.92%
-00/01/1900,ScreenClippingHost,misc,00:00:00,00:00:01,0.02,0.05%
-00/01/1900,Taskmgr,misc,00:00:00,00:00:01,0.08,0.27%

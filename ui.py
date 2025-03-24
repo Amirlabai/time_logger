@@ -21,11 +21,14 @@ class TimeTrackerUI:
         self.root.withdraw()
 
         categories_label = tk.Label(self.root, text="Available Categories:", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "16", "bold"))
-        categories_label.pack(pady=5)
+        categories_label.pack(pady=10)
 
         self.categories_listbox = tk.Listbox(self.root, height=5, bg=self.theme.buttonBg(), fg="white")
-        self.categories_listbox.pack(pady=5)
+        self.categories_listbox.pack()
         self.update_category_list()
+
+        categories_discription = tk.Label(self.root, text="Category entry: name (count) | percentage", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "8"))
+        categories_discription.pack()
 
         self.running_time_label = tk.Label(self.root, text="Running Time: 00:00:00", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold"))
         self.running_time_label.pack(pady=5)
@@ -52,8 +55,9 @@ class TimeTrackerUI:
     def update_category_list(self):
         self.categories_listbox.delete(0, tk.END)
         category_counts = self.logger.df['category'].value_counts()
+        total_counts = self.logger.df.shape[0]
         for category, count in category_counts.items():
-            self.categories_listbox.insert(tk.END, f"{category} ({count})")
+            self.categories_listbox.insert(tk.END, f"{category} ({count}) | {round((count/total_counts)*100,2)}%")
 
     def update_running_time(self):
         time_frame = int(time.time() - self.tracker.start_time)
@@ -75,6 +79,7 @@ class TimeTrackerUI:
     def close_program(self):
         self.tracker.stop_tracking()
         if messagebox.askyesno("Confirm Exit", "Are you sure you want to close the program?"):
+            #time.sleep(1)
             if self.graph_display.is_open:
                 graph_window = [w for w in tk.Toplevel.winfo_children(self.root) if isinstance(w, tk.Toplevel)][0]
                 graph_window.destroy()
