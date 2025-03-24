@@ -37,7 +37,8 @@ class WindowTracker:
                     if self.active_window:
                         end_time = time.time()
                         total_time = end_time - self.start_time
-                        self.log_activity(self.active_window,window_name, self.start_time, end_time, total_time)
+                        self.log_activity(self.active_window, window_name, self.start_time, end_time, total_time)
+                        #print(self.active_window)
                         self.perv_window = self.active_window
                     if program_name not in self.category_map:
                         category = self.get_category(program_name)
@@ -62,3 +63,4 @@ class WindowTracker:
 
     def stop_tracking(self):
         self.running = False
+        self.track_windows()

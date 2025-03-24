@@ -17,6 +17,7 @@ class Logger:
 
     def get_CATEGORIES(self):
         return self.CATEGORIES
+
     def load_existing_data(self):
         try:
             if os.path.exists(self.csv_file):
@@ -44,6 +45,7 @@ class Logger:
         self.df = pd.concat([self.df, new_df], ignore_index=True)
         self.df = self.calculate_session_percentages(self.df)
         self.df.to_csv(self.csv_file, index=False)
+        #print(self.log)
         self.log = []
 
     def calculate_session_percentages(self, df):
@@ -68,6 +70,8 @@ class Logger:
 
         df.drop(columns=['total_time_seconds', 'session_start_time', 'session_total_time'], inplace=True)
         return df
+
+#   region New Window entry
 
     def get_category(self, window_name):
         root = tk.Tk()

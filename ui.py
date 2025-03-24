@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import time
 
+
 class TimeTrackerUI:
     def __init__(self, root, tracker, graph_display, theme, logger):
         self.root = root
@@ -10,6 +11,8 @@ class TimeTrackerUI:
         self.theme = theme
         self.logger = logger
         self.setup_ui()
+
+#   region initiate GUI
 
     def setup_ui(self):
         self.root.configure(bg=self.theme.windowBg())
@@ -44,6 +47,8 @@ class TimeTrackerUI:
         self.root.after(100, lambda: self.root.deiconify())
         self.update_running_time()
 
+#   region update GUI
+
     def update_category_list(self):
         self.categories_listbox.delete(0, tk.END)
         category_counts = self.logger.df['category'].value_counts()
@@ -62,12 +67,13 @@ class TimeTrackerUI:
 
         self.root.after(1000, self.update_running_time)
 
+#   region Buttons
+
     def get_graph(self):
         self.graph_display.show_graph(self.logger.df)
 
     def close_program(self):
         self.tracker.stop_tracking()
-        self.logger.save_log_to_csv()
         if messagebox.askyesno("Confirm Exit", "Are you sure you want to close the program?"):
             if self.graph_display.is_open:
                 graph_window = [w for w in tk.Toplevel.winfo_children(self.root) if isinstance(w, tk.Toplevel)][0]

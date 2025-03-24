@@ -10,8 +10,6 @@ class GraphDisplay:
         self.theme = theme
         self.is_open = False
 
-    
-
     def show_graph(self, df):
         def format_with_hours(value):
             """Formats a time value to include "hours"."""
@@ -186,5 +184,3 @@ class GraphDisplay:
 
         except Exception as e:
             print(f"Error showing graph: {e}")
-    
-    
