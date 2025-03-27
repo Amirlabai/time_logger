@@ -18,6 +18,7 @@ class TimeTrackerUI:
         self.root.configure(bg=self.theme.windowBg())
         self.root.title("Time Tracker")
         self.root.minsize(width=300, height=200)
+        self.root.iconbitmap("icons\\timer_icon_32.ico")
         self.root.withdraw()
 
         categories_label = tk.Label(self.root, text="Available Categories:", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "16", "bold"))

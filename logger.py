@@ -5,6 +5,7 @@ from tkinter import messagebox
 import tkinter as tk
 from tkinter import ttk
 from themes import Theme
+import datetime
 
 class Logger:
     def __init__(self, csv_file,theme):
@@ -41,13 +42,36 @@ class Logger:
         self.save_log_to_csv()
 
     def save_log_to_csv(self):
-        new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
-        self.df = pd.concat([self.df, new_df], ignore_index=True)
-        self.df = self.calculate_session_percentages(self.df)
-        self.df.to_csv(self.csv_file, index=False)
-        #print(self.log)
-        self.log = []
-
+        try:
+            now = datetime.datetime.now()
+            df_date = str(self.df.iloc[0,0]).split("-")[1]
+            log_date = self.log[0][0].split("-")[1]
+            print(df_work_hours)
+            if df_date != log_date:
+                #self.df.to_csv(self.csv_file + now.year + now.month, index=False)
+                df_work_hours = self.df.groupby(['date', 'category'])['total_time'].sum()
+                df_work_hours.to_csv(f"C:\\timeLog\\report {now.year, now.month}.csv", index=True)
+                new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
+                #self.df = pd.concat([self.df, new_df], ignore_index=True)
+                #self.df = self.calculate_session_percentages(self.df)
+                new_df = self.calculate_session_percentages(new_df)
+                new_df.to_csv(self.csv_file, index=False)
+                #print(self.log)
+                self.log = []
+            else:
+                new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
+                self.df = pd.concat([self.df, new_df], ignore_index=True)
+                self.df = self.calculate_session_percentages(self.df)
+                self.df.to_csv(self.csv_file, index=False)
+                #print(self.log)
+                self.log = []
+        except:
+            new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
+            self.df = pd.concat([self.df, new_df], ignore_index=True)
+            self.df = self.calculate_session_percentages(self.df)
+            self.df.to_csv(self.csv_file, index=False)
+            #print(self.log)
+            self.log = []
     def calculate_session_percentages(self, df):
         if df.empty:
             return df

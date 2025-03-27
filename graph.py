@@ -63,8 +63,10 @@ class GraphDisplay:
             category_percentage_all = category_percentage_all[category_percentage_today.index]
 
             graph_window = tk.Toplevel()
+            graph_window.iconbitmap("icons\\barchart_32.ico")
             graph_window.configure(bg=self.theme.windowBg())
             graph_window.title("Category Percentage Comparison")
+            
 
             info_frame = tk.Frame(graph_window, bg=self.theme.windowBg())
             info_frame.pack(pady=(5, 5))
