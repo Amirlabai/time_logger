@@ -24,11 +24,7 @@ def main():
 
     def on_closing():
         """Handles the window close event."""
-        #if messagebox.askokcancel("Quit", "Do you want to quit?"):
-            #tracker.stop_tracking()  # Stop the tracker
         ui.close_program()
-            #time.sleep(1)
-            # Perform any other cleanup (e.g., saving data, closing files)
 
     root.protocol("WM_DELETE_WINDOW", on_closing)  # Bind the close event
 
