@@ -66,6 +66,7 @@ class GraphDisplay:
             graph_window.iconbitmap("icons\\barchart_32.ico")
             graph_window.configure(bg=self.theme.windowBg())
             graph_window.title("Category Percentage Comparison")
+            
 
             info_frame = tk.Frame(graph_window, bg=self.theme.windowBg())
             info_frame.pack(pady=(5, 5))
