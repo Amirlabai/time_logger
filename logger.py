@@ -36,7 +36,7 @@ class Logger:
                 columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
 
     def log_activity(self,program, window, start_time, end_time, total_time):
-        self.log.append([time.strftime('%Y-%m-%d'),program, window, self.category_map.get(program, "Misc"),
+        self.log.append([time.strftime('%d/%m/%Y'),program, window, self.category_map.get(program, "Misc"),
                          time.strftime('%H:%M:%S', time.localtime(start_time)),
                          time.strftime('%H:%M:%S', time.localtime(end_time)), round(total_time / 60, 2)])
         self.save_log_to_csv()
@@ -67,11 +67,12 @@ class Logger:
             self.df.to_csv(self.csv_file, index=False)
             #print(self.log)
             self.log = []
+
     def calculate_session_percentages(self, df):
         if df.empty:
             return df
 
-        df['date'] = pd.to_datetime(df['date'])
+        df['date'] = pd.to_datetime(df['date'],format="%d/%m/%Y")
         df['start_time'] = pd.to_datetime(df['start_time'], format='%H:%M:%S').dt.time
         df['end_time'] = pd.to_datetime(df['end_time'], format='%H:%M:%S').dt.time
 
