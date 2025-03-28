@@ -13,6 +13,7 @@ class WindowTracker:
         self.category_map = category_map
         self.running = True
         self.active_window = None
+        self.total_time = 0
         self.start_time = 0
         self.perv_window = None
         self.thread = None  # Store the thread
@@ -39,7 +40,7 @@ class WindowTracker:
             while self.running:
                 program_name, window_name = self.get_active_window()
                 if program_name and program_name != self.active_window:
-                    self.log_current_window_activity()  # Log previous window
+                    self.log_current_window_activity(window_name)  # Log previous window
 
                     if program_name not in self.category_map:
                         category = self.get_category(program_name)
@@ -50,19 +51,17 @@ class WindowTracker:
                     self.start_time = time.time()
                 time.sleep(1)
             # Log the final window activity.
-            self.log_current_window_activity()
+            self.log_current_window_activity(window_name)
 
         except Exception as e:
             print(f"Error in window_tracker thread: {e}")
             traceback.print_exc()
 
-    def log_current_window_activity(self):
+    def log_current_window_activity(self,window_name):
         if self.active_window:
             end_time = time.time()
-            total_time = end_time - self.start_time
-            program_name, window_name = self.get_active_window() #get current window.
-            self.active_window = program_name
-            self.log_activity(self.active_window, window_name, self.start_time, end_time, total_time)
+            self.total_time = end_time - self.start_time
+            self.log_activity(self.active_window, window_name, self.start_time, end_time, self.total_time)
             self.start_time = end_time
 
     def start_tracking(self):
