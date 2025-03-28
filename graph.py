@@ -32,7 +32,7 @@ class GraphDisplay:
             return
 
         try:
-            df["date"] = pd.to_datetime(df["date"],format="%d/%m/%Y")
+            df["date"] = pd.to_datetime(df["date"])
             today = pd.Timestamp.today().normalize()
             df_today = df[df["date"] == today]
 

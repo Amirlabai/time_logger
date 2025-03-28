@@ -22,7 +22,7 @@ class Logger:
     def load_existing_data(self):
         try:
             if os.path.exists(self.csv_file):
-                df = pd.read_csv(self.csv_file)
+                df = pd.read_csv(self.csv_file,dayfirst=True)
                 #self.CATEGORIES.update(df['category'].unique())
                 return df
             return pd.DataFrame(
@@ -44,27 +44,27 @@ class Logger:
     def save_log_to_csv(self):
         try:
             now = datetime.datetime.now()
-            df_date = str(self.df.iloc[0,0]).split("-")[1]
-            log_date = self.log[0][0].split("-")[1]
-            print(df_work_hours)
+            df_date = str(self.df.iloc[0,0]).split("/")[1]
+            log_date = self.log[0][0].split("/")[1]
+            #print(df_work_hours)
             if df_date != log_date:
                 df_work_hours = self.df.groupby(['date', 'category'])['total_time'].sum()
                 df_work_hours.to_csv(f"C:\\timeLog\\report {now.year, now.month}.csv", index=True)
                 new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
                 new_df = self.calculate_session_percentages(new_df)
-                new_df.to_csv(self.csv_file, index=False)
+                new_df.to_csv(self.csv_file, index=False,date_format='%d/%m/%Y')
                 self.log = []
             else:
                 new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
                 self.df = pd.concat([self.df, new_df], ignore_index=True)
                 self.df = self.calculate_session_percentages(self.df)
-                self.df.to_csv(self.csv_file, index=False)
+                self.df.to_csv(self.csv_file, index=False,date_format='%d/%m/%Y')
                 self.log = []
         except:
             new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
             self.df = pd.concat([self.df, new_df], ignore_index=True)
             self.df = self.calculate_session_percentages(self.df)
-            self.df.to_csv(self.csv_file, index=False)
+            self.df.to_csv(self.csv_file, index=False,date_format='%d/%m/%Y')
             #print(self.log)
             self.log = []
 
@@ -72,7 +72,7 @@ class Logger:
         if df.empty:
             return df
 
-        df['date'] = pd.to_datetime(df['date'],format="%d/%m/%Y")
+        df['date'] = pd.to_datetime(df['date'], format = '%d/%m/%Y')
         df['start_time'] = pd.to_datetime(df['start_time'], format='%H:%M:%S').dt.time
         df['end_time'] = pd.to_datetime(df['end_time'], format='%H:%M:%S').dt.time
 

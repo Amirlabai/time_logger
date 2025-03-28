@@ -17,7 +17,7 @@ class TimeTrackerUI:
     def setup_ui(self):
         self.root.configure(bg=self.theme.windowBg())
         self.root.title("Time Tracker")
-        self.root.minsize(width=300, height=200)
+        self.root.minsize(width=400, height=350)
         self.root.iconbitmap("icons\\timer_icon_32.ico")
         self.root.withdraw()
 
@@ -66,9 +66,9 @@ class TimeTrackerUI:
         minutes, seconds = divmod(remainder, 60)
         self.running_time_label.config(text=f"Current program Running Time: {hours:02}:{minutes:02}:{seconds:02}")
         try:
-            self.current_window_label.config(text=f"previous Window: {self.tracker.perv_window or 'None'} | {self.tracker.total_time/60:.2f} minutes")
+            self.current_window_label.config(text=f"Previous window: {self.tracker.perv_window or 'None'} | {self.tracker.total_time/60:.2f} minutes")
         except:
-            self.current_window_label.config(text=f"current Window: {self.tracker.active_window or 'None'}")
+            self.current_window_label.config(text=f"Current window: {self.tracker.active_window or 'None'}")
 
         self.root.after(1000, self.update_running_time)
 
