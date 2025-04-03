@@ -67,7 +67,11 @@ class TimeTrackerUI:
         self.running_time_label.config(text=f"Current program Running Time: {hours:02}:{minutes:02}:{seconds:02}")
         try:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             self.current_window_label.config(text=f"Previous window: {self.tracker.perv_window or 'None'} | {self.tracker.total_time/60:.2f} minutes")
+=======
+            self.current_window_label.config(text=f"Previous Window: {self.tracker.perv_window or 'None'} | {self.tracker.total_time/60:.2f} minutes")
+>>>>>>> Stashed changes
 =======
             self.current_window_label.config(text=f"Previous Window: {self.tracker.perv_window or 'None'} | {self.tracker.total_time/60:.2f} minutes")
 >>>>>>> Stashed changes
