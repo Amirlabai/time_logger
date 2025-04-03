@@ -1,0 +1,1 @@
+{"python": "Misc", "Code": "Study", "explorer": "Misc", "EXCEL.EXE": "Study", "Acrobat": "Study", "Unknown": "Break", "firefox": "Break", "ShellExperienceHost": "Misc", "GitHubDesktop": "Misc", "SearchHost": "Misc", "ApplicationFrameHost": "Study", "Taskmgr": "Misc"}

@@ -66,7 +66,11 @@ class TimeTrackerUI:
         minutes, seconds = divmod(remainder, 60)
         self.running_time_label.config(text=f"Current program Running Time: {hours:02}:{minutes:02}:{seconds:02}")
         try:
+<<<<<<< Updated upstream
             self.current_window_label.config(text=f"Previous window: {self.tracker.perv_window or 'None'} | {self.tracker.total_time/60:.2f} minutes")
+=======
+            self.current_window_label.config(text=f"Previous Window: {self.tracker.perv_window or 'None'} | {self.tracker.total_time/60:.2f} minutes")
+>>>>>>> Stashed changes
         except:
             self.current_window_label.config(text=f"Current window: {self.tracker.active_window or 'None'}")
 
@@ -75,6 +79,10 @@ class TimeTrackerUI:
 #   region Buttons
 
     def get_graph(self):
+        if self.graph_display.is_open:
+                graph_window = [w for w in tk.Toplevel.winfo_children(self.root) if isinstance(w, tk.Toplevel)][0]
+                graph_window.destroy()
+                self.graph_display.is_open = False
         self.graph_display.show_graph(self.logger.df)
 
     def close_program(self):

@@ -16,7 +16,7 @@ def main():
     root = tk.Tk()
     theme = Theme()
     logger = Logger("C:\\timeLog\\time_log.csv",theme)
-    tracker = WindowTracker(logger.log_activity, logger.category_map)
+    tracker = WindowTracker(logger,logger.log_activity, logger.category_map)
     graph_display = GraphDisplay(logger, theme)
     ui = TimeTrackerUI(root, tracker, graph_display, theme, logger)
 

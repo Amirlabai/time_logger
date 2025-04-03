@@ -3,14 +3,19 @@ from tkinter import ttk
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pandas as pd
+import glob
+import os
+from tkinter import messagebox 
 
 class GraphDisplay:
     def __init__(self, logger, theme):
         self.logger = logger
         self.theme = theme
         self.is_open = False
+        self.df_all_data = self.get_history()
 
     def show_graph(self, df):
+        self.df_all_data = self.get_history()
         def format_with_hours(value):
             """Formats a time value to include "hours"."""
             if value < 60:
@@ -27,27 +32,49 @@ class GraphDisplay:
             except KeyError:
                 return f"no data found in DataFrame."
         
-        if df.empty:
-            print("No data to display.")
+        if df.empty and not self.df_all_data.empty:
+            messagebox.showinfo("No data to display.")
             return
 
         try:
+<<<<<<< Updated upstream
             df["date"] = pd.to_datetime(df["date"])
             today = pd.Timestamp.today().normalize()
+=======
+            #df["date"] = pd.to_datetime(df["date"]).dt.strftime("%d/%m/%Y")
+            print(f"show graph \n{df.head()}\n")
+            #df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
+            print(f"show graph \n{df.head()}\n")
+            today = pd.Timestamp.today().normalize().strftime("%d/%m/%Y")
+>>>>>>> Stashed changes
             df_today = df[df["date"] == today]
 
             if df_today.empty:
                 print("No data for today.")
                 return
             
+            df_month = df.copy()
+
+            if not self.df_all_data.empty:
+                df = pd.concat([self.df_all_data, df], ignore_index=True)
+                
+            
             category_var = tk.StringVar()
             
             total_time_all = df["total_time"].sum()
             
             total_time_today = df_today["total_time"].sum()
+            #total_time_month = df_month["total_time"].sum()
+            total_days_month = df_month["date"].nunique()
             total_days = df["date"].nunique()
+
+            df_filter_month = df_month[df_month["category"] == category_var.get()]
+            month_work_hours = df_filter_month["total_time"].sum() if not df_filter_month.empty else df_month['total_time'].sum()
+            month_work_hours = month_work_hours / 60
+            productivity_month = (month_work_hours / (total_days_month * 24 * (2 / 3))) * 100 if month_work_hours > 0 and total_days_month * 24 > 0 else 0
+            
             df_filter = df[df["category"] == category_var.get()]
-            total_work_hours = df_filter["total_time"].sum() if not df_filter.empty else 0
+            total_work_hours = df_filter["total_time"].sum() if not df_filter.empty else df['total_time'].sum()
             total_work_hours = total_work_hours / 60
             productivity = (total_work_hours / (total_days * 24 * (2 / 3))) * 100 if total_work_hours > 0 and total_days * 24 > 0 else 0
 
@@ -72,13 +99,25 @@ class GraphDisplay:
             info_frame.pack(pady=(5, 5))
 
             def update_header():
-                total_time_today = df_today["total_time"].sum()
-                total_days = df["date"].nunique()
+                df_filter_day = df_today[df_today["category"] == category_var.get()]
+                day_work_hours = df_filter_day["total_time"].sum() if not df_filter_day.empty else df_today['total_time'].sum()
+                day_work_hours = day_work_hours / 60
+                #productivity_month = (day_work_hours / (total_days_month * 24 * (2 / 3))) * 100 if day_work_hours > 0 and total_days_month * 24 > 0 else 0
+
+                df_filter_month = df_month[df_month["category"] == category_var.get()]
+                month_work_hours = df_filter_month["total_time"].sum() if not df_filter_month.empty else df_month['total_time'].sum()
+                month_work_hours = month_work_hours / 60
+                productivity_month = (month_work_hours / (total_days_month * 24 * (2 / 3))) * 100 if month_work_hours > 0 and total_days_month * 24 > 0 else 0
+                #total_time_today = df_today["total_time"].sum()
+                #total_days = df["date"].nunique()
                 df_filter = df[df["category"] == category_var.get()]
-                total_work_hours = df_filter["total_time"].sum() if not df_filter.empty else 0
+                total_work_hours = df_filter["total_time"].sum() if not df_filter.empty else df['total_time'].sum()
                 total_work_hours = total_work_hours / 60
                 productivity = (total_work_hours / (total_days * 24 * (2 / 3))) * 100 if total_work_hours > 0 and total_days * 24 > 0 else 0
-                info_label.config(text=f"Today Session: {round(total_time_today/60,2)} | Total Days: {total_days} | Total {category_var.get()} Hours: {total_work_hours:.2f} | Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)")
+                info_label.config(
+                                    text=f"""Today Session: {day_work_hours:.2f} | This Month: {month_work_hours:.2f} | Active Days During This Month: {total_days_month} | This Month Productivity: {productivity_month:.1f}% (Assuming 8 hours sleep zZzZ)
+                                    \nTotal Days: {total_days} | Total {category_var.get()} Hours: {total_work_hours:.2f} | Total Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)"""
+                                    )
             
             def on_catagory_change(event):
                 nonlocal df, df_filter
@@ -94,10 +133,13 @@ class GraphDisplay:
 
             category_dropdown.bind("<<ComboboxSelected>>", on_catagory_change)
 
-            info_label = tk.Label(info_frame,
-                                    text=f"Today Session: {round(total_time_today/60,2)} | Total Days: {total_days} | Total {category_var.get()} Hours: {total_work_hours:.2f} | Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)",
-                                    font=("Helvetica", 12), bg=self.theme.windowBg(), fg="white")
-            info_label.grid(row=0,column=1,padx=10)
+            info_label = tk.Label(
+                                    info_frame,
+                                    text=f"""Today Session: {total_time_today/60:.2f} | This Month: {month_work_hours:.2f} | Active Days During This Month: {total_days_month} | This Month Productivity: {productivity_month:.1f}% (Assuming 8 hours sleep zZzZ)
+                                    \nTotal Days: {total_days} | Total {category_var.get()} Hours: {total_work_hours:.2f} | Total Productivity: {productivity:.1f}% (Assuming 8 hours sleep zZzZ)""",
+                                    font=("Helvetica", 12), bg=self.theme.windowBg(), fg="white"
+                                    )
+            info_label.grid(row=0, column=1, rowspan=3, padx=10)
 
             sub_info_frame = tk.Frame(graph_window, bg=self.theme.buttonBg())
             sub_info_frame.pack(pady=(5, 5),padx=10)
@@ -186,3 +228,40 @@ class GraphDisplay:
 
         except Exception as e:
             print(f"Error showing graph: {e}")
+
+    def get_history(self):
+        try:
+            # Use glob to find all CSV files in the folder
+            csv_files = glob.glob(os.path.join('C:\\timeLog\\log', "*.csv"))
+
+            if not csv_files:
+                print(f"No CSV files found in C:\\timeLog\\log'")
+                return pd.DataFrame(columns=None, index=None, dtype=None)
+
+            # Read each CSV into a DataFrame and store in a list
+            dfs = []
+            for file in csv_files:
+                try:
+                    df = pd.read_csv(file)#, dayfirst=True) # Parse the 'date' column
+                    #df["date"] = pd.to_datetime(df["date"]).dt.strftime("%d/%m/%Y")
+                    dfs.append(df)
+                except Exception as e:
+                    print(f"Error reading {file}: {e}")
+
+            if not dfs: # check if any dataframe was successfully read.
+                return pd.DataFrame(columns=None, index=None, dtype=None)
+
+            # Concatenate all DataFrames into a single DataFrame
+            merged_df = pd.concat(dfs, ignore_index=True)
+
+            # Set the 'date' column as the index
+            #merged_df.set_index('date', inplace=True)
+
+            # Sort the index for consistent ordering
+            merged_df.sort_index(inplace=True)
+
+            return merged_df
+
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return pd.DataFrame(columns=None, index=None, dtype=None)

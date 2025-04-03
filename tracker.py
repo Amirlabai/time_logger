@@ -6,9 +6,10 @@ import threading
 import traceback
 from logger import Logger  # Assuming you have a logger.py
 import themes # And a themes.py
+import json
 
 class WindowTracker:
-    def __init__(self, log_activity_callback, category_map):
+    def __init__(self,logger, log_activity_callback, category_map):
         self.log_activity = log_activity_callback
         self.category_map = category_map
         self.running = True
@@ -17,7 +18,7 @@ class WindowTracker:
         self.start_time = 0
         self.perv_window = None
         self.thread = None  # Store the thread
-        self.logger = Logger("C:\\timeLog\\time_log.csv", themes) #create a logger instance.
+        self.logger = logger
 
     def get_active_window(self):
         hwnd = win32gui.GetForegroundWindow()
@@ -29,11 +30,11 @@ class WindowTracker:
             return app_name, window_title
         except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess) as e:
             print(f"Error in get_active_window: {e}")
-            return "Unknown", "" # Return empty string for window title
+            return "Unknown", "blank" # Return empty string for window title
         except Exception as e:
             print(f"Error in get_active_window: {e}")
             traceback.print_exc()
-            return "Unknown", ""
+            return "Unknown", "blank"
 
     def track_windows(self):
         try:
@@ -51,6 +52,7 @@ class WindowTracker:
                     self.start_time = time.time()
                 time.sleep(1)
             # Log the final window activity.
+            self.update_user_data()
             self.log_current_window_activity(window_name)
 
         except Exception as e:
@@ -75,3 +77,7 @@ class WindowTracker:
 
     def stop_tracking(self):
         self.running = False
+
+    def update_user_data(self):
+        with open('user_programs.txt', "w") as file:
+            json.dump(self.logger.category_map, file)
