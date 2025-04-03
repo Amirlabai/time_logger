@@ -23,20 +23,11 @@ class Logger:
     def load_existing_data(self):
         try:
             if os.path.exists(self.csv_file):
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-                df = pd.read_csv(self.csv_file,dayfirst=True)
-=======
-=======
->>>>>>> Stashed changes
+
                 df = pd.read_csv(self.csv_file, dayfirst=True)
                 #print(f"import data frame \n{df.head()}")
                 #df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y", errors='coerce')
-                
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
+
                 #self.CATEGORIES.update(df['category'].unique())
                 return df
             return pd.DataFrame(
@@ -61,13 +52,7 @@ class Logger:
         print(f"save log data frame \n{self.df.head()} \n{self.log}\n")
         try:
             now = datetime.datetime.now()
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-            df_date = str(self.df.iloc[0,0]).split("/")[1]
-            log_date = self.log[0][0].split("/")[1]
-=======
-=======
->>>>>>> Stashed changes
+
             try:
                 df_date = str(self.df.iloc[0,0]).split("-")[1]
             except:
@@ -76,10 +61,6 @@ class Logger:
                 log_date = self.log[0][0].split("-")[1]
             except:
                 log_date = self.log[0][0].split("/")[1]
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
             #print(df_work_hours)
             if df_date != log_date:
                 df_work_hours = self.df.groupby(['date', 'category'])['total_time'].sum()
@@ -109,15 +90,8 @@ class Logger:
         if df.empty:
             return df
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        df['date'] = pd.to_datetime(df['date'], format = '%d/%m/%Y')
-=======
-        df['date'] = pd.to_datetime(df['date'], format="%d/%m/%Y")
->>>>>>> Stashed changes
-=======
-        df['date'] = pd.to_datetime(df['date'], format="%d/%m/%Y")
->>>>>>> Stashed changes
+        #df['date'] = pd.to_datetime(df['date'], format="%d/%m/%Y")
+
         df['start_time'] = pd.to_datetime(df['start_time'], format='%H:%M:%S').dt.time
         df['end_time'] = pd.to_datetime(df['end_time'], format='%H:%M:%S').dt.time
 
