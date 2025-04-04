@@ -15,7 +15,7 @@ class WindowTracker:
         self.running = True
         self.active_window = None
         self.total_time = 0
-        self.start_time = 0
+        self.start_time = time.time()
         self.perv_window = None
         self.thread = None  # Store the thread
         self.logger = logger
@@ -43,13 +43,14 @@ class WindowTracker:
                 if program_name and program_name != self.active_window:
                     self.log_current_window_activity(window_name)  # Log previous window
 
+
                     if program_name not in self.category_map:
                         category = self.get_category(program_name)
                         if category:
                             self.category_map[program_name] = category
                     self.perv_window = self.active_window
                     self.active_window = program_name
-                    self.start_time = time.time()
+                    #self.start_time = time.time()
                 time.sleep(1)
             # Log the final window activity.
             self.update_user_data()

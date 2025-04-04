@@ -38,9 +38,8 @@ class GraphDisplay:
 
         try:
             #df["date"] = pd.to_datetime(df["date"]).dt.strftime("%d/%m/%Y")
-            print(f"show graph \n{df.head()}\n")
+            print(f"\nshow graph \n{df.head(1)}\n")
             #df["date"] = pd.to_datetime(df["date"], format="%d/%m/%Y")
-            print(f"show graph \n{df.head()}\n")
             today = pd.Timestamp.today().normalize().strftime("%d/%m/%Y")
             df_today = df[df["date"] == today]
 

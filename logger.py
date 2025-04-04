@@ -44,16 +44,20 @@ class Logger:
         #print(f"log activity data frame \n{self.df.head()}")
         self.log.append([time.strftime('%d/%m/%Y'),program, window, self.category_map.get(program, "Misc"),
                          time.strftime('%H:%M:%S', time.localtime(start_time)),
-                         time.strftime('%H:%M:%S', time.localtime(end_time)), round(total_time / 60, 2)])
+                         time.strftime('%H:%M:%S', time.localtime(end_time)), round(total_time / 60, 2),0])
         self.save_log_to_csv()
 
     def save_log_to_csv(self):
         self.df["date"] = pd.to_datetime(self.df["date"]).dt.strftime("%d/%m/%Y")
-        print(f"save log data frame \n{self.df.head()} \n{self.log}\n")
+        print(f"\nsave log data frame \n\n{self.df.head(1)} \n\n {self.df.tail(1)} \n\n{self.log}\n")
         try:
             now = datetime.datetime.now()
+            print(f"{now.day}/{now.month}/{now.year}")
+            log_date = self.log[0][0]
+            log_date = datetime.datetime.strptime(log_date, '%d/%m/%Y').date()
+            print(f"{log_date.day}/{log_date.month}/{log_date.year}")
 
-            try:
+            '''try:
                 df_date = str(self.df.iloc[0,0]).split("-")[1]
             except:
                 df_date = str(self.df.iloc[0,0]).split("/")[1]
@@ -61,25 +65,26 @@ class Logger:
                 log_date = self.log[0][0].split("-")[1]
             except:
                 log_date = self.log[0][0].split("/")[1]
-            #print(df_work_hours)
-            if df_date != log_date:
+            #print(df_work_hours)'''
+
+            if now.month != log_date.month:
                 df_work_hours = self.df.groupby(['date', 'category'])['total_time'].sum()
                 df_work_hours.to_csv(f"C:\\timeLog\\report\\report_{now.year}{now.month-1}_{now.hour}{now.minute}{now.second}.csv", index=False)
                 self.df.to_csv(f"C:\\timeLog\\log\\log_{now.year}{now.month-1}_{now.hour}{now.minute}{now.second}.csv", index=False)
-                new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
+                new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
                 new_df = self.calculate_session_percentages(new_df)
                 new_df.to_csv(self.csv_file, index=False,date_format='%d/%m/%Y')
                 self.log = []
                 self.df = self.load_existing_data()
 
             else:
-                new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
+                new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
                 self.df = pd.concat([self.df, new_df], ignore_index=True)
                 self.df = self.calculate_session_percentages(self.df)
                 self.df.to_csv(self.csv_file, index=False,date_format='%d/%m/%Y')
                 self.log = []
         except:
-            new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time"])
+            new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
             self.df = pd.concat([self.df, new_df], ignore_index=True)
             self.df = self.calculate_session_percentages(self.df)
             self.df.to_csv(self.csv_file, index=False,date_format='%d/%m/%Y')
