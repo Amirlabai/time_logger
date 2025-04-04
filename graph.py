@@ -117,13 +117,21 @@ class GraphDisplay:
                 nonlocal df, df_filter
                 selected_value = category_dropdown.get()
                 category_var.set(selected_value)
-                df_filter = df[df["category"] == category_var.get()]
+                #df_filter = df[df["category"] == category_var.get()]
+                update_header()
+
+            def resst_header():
+                category_var.set("")
                 update_header()
 
             category_dropdown = ttk.Combobox(
                 info_frame, textvariable=category_var, values=list(self.logger.get_CATEGORIES()),state="readonly"   
             )
             category_dropdown.grid(row=0,column=0,padx=10)
+
+            resst_header_button = tk.Button(info_frame, text="Reset Selection", command=resst_header, bg=self.theme.closeButtonBg(), fg="white", font=("Arial", "10", "bold"),
+                                 activebackground=self.theme.closeActiveButtonBg(), activeforeground="white", borderwidth=2)
+            resst_header_button.grid(row=1,column=0,padx=10)
 
             category_dropdown.bind("<<ComboboxSelected>>", on_catagory_change)
 
