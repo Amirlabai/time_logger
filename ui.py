@@ -37,6 +37,26 @@ class TimeTrackerUI:
         self.current_window_label = tk.Label(self.root, text="Current Window: None", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold"))
         self.current_window_label.pack(pady=5)
 
+        def change_time_window():
+            top_change_time_window = tk.Toplevel(self.root)
+            top_change_time_window.title("Enter break time window")
+            time_window_entry = ttk.Entry(top_change_time_window)
+            time_window_entry.pack()
+            self.tracker.break_time = time_window_entry.get()
+
+        break_timer_frame = tk.Frame(self.root, bg=self.theme.windowBg())
+        break_timer_frame.pack(pady=(10, 5))
+
+        change_time_window_button = tk.Button(break_timer_frame, text="Change Window Time", command=change_time_window, bg=self.theme.buttonBg(), fg="white", font=("Helvetica", "10", "bold"),
+                                 activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
+        change_time_window_button.grid(row=0,column=0)
+        
+        self.time_for_break = tk.Label(break_timer_frame, text=f" time Window: {self.tracker.break_time}", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold"))
+        self.time_for_break.grid(row=0,column=1)
+
+        self.break_timer = tk.Label(break_timer_frame, text=f"Time untill break: {self.tracker.break_time_counter}", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold"))
+        self.break_timer.grid(row=1,column=0,columnspan=2)
+
         button_frame = tk.Frame(self.root, bg=self.theme.buttonBg())
         button_frame.pack(pady=(10, 5))
 
@@ -71,6 +91,8 @@ class TimeTrackerUI:
 
         except:
             self.current_window_label.config(text=f"Current window: {self.tracker.active_window or 'None'}")
+        
+        self.break_timer.config(text=f"Time untill break: {self.tracker.break_time_counter}")
 
         self.root.after(1000, self.update_running_time)
 
