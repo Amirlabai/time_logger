@@ -38,24 +38,50 @@ class TimeTrackerUI:
         self.current_window_label.pack(pady=5)
 
         def change_time_window():
-            top_change_time_window = tk.Toplevel(self.root)
+            def close_change_time_window():
+                self.tracker.break_time= int(time_window_entry.get())*60
+                kill_switch()
+
+            def kill_switch():
+                top_change_time_window.destroy()
+
+            top_change_time_window = tk.Toplevel(self.root,bg=self.theme.windowBg())
             top_change_time_window.title("Enter break time window")
+
+            time_window_text = tk.Label(top_change_time_window, text=f"Current time Window: {self.tracker.break_time}\nEnter in minutes!", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold"))
+            time_window_text.pack(pady=10)
+            
             time_window_entry = ttk.Entry(top_change_time_window)
-            time_window_entry.pack()
-            self.tracker.break_time = time_window_entry.get()
+            time_window_entry.pack(padx=10,pady=10)
+
+            entry_button = tk.Button(top_change_time_window,text="Submit", command=close_change_time_window, bg=self.theme.buttonBg(), fg="white", font=("Helvetica", "10", "bold"),
+                                    activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
+            entry_button.pack(pady=10)
+
+            entry_button.bind("<Return>", lambda event: close_change_time_window())
+            top_change_time_window.protocol("WM_DELETE_WINDOW", kill_switch)
+
+            
+
+        def reset_time_window():
+            self.tracker.reset_break_timer_start()
 
         break_timer_frame = tk.Frame(self.root, bg=self.theme.windowBg())
         break_timer_frame.pack(pady=(10, 5))
 
         change_time_window_button = tk.Button(break_timer_frame, text="Change Window Time", command=change_time_window, bg=self.theme.buttonBg(), fg="white", font=("Helvetica", "10", "bold"),
                                  activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
-        change_time_window_button.grid(row=0,column=0)
+        change_time_window_button.grid(row=0,column=0,pady=5)
         
-        self.time_for_break = tk.Label(break_timer_frame, text=f" time Window: {self.tracker.break_time}", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold"))
-        self.time_for_break.grid(row=0,column=1)
+        self.time_for_break = tk.Label(break_timer_frame, text=f" Time Window: {self.tracker.break_time}", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold"))
+        self.time_for_break.grid(row=0,column=1,pady=5)
+
+        reset_time_window_button = tk.Button(break_timer_frame, text="Reset Timer", command=reset_time_window, bg=self.theme.buttonBg(), fg="white", font=("Helvetica", "10", "bold"),
+                                 activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
+        reset_time_window_button.grid(row=1,column=0,pady=5)
 
         self.break_timer = tk.Label(break_timer_frame, text=f"Time untill break: {self.tracker.break_time_counter}", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold"))
-        self.break_timer.grid(row=1,column=0,columnspan=2)
+        self.break_timer.grid(row=1,column=1,columnspan=2,pady=5)
 
         button_frame = tk.Frame(self.root, bg=self.theme.buttonBg())
         button_frame.pack(pady=(10, 5))
@@ -81,6 +107,8 @@ class TimeTrackerUI:
             self.categories_listbox.insert(tk.END, f"{category} ({count}) | {round((count/total_counts)*100,2)}%")
 
     def update_running_time(self):
+        if self.tracker.check_break_time():
+            messagebox.showinfo("Break", "take a 10 min break bro")
         time_frame = int(time.time() - self.tracker.start_time)
         hours, remainder = divmod(time_frame, 3600)
         minutes, seconds = divmod(remainder, 60)

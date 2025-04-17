@@ -49,16 +49,16 @@ class Logger:
 
     def save_log_to_csv(self):
         #self.df["date"] = pd.to_datetime(self.df["date"]).dt.strftime("%d/%m/%Y")
-        print(f"\nsave log data frame \n\n{self.df.head(1)} \n\n {self.df.tail(1)} \n\n{self.log}\n")
+        #print(f"\nsave log data frame \n\n{self.df.head(1)} \n\n {self.df.tail(1)} \n\n{self.log}\n")
         try:
             now = datetime.datetime.now()
-            print(f"{now.day}/{now.month}/{now.year}")
+            #print(f"{now.day}/{now.month}/{now.year}")
             df_date = self.df.iloc[0,0]
             df_date = datetime.datetime.strptime(df_date,'%d/%m/%Y').date()
-            print(f"{df_date.day}/{df_date.month}/{df_date.year}")
+            #print(f"{df_date.day}/{df_date.month}/{df_date.year}")
             log_date = self.log[0][0]
             log_date = datetime.datetime.strptime(log_date, '%d/%m/%Y').date()
-            print(f"{log_date.day}/{log_date.month}/{log_date.year}")
+            #print(f"{log_date.day}/{log_date.month}/{log_date.year}")
 
             '''try:
                 df_date = str(self.df.iloc[0,0]).split("-")[1]

@@ -19,7 +19,7 @@ class WindowTracker:
         self._break_time = _break_time
         self._break_time_counter = _break_time
         self.start_time = time.time()
-        self.break_timer_start = time.time()
+        self._break_timer_start = time.time()
         self.perv_window = None
         self.thread = None  # Store the thread
         self.logger = logger
@@ -48,8 +48,19 @@ class WindowTracker:
         if isinstance(other, int) and other >= 600:
             self._break_time = other
         else:
-            messagebox.showerror("TOO LOW", "Set Break Yimer Higher Than 10 Minutes")
+            messagebox.showerror("TOO LOW", "Set Break Timer Higher Than 10 Minutes")
             self._break_time = 3000
+
+    @property
+    def break_timer_start(self):
+        time_frame = int(self._break_timer_start)
+        hours, remainder = divmod(time_frame, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        return str(f"{hours:02}:{minutes:02}:{seconds:02}")    
+    
+    def reset_break_timer_start(self):
+        self._break_timer_start = time.time()
+
 
     def get_active_window(self):
         hwnd = win32gui.GetForegroundWindow()
@@ -66,16 +77,18 @@ class WindowTracker:
             print(f"Error in get_active_window: {e}")
             traceback.print_exc()
             return "Unknown", "blank"
+    
+    def check_break_time(self):
+        return self._break_time_counter < 0
 
     def track_windows(self):
         try:
             while self.running:
-                self._break_time_counter = self._break_time - (time.time() - self.break_timer_start)
-                print(int(self._break_time_counter))
+                self._break_time_counter = self._break_time - (time.time() - self._break_timer_start)
+                #print(int(self._break_time_counter))
                 if self._break_time_counter < 0:
                     self.break_time_counter = self.break_time
-                    messagebox.showinfo("Break", "take a 10 min break bro")
-                    self.break_timer_start = time.time()
+                    self._break_timer_start = time.time()
                 program_name, window_name = self.get_active_window()
                 if program_name and program_name != self.active_window:
                     self.log_current_window_activity(window_name)  # Log previous window

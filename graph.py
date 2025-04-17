@@ -237,7 +237,7 @@ class GraphDisplay:
             csv_files = glob.glob(os.path.join('C:\\timeLog\\log', "*.csv"))
 
             if not csv_files:
-                print(f"No CSV files found in C:\\timeLog\\log'")
+                print("wher's the file mate",f"No CSV files found in C:\\timeLog\\log'")
                 return pd.DataFrame(columns=None, index=None, dtype=None)
 
             # Read each CSV into a DataFrame and store in a list
