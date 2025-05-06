@@ -25,4 +25,3 @@ win32gui is pywin32
 ```bash
 pip install pandas etc...
 ```
-code has been split into modules, but timeLogger.py is still there, all jammed into one file
