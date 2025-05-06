@@ -1,0 +1,77 @@
+# config.py
+import os
+from pathlib import Path
+
+# --- Base Project Directory ---
+# Assuming config.py is in the project root. If not, adjust accordingly.
+# For a script, __file__ gives its path. For an executable, this might need adjustment.
+try:
+    PROJECT_ROOT = Path(__file__).parent.resolve()
+except NameError: # Fallback for interactive environments or if __file__ is not defined
+    PROJECT_ROOT = Path.cwd()
+
+
+# --- Log Directories and Files ---
+LOG_BASE_DIR_NAME = "timeLog" # Name of the main logging directory
+LOG_BASE_DIR = PROJECT_ROOT / LOG_BASE_DIR_NAME # Base directory for all logs (e.g., C:\YourProject\timeLog)
+
+MAIN_LOG_FILE_NAME = "time_log.csv"
+HISTORICAL_LOG_DIR_NAME = "log" # Subdirectory for archived CSV logs
+REPORTS_DIR_NAME = "report" # Subdirectory for monthly reports
+
+# Construct full paths
+MAIN_LOG_FILE_PATH = LOG_BASE_DIR / MAIN_LOG_FILE_NAME
+HISTORICAL_LOG_DIR_PATH = LOG_BASE_DIR / HISTORICAL_LOG_DIR_NAME
+REPORTS_DIR_PATH = LOG_BASE_DIR / REPORTS_DIR_NAME
+
+# --- User Data Files ---
+USER_PROGRAMS_FILE_NAME = "user_programs.txt"
+USER_PROGRAMS_FILE_PATH = PROJECT_ROOT / USER_PROGRAMS_FILE_NAME # Stored in project root
+
+# --- Icon Paths ---
+# Store icons in an 'icons' folder in the project root
+ICON_DIR_NAME = "icons"
+ICON_DIR_PATH = PROJECT_ROOT / ICON_DIR_NAME
+TIMER_ICON_NAME = "timer_icon_32.ico"
+BARCHART_ICON_NAME = "barchart_32.ico"
+
+TIMER_ICON_PATH = ICON_DIR_PATH / TIMER_ICON_NAME
+BARCHART_ICON_PATH = ICON_DIR_PATH / BARCHART_ICON_NAME
+
+
+# --- Application Settings ---
+DEFAULT_BREAK_TIME_SECONDS = 3000  # 50 minutes
+MIN_BREAK_TIME_SECONDS = 600 # 10 minutes
+
+
+# --- Function to ensure directories exist ---
+def ensure_directories_exist():
+    """Creates necessary log directories if they don't exist."""
+    dirs_to_create = [
+        LOG_BASE_DIR,
+        HISTORICAL_LOG_DIR_PATH,
+        REPORTS_DIR_PATH,
+        ICON_DIR_PATH # Also ensure icon dir path is considered, though icons should be pre-existing
+    ]
+    for dir_path in dirs_to_create:
+        try:
+            dir_path.mkdir(parents=True, exist_ok=True)
+        except OSError as e:
+            # This error should be logged by the app_logger once it's initialized
+            # For now, print to stderr as a fallback if this runs before logger setup
+            print(f"Error creating directory {dir_path}: {e}")
+            # Depending on severity, you might want to raise the exception
+            # or handle it more gracefully (e.g., disable features that need the dir)
+
+if __name__ == "__main__":
+    # Example of how to use and print paths
+    print(f"Project Root: {PROJECT_ROOT}")
+    print(f"Log Base Directory: {LOG_BASE_DIR}")
+    print(f"Main Log File: {MAIN_LOG_FILE_PATH}")
+    print(f"Historical Log Dir: {HISTORICAL_LOG_DIR_PATH}")
+    print(f"Reports Dir: {REPORTS_DIR_PATH}")
+    print(f"User Programs File: {USER_PROGRAMS_FILE_PATH}")
+    print(f"Timer Icon: {TIMER_ICON_PATH}")
+    print(f"Barchart Icon: {BARCHART_ICON_PATH}")
+    ensure_directories_exist()
+    print("Directories checked/created.")
