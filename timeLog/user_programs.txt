@@ -29,6 +29,5 @@
     "javaw": "Study",
     "Visual Paradigm": "Study",
     "EaseOfAccessDialog": "Misc",
-    "acrotray": "Study",
-    "PickerHost": "Study"
+    "acrotray": "Study"
 }

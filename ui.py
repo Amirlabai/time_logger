@@ -213,7 +213,7 @@ class TimeTrackerUI:
             # Call the logger's export method
             self.logger.export_activity_report(export_type, start_date, end_date)
             # Optionally close the dialog after export attempt, or let user close it.
-            # dialog.destroy() 
+            dialog.destroy() 
 
         export_button = tk.Button(dialog, text="Generate and Export Report", 
                                   command=do_export,
@@ -248,39 +248,39 @@ class TimeTrackerUI:
     _break_message_shown_this_cycle = False # Class variable to track if break message shown for current cycle
 
     def update_ui_elements(self): # Renamed from update_running_time
+        # Update current application time
+        current_app_time_seconds = self.tracker.current_session_total_time_seconds
+        h, rem = divmod(int(current_app_time_seconds), 3600)
+        m, s = divmod(rem, 60)
+        self.current_app_time_label.config(text=f"Current App Time: {h:02}:{m:02}:{s:02}")
+
+        # Update active and previous window labels
+        active_exe = self.tracker.active_window_exe or "None"
+        active_title = self.tracker.active_window_title or ""
+        # Truncate long titles for display
+        display_title = active_title if len(active_title) < 70 else active_title[:67] + "..."
+        self.current_window_label.config(text=f"Active: {active_exe} - {display_title}")
+        
+        prev_exe = self.tracker.previous_window_exe or "None"
+        self.previous_window_label.config(text=f"Previous: {prev_exe}")
+        
+        # Update break timer display
+        self.break_countdown_label.config(text=f"Time Until Next Break: {self.tracker.break_time_counter_display}")
+
+        # Check for break time
+        if self.tracker.should_take_break():
+            if not TimeTrackerUI._break_message_shown_this_cycle:
+                app_logger.info("Break time reached. Showing notification.")
+                messagebox.showinfo("Break Time!", "It's time to take a break.", parent=self.root)
+                TimeTrackerUI._break_message_shown_this_cycle = True # Mark as shown
+                self.tracker.reset_break_timer_countdown() # Automatically reset after showing message
+                self.update_category_list() # Refresh categories listbox, might have new data after a long session
+        else:
+            TimeTrackerUI._break_message_shown_this_cycle = False # Reset flag if not break time
         try:
-            # Update current application time
-            current_app_time_seconds = self.tracker.current_session_total_time_seconds
-            h, rem = divmod(int(current_app_time_seconds), 3600)
-            m, s = divmod(rem, 60)
-            self.current_app_time_label.config(text=f"Current App Time: {h:02}:{m:02}:{s:02}")
-
-            # Update active and previous window labels
-            active_exe = self.tracker.active_window_exe or "None"
-            active_title = self.tracker.active_window_title or ""
-            # Truncate long titles for display
-            display_title = active_title if len(active_title) < 70 else active_title[:67] + "..."
-            self.current_window_label.config(text=f"Active: {active_exe} - {display_title}")
-            
-            prev_exe = self.tracker.previous_window_exe or "None"
-            self.previous_window_label.config(text=f"Previous: {prev_exe}")
-            
-            # Update break timer display
-            self.break_countdown_label.config(text=f"Time Until Next Break: {self.tracker.break_time_counter_display}")
-
-            # Check for break time
-            if self.tracker.should_take_break():
-                if not TimeTrackerUI._break_message_shown_this_cycle:
-                    app_logger.info("Break time reached. Showing notification.")
-                    messagebox.showinfo("Break Time!", "It's time to take a break.", parent=self.root)
-                    TimeTrackerUI._break_message_shown_this_cycle = True # Mark as shown
-                    self.tracker.reset_break_timer_countdown() # Automatically reset after showing message
-                    self.update_category_list() # Refresh categories listbox, might have new data after a long session
-            else:
-                TimeTrackerUI._break_message_shown_this_cycle = False # Reset flag if not break time
-
             # Schedule next update
-            self.root.after(1000, self.update_ui_elements)
+            if self.tracker.is_running:
+                self.root.after(1000, self.update_ui_elements)
             # app_logger.debug("UI elements updated.") # Too frequent for debug log
         except Exception as e:
             app_logger.error(f"Error updating UI elements: {e}", exc_info=True)
@@ -314,9 +314,10 @@ class TimeTrackerUI:
 
     def close_program(self):
         app_logger.info("Close program sequence initiated by UI.")
+        self.tracker.stop_tracking() # This will log final activity and save category map
         if messagebox.askyesno("Confirm Exit", "Are you sure you want to close Time Tracker?", parent=self.root):
             app_logger.info("User confirmed exit.")
-            self.tracker.stop_tracking() # This will log final activity and save category map
+            #self.tracker.stop_tracking() # This will log final activity and save category map
 
             # Log final data from self.logger.log (if any pending) one last time
             if self.logger.log: # If there are unsaved entries in the list
@@ -336,3 +337,4 @@ class TimeTrackerUI:
             # self.root.quit() # destroy() usually handles this for Tk object.
         else:
             app_logger.info("User cancelled exit.")
+            self.tracker.start_tracking() # Restart tracking if exit was cancelled

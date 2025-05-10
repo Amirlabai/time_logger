@@ -45,6 +45,10 @@ class WindowTracker:
         minutes, seconds = divmod(remainder, 60)
         return f"{hours:02}:{minutes:02}:{seconds:02}"
     
+    @property
+    def is_running(self):
+        return self.running
+    
     # Setter for break_time_counter_seconds is not really needed as it's calculated
     
     @property
@@ -170,7 +174,7 @@ class WindowTracker:
                 app_logger.debug(f"Skipping log for '{self.active_window_exe}': duration too short ({duration_seconds:.2f}s).")
                 return
 
-            app_logger.debug(f"Logging final activity for '{self.active_window_exe}', Title: '{window_title_to_log}', Start: {self.current_session_start_time_epoch}, End: {end_time_epoch}, Duration: {duration_seconds:.2f}s")
+            app_logger.debug(f"Logging final activity for '{self.active_window_exe}', Title: '{window_title_to_log.split('\\')}', Start: {self.current_session_start_time_epoch}, End: {end_time_epoch}, Duration: {duration_seconds:.2f}s")
             self.log_activity(self.active_window_exe, window_title_to_log, 
                               self.current_session_start_time_epoch, end_time_epoch, duration_seconds)
             # self.current_session_start_time_epoch will be reset when the new window becomes active.
