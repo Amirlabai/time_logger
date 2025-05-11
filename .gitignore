@@ -1,0 +1,11 @@
+# Ignore log and user files
+time_tracker_app.log
+user_programs.txt
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Ignore timeLog directory
+timeLog/
+
