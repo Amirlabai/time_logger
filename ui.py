@@ -335,7 +335,7 @@ class TimeTrackerUI:
             app_logger.info("Destroying main application window.")
             time.sleep(0.5)
             self.root.destroy()
-            # self.root.quit() # destroy() usually handles this for Tk object.
+            self.root.quit() # destroy() usually handles this for Tk object.
         else:
             app_logger.info("User cancelled exit.")
             self.tracker.start_tracking() # Restart tracking if exit was cancelled
