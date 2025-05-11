@@ -14,6 +14,7 @@ Note: For best results have a designated window for breaks, even if your compute
 *   **CSV Output:** Saves the logged data to a CSV file (specified by the user). To rest either move or delete the CSV file, program creates it.
 *   **Error Handling:** Attempts to handle cases where the CSV file is already open. Must be closed to open through script
 *   **Graph Plot:** Shows session percentage along with total time spent. Graph window has on top total span of days and it calculates productivity
+*   **Break Timer:** Running timer with minimum of 10 minutes and a pop up alert to take a break
 
 ## Requirements
 

@@ -3354,3 +3354,1168 @@ TypeError: 'bool' object is not callable
 2025-05-10 17:46:16,228 - TimeTrackerApp - INFO - ui:320 - User confirmed exit.
 2025-05-10 17:46:16,228 - TimeTrackerApp - INFO - ui:336 - Destroying main application window.
 2025-05-10 17:46:16,246 - TimeTrackerApp - INFO - main:65 - Application exited.
+2025-05-10 17:51:49,496 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-10 17:51:49,496 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-10 17:51:49,496 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-10 17:51:49,557 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (333, 8)
+2025-05-10 17:51:49,558 - TimeTrackerApp - INFO - logger:309 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-10 17:51:49,558 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-10 17:51:49,558 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-10 17:51:49,558 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-10 17:51:49,612 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-10 17:51:49,688 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-10 17:51:49,689 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-10 17:51:49,691 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-10 17:51:49,693 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-10 17:51:49,693 - TimeTrackerApp - INFO - tracker:188 - start_tracking called, new tracking thread initiated.
+2025-05-10 17:51:49,693 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-10 17:51:49,694 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'python'.
+2025-05-10 17:51:51,268 - TimeTrackerApp - DEBUG - ui:151 - Export report dialog opened.
+2025-05-10 17:51:52,584 - TimeTrackerApp - INFO - logger:365 - Exporting activity report. Type: all, Start: None, End: None
+2025-05-10 17:51:52,585 - TimeTrackerApp - INFO - logger:322 - Consolidating all logged data.
+2025-05-10 17:51:52,585 - TimeTrackerApp - DEBUG - logger:329 - Found 1 historical CSV files in C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log
+2025-05-10 17:51:52,588 - TimeTrackerApp - INFO - logger:349 - Consolidated data for report. Total entries: 432
+2025-05-10 17:52:08,088 - TimeTrackerApp - INFO - logger:424 - Report exported to C:/Users/amirl/OneDrive/Documents/GitHub/time_logger/timeLog/report/get.xlx
+2025-05-10 17:52:10,802 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-10 17:52:10,802 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746888709.6935449, End: 1746888730.8024018, Duration: 21.11s
+2025-05-10 17:52:10,802 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=python, Win=['Time Tracker'], Cat=Misc, Start=17:51:49, End=17:52:10, TotalMin=0.35
+2025-05-10 17:52:10,803 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:52:10,811 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:52:10,813 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (334, 8)
+2025-05-10 17:52:15,817 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'explorer'.
+2025-05-10 17:52:15,817 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746888730.8020341, End: 1746888735.8176985, Duration: 5.02s
+2025-05-10 17:52:15,817 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=Code, Win=['main.py - time_logger - Visual Studio Code'], Cat=Study, Start=17:52:10, End=17:52:15, TotalMin=0.08
+2025-05-10 17:52:15,818 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:52:15,829 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:52:15,831 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (335, 8)
+2025-05-10 17:52:35,844 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Code'.
+2025-05-10 17:52:35,844 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'explorer', Title: '['report - סייר הקבצים']', Start: 1746888735.8174045, End: 1746888755.8442438, Duration: 20.03s
+2025-05-10 17:52:35,844 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=explorer, Win=['report - סייר הקבצים'], Cat=Misc, Start=17:52:15, End=17:52:35, TotalMin=0.33
+2025-05-10 17:52:35,845 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:52:35,851 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:52:35,854 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (336, 8)
+2025-05-10 17:52:36,856 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-10 17:52:36,856 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746888755.8439837, End: 1746888756.8563852, Duration: 1.01s
+2025-05-10 17:52:36,856 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=Code, Win=['main.py - time_logger - Visual Studio Code'], Cat=Study, Start=17:52:35, End=17:52:36, TotalMin=0.02
+2025-05-10 17:52:36,857 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:52:36,863 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:52:36,864 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (337, 8)
+2025-05-10 17:52:37,474 - TimeTrackerApp - DEBUG - ui:151 - Export report dialog opened.
+2025-05-10 17:52:38,346 - TimeTrackerApp - INFO - logger:365 - Exporting activity report. Type: all, Start: None, End: None
+2025-05-10 17:52:38,347 - TimeTrackerApp - INFO - logger:322 - Consolidating all logged data.
+2025-05-10 17:52:38,347 - TimeTrackerApp - DEBUG - logger:329 - Found 1 historical CSV files in C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log
+2025-05-10 17:52:38,350 - TimeTrackerApp - INFO - logger:349 - Consolidated data for report. Total entries: 436
+2025-05-10 17:52:43,107 - TimeTrackerApp - INFO - logger:424 - Report exported to C:/Users/amirl/OneDrive/Documents/GitHub/time_logger/timeLog/report/asd.xlsx
+2025-05-10 17:52:43,871 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'explorer'.
+2025-05-10 17:52:43,871 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746888756.8547385, End: 1746888763.8715115, Duration: 7.02s
+2025-05-10 17:52:43,871 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=python, Win=['Time Tracker'], Cat=Misc, Start=17:52:36, End=17:52:43, TotalMin=0.12
+2025-05-10 17:52:43,872 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:52:43,878 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:52:43,880 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (338, 8)
+2025-05-10 17:52:55,888 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'EXCEL.EXE'.
+2025-05-10 17:52:55,888 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1746888763.8712478, End: 1746888775.8886795, Duration: 12.02s
+2025-05-10 17:52:55,888 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=explorer, Win=['explorer'], Cat=Misc, Start=17:52:43, End=17:52:55, TotalMin=0.2
+2025-05-10 17:52:55,890 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:52:55,901 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:52:55,904 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (339, 8)
+2025-05-10 17:53:01,908 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'EXCEL.EXE' to 'explorer'.
+2025-05-10 17:53:01,908 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'EXCEL.EXE', Title: '['Excel']', Start: 1746888775.888348, End: 1746888781.9082823, Duration: 6.02s
+2025-05-10 17:53:01,908 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=EXCEL.EXE, Win=['Excel'], Cat=Study, Start=17:52:55, End=17:53:01, TotalMin=0.1
+2025-05-10 17:53:01,909 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:53:01,915 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:53:01,918 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (340, 8)
+2025-05-10 17:53:10,924 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Code'.
+2025-05-10 17:53:10,924 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'explorer', Title: '['report - סייר הקבצים']', Start: 1746888781.9080236, End: 1746888790.924381, Duration: 9.02s
+2025-05-10 17:53:10,924 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=explorer, Win=['report - סייר הקבצים'], Cat=Misc, Start=17:53:01, End=17:53:10, TotalMin=0.15
+2025-05-10 17:53:10,925 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:53:10,933 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:53:10,935 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (341, 8)
+2025-05-10 17:53:51,962 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'firefox'.
+2025-05-10 17:53:51,962 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746888790.9240887, End: 1746888831.962546, Duration: 41.04s
+2025-05-10 17:53:51,962 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=Code, Win=['main.py - time_logger - Visual Studio Code'], Cat=Study, Start=17:53:10, End=17:53:51, TotalMin=0.68
+2025-05-10 17:53:51,963 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:53:51,970 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:53:51,972 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (342, 8)
+2025-05-10 17:56:58,075 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'python'.
+2025-05-10 17:56:58,075 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'firefox', Title: '['Mozilla Firefox']', Start: 1746888831.9620757, End: 1746889018.0758038, Duration: 186.11s
+2025-05-10 17:56:58,075 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=firefox, Win=['Mozilla Firefox'], Cat=Break, Start=17:53:51, End=17:56:58, TotalMin=3.1
+2025-05-10 17:56:58,077 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:56:58,084 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:56:58,085 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (343, 8)
+2025-05-10 17:57:00,087 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-10 17:57:00,087 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746889018.075087, End: 1746889020.087476, Duration: 2.01s
+2025-05-10 17:57:00,087 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=python, Win=['Time Tracker'], Cat=Misc, Start=17:56:58, End=17:57:00, TotalMin=0.03
+2025-05-10 17:57:00,088 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:57:00,095 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:57:00,097 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (344, 8)
+2025-05-10 17:57:01,098 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-10 17:57:01,098 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Code', Title: '['Extension: Rainbow CSV - time_logger - Visual Studio Code']', Start: 1746889020.0872478, End: 1746889021.098932, Duration: 1.01s
+2025-05-10 17:57:01,099 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=Code, Win=['Extension: Rainbow CSV - time_logger - Visual Studio Code'], Cat=Study, Start=17:57:00, End=17:57:01, TotalMin=0.02
+2025-05-10 17:57:01,100 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:57:01,106 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:57:01,108 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (345, 8)
+2025-05-10 17:57:02,168 - TimeTrackerApp - INFO - ui:316 - Close program sequence initiated by UI.
+2025-05-10 17:57:02,168 - TimeTrackerApp - INFO - tracker:194 - stop_tracking called.
+2025-05-10 17:57:02,169 - TimeTrackerApp - INFO - tracker:197 - Attempting to join tracking thread...
+2025-05-10 17:57:03,110 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746889021.0983186, End: 1746889023.1100287, Duration: 2.01s
+2025-05-10 17:57:03,110 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=10/05/2025, Prog=python, Win=['Time Tracker'], Cat=Misc, Start=17:57:01, End=17:57:03, TotalMin=0.03
+2025-05-10 17:57:03,111 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-10 17:57:03,118 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-10 17:57:03,121 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (346, 8)
+2025-05-10 17:57:03,122 - TimeTrackerApp - INFO - logger:298 - Category map saved to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-10 17:57:03,122 - TimeTrackerApp - INFO - tracker:211 - User category data update requested (via logger instance).
+2025-05-10 17:57:03,122 - TimeTrackerApp - INFO - tracker:159 - Window tracking thread stopped.
+2025-05-10 17:57:03,123 - TimeTrackerApp - INFO - tracker:202 - Tracking thread successfully joined.
+2025-05-10 17:57:04,302 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
+2025-05-10 17:57:04,302 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
+2025-05-10 17:57:04,325 - TimeTrackerApp - INFO - main:65 - Application exited.
+2025-05-11 10:57:32,246 - TimeTrackerApp - DEBUG - app_logger:54 - This is a debug message.
+2025-05-11 10:57:32,247 - TimeTrackerApp - INFO - app_logger:55 - This is an info message.
+2025-05-11 10:57:32,247 - TimeTrackerApp - WARNING - app_logger:56 - This is a warning message.
+2025-05-11 10:57:32,247 - TimeTrackerApp - ERROR - app_logger:57 - This is an error message.
+2025-05-11 10:57:32,247 - TimeTrackerApp - CRITICAL - app_logger:58 - This is a critical message.
+2025-05-11 10:57:32,248 - TimeTrackerApp - ERROR - app_logger:62 - A ZeroDivisionError occurred!
+Traceback (most recent call last):
+  File "c:\Users\amirl\OneDrive\Documents\GitHub\time_logger\app_logger.py", line 60, in <module>
+    1/0
+    ~^~
+ZeroDivisionError: division by zero
+2025-05-11 14:46:12,567 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-11 14:46:12,569 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-11 14:46:12,569 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-11 14:46:13,237 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (346, 8)
+2025-05-11 14:46:13,252 - TimeTrackerApp - INFO - logger:309 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 14:46:13,255 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-11 14:46:13,255 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-11 14:46:13,256 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-11 14:46:13,447 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-11 14:46:13,499 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-11 14:46:13,499 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-11 14:46:13,499 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-11 14:46:13,500 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-11 14:46:13,501 - TimeTrackerApp - INFO - tracker:188 - start_tracking called, new tracking thread initiated.
+2025-05-11 14:46:13,501 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-11 14:46:13,503 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'python'.
+2025-05-11 14:46:19,512 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'GitHubDesktop'.
+2025-05-11 14:46:19,512 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746963973.5012438, End: 1746963979.5122392, Duration: 6.01s
+2025-05-11 14:46:19,512 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=['Time Tracker'], Cat=Misc, Start=14:46:13, End=14:46:19, TotalMin=0.1
+2025-05-11 14:46:19,516 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:46:19,536 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:46:19,543 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (347, 8)
+2025-05-11 14:46:21,545 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'GitHubDesktop' to 'python'.
+2025-05-11 14:46:21,545 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'GitHubDesktop', Title: '['\u202aGitHub Desktop\u202c']', Start: 1746963979.5118983, End: 1746963981.5453777, Duration: 2.03s
+2025-05-11 14:46:21,545 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=GitHubDesktop, Win=['\u202aGitHub Desktop\u202c'], Cat=Misc, Start=14:46:19, End=14:46:21, TotalMin=0.03
+2025-05-11 14:46:21,547 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:46:21,561 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:46:21,563 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (348, 8)
+2025-05-11 14:46:28,571 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-11 14:46:28,571 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746963981.5445342, End: 1746963988.5717614, Duration: 7.03s
+2025-05-11 14:46:28,571 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=['Time Tracker'], Cat=Misc, Start=14:46:21, End=14:46:28, TotalMin=0.12
+2025-05-11 14:46:28,574 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:46:28,586 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:46:28,589 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (349, 8)
+2025-05-11 14:46:44,600 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'explorer'.
+2025-05-11 14:46:44,600 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746963988.571218, End: 1746964004.6004212, Duration: 16.03s
+2025-05-11 14:46:44,600 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=['main.py - time_logger - Visual Studio Code'], Cat=Study, Start=14:46:28, End=14:46:44, TotalMin=0.27
+2025-05-11 14:46:44,602 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:46:44,608 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:46:44,610 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (350, 8)
+2025-05-11 14:47:30,648 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 14:47:30,648 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1746964004.5998101, End: 1746964050.6486402, Duration: 46.05s
+2025-05-11 14:47:30,648 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=['explorer'], Cat=Misc, Start=14:46:44, End=14:47:30, TotalMin=0.77
+2025-05-11 14:47:30,652 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:47:30,677 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:47:30,684 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (351, 8)
+2025-05-11 14:47:45,697 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 14:47:45,697 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Visual Paradigm', Title: '['Visual Paradigm']', Start: 1746964050.647995, End: 1746964065.6974337, Duration: 15.05s
+2025-05-11 14:47:45,697 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=['Visual Paradigm'], Cat=Study, Start=14:47:30, End=14:47:45, TotalMin=0.25
+2025-05-11 14:47:45,700 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:47:45,733 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:47:45,740 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (352, 8)
+2025-05-11 14:48:10,791 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Code'.
+2025-05-11 14:48:10,791 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'explorer', Title: '['HW 2 - סייר הקבצים']', Start: 1746964065.6968737, End: 1746964090.7916806, Duration: 25.09s
+2025-05-11 14:48:10,791 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=['HW 2 - סייר הקבצים'], Cat=Misc, Start=14:47:45, End=14:48:10, TotalMin=0.42
+2025-05-11 14:48:10,796 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:48:10,846 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:48:10,859 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (353, 8)
+2025-05-11 14:48:19,870 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'Visual Paradigm'.
+2025-05-11 14:48:19,870 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Code', Title: '['logger.py - time_logger - Visual Studio Code']', Start: 1746964090.791271, End: 1746964099.8707695, Duration: 9.08s
+2025-05-11 14:48:19,871 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=['logger.py - time_logger - Visual Studio Code'], Cat=Study, Start=14:48:10, End=14:48:19, TotalMin=0.15
+2025-05-11 14:48:19,873 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:48:19,895 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:48:19,901 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (354, 8)
+2025-05-11 14:48:20,903 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Code'.
+2025-05-11 14:48:20,903 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Visual Paradigm', Title: '['Opening Project']', Start: 1746964099.8701434, End: 1746964100.9034383, Duration: 1.03s
+2025-05-11 14:48:20,903 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=['Opening Project'], Cat=Study, Start=14:48:19, End=14:48:20, TotalMin=0.02
+2025-05-11 14:48:20,907 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:48:20,931 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:48:20,938 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (355, 8)
+2025-05-11 14:49:59,025 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'Visual Paradigm'.
+2025-05-11 14:49:59,026 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Code', Title: '['logger.py - time_logger - Visual Studio Code']', Start: 1746964100.9028282, End: 1746964199.0262158, Duration: 98.12s
+2025-05-11 14:49:59,026 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=['logger.py - time_logger - Visual Studio Code'], Cat=Study, Start=14:48:20, End=14:49:59, TotalMin=1.64
+2025-05-11 14:49:59,030 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:49:59,059 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:49:59,066 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (356, 8)
+2025-05-11 14:50:52,104 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Code'.
+2025-05-11 14:50:52,105 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Visual Paradigm', Title: '['Recover Project']', Start: 1746964199.0252745, End: 1746964252.105168, Duration: 53.08s
+2025-05-11 14:50:52,105 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=['Recover Project'], Cat=Study, Start=14:49:59, End=14:50:52, TotalMin=0.88
+2025-05-11 14:50:52,108 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:50:52,137 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:50:52,144 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (357, 8)
+2025-05-11 14:56:01,418 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'Visual Paradigm'.
+2025-05-11 14:56:01,638 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:56:01,664 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:56:01,671 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (358, 8)
+2025-05-11 14:56:02,672 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 14:56:02,672 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746964561.4178069, End: 1746964562.6727247, Duration: 1.25s
+2025-05-11 14:56:02,672 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=['Hebrew Library System Homework * - Visual Paradigm Standard'], Cat=Study, Start=14:56:01, End=14:56:02, TotalMin=0.02
+2025-05-11 14:56:02,675 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:56:02,698 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:56:02,705 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (359, 8)
+2025-05-11 14:56:03,706 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Code'.
+2025-05-11 14:56:03,707 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'explorer', Title: '['\u200f\u200fמעבר בין משימות']', Start: 1746964562.672045, End: 1746964563.7072449, Duration: 1.04s
+2025-05-11 14:56:03,707 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=['\u200f\u200fמעבר בין משימות'], Cat=Misc, Start=14:56:02, End=14:56:03, TotalMin=0.02
+2025-05-11 14:56:03,710 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:56:03,735 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:56:03,742 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (360, 8)
+2025-05-11 14:56:08,747 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'explorer'.
+2025-05-11 14:56:08,748 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Code', Title: '['tracker.py - time_logger - Visual Studio Code']', Start: 1746964563.7066753, End: 1746964568.7482626, Duration: 5.04s
+2025-05-11 14:56:08,748 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=['tracker.py - time_logger - Visual Studio Code'], Cat=Study, Start=14:56:03, End=14:56:08, TotalMin=0.08
+2025-05-11 14:56:08,752 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:56:08,777 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:56:08,785 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (361, 8)
+2025-05-11 14:56:11,788 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 14:56:11,788 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'explorer', Title: '['\u200f\u200fמעבר בין משימות']', Start: 1746964568.747543, End: 1746964571.7888756, Duration: 3.04s
+2025-05-11 14:56:11,789 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=['\u200f\u200fמעבר בין משימות'], Cat=Misc, Start=14:56:08, End=14:56:11, TotalMin=0.05
+2025-05-11 14:56:11,791 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:56:11,813 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:56:11,820 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (362, 8)
+2025-05-11 14:56:14,823 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Code'.
+2025-05-11 14:56:14,823 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746964571.7882495, End: 1746964574.8236814, Duration: 3.04s
+2025-05-11 14:56:14,823 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=['Hebrew Library System Homework * - Visual Paradigm Standard'], Cat=Study, Start=14:56:11, End=14:56:14, TotalMin=0.05
+2025-05-11 14:56:14,826 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:56:14,852 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:56:14,859 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (363, 8)
+2025-05-11 14:56:15,861 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'explorer'.
+2025-05-11 14:56:15,861 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Code', Title: '['tracker.py - time_logger - Visual Studio Code']', Start: 1746964574.8231168, End: 1746964575.8618429, Duration: 1.04s
+2025-05-11 14:56:15,862 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=['tracker.py - time_logger - Visual Studio Code'], Cat=Study, Start=14:56:14, End=14:56:15, TotalMin=0.02
+2025-05-11 14:56:15,865 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:56:15,887 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:56:15,894 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (364, 8)
+2025-05-11 14:56:16,895 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 14:56:16,896 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'explorer', Title: '['\u200f\u200fמעבר בין משימות']', Start: 1746964575.8613143, End: 1746964576.8962948, Duration: 1.03s
+2025-05-11 14:56:16,896 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=['\u200f\u200fמעבר בין משימות'], Cat=Misc, Start=14:56:15, End=14:56:16, TotalMin=0.02
+2025-05-11 14:56:16,900 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:56:16,923 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:56:16,933 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (365, 8)
+2025-05-11 14:56:18,936 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Code'.
+2025-05-11 14:56:18,936 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746964576.8955374, End: 1746964578.9366732, Duration: 2.04s
+2025-05-11 14:56:18,937 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=['Hebrew Library System Homework * - Visual Paradigm Standard'], Cat=Study, Start=14:56:16, End=14:56:18, TotalMin=0.03
+2025-05-11 14:56:18,941 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:56:18,968 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:56:18,976 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (366, 8)
+2025-05-11 14:57:11,029 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-11 14:57:11,030 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'Code', Title: '['tracker.py - time_logger - Visual Studio Code']', Start: 1746964578.935886, End: 1746964631.0301962, Duration: 52.09s
+2025-05-11 14:57:11,030 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=['tracker.py - time_logger - Visual Studio Code'], Cat=Study, Start=14:56:18, End=14:57:11, TotalMin=0.87
+2025-05-11 14:57:11,033 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:57:11,042 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:57:11,044 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (367, 8)
+2025-05-11 14:57:11,801 - TimeTrackerApp - INFO - ui:316 - Close program sequence initiated by UI.
+2025-05-11 14:57:11,801 - TimeTrackerApp - INFO - tracker:194 - stop_tracking called.
+2025-05-11 14:57:11,801 - TimeTrackerApp - INFO - tracker:197 - Attempting to join tracking thread...
+2025-05-11 14:57:12,045 - TimeTrackerApp - DEBUG - tracker:177 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746964631.0295076, End: 1746964632.0452306, Duration: 1.02s
+2025-05-11 14:57:12,045 - TimeTrackerApp - DEBUG - logger:74 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=['Time Tracker'], Cat=Misc, Start=14:57:11, End=14:57:12, TotalMin=0.02
+2025-05-11 14:57:12,049 - TimeTrackerApp - DEBUG - logger:103 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:57:12,063 - TimeTrackerApp - DEBUG - logger:196 - Session percentages calculated.
+2025-05-11 14:57:12,067 - TimeTrackerApp - INFO - logger:140 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (368, 8)
+2025-05-11 14:57:12,068 - TimeTrackerApp - INFO - logger:298 - Category map saved to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 14:57:12,069 - TimeTrackerApp - INFO - tracker:211 - User category data update requested (via logger instance).
+2025-05-11 14:57:12,070 - TimeTrackerApp - INFO - tracker:159 - Window tracking thread stopped.
+2025-05-11 14:57:12,071 - TimeTrackerApp - INFO - tracker:202 - Tracking thread successfully joined.
+2025-05-11 14:57:13,324 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
+2025-05-11 14:57:13,324 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
+2025-05-11 14:57:13,383 - TimeTrackerApp - INFO - main:65 - Application exited.
+2025-05-11 14:58:22,697 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-11 14:58:22,697 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-11 14:58:22,697 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-11 14:58:22,804 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (368, 8)
+2025-05-11 14:58:22,825 - TimeTrackerApp - INFO - logger:312 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 14:58:22,827 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-11 14:58:22,827 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-11 14:58:22,827 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-11 14:58:22,916 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-11 14:58:22,994 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-11 14:58:22,994 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-11 14:58:22,994 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-11 14:58:22,995 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-11 14:58:22,995 - TimeTrackerApp - INFO - tracker:189 - start_tracking called, new tracking thread initiated.
+2025-05-11 14:58:22,996 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-11 14:58:22,999 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'python'.
+2025-05-11 14:58:27,008 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-11 14:58:27,008 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746964702.9958174, End: 1746964707.0086226, Duration: 4.01s
+2025-05-11 14:58:27,008 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=14:58:22, End=14:58:27, TotalMin=0.07
+2025-05-11 14:58:27,011 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:58:27,028 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 14:58:27,033 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (369, 8)
+2025-05-11 14:58:30,036 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-11 14:58:30,040 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746964707.007881, End: 1746964710.0401535, Duration: 3.03s
+2025-05-11 14:58:30,040 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=main.py - time_logger - Visual Studio Code, Cat=Study, Start=14:58:27, End=14:58:30, TotalMin=0.05
+2025-05-11 14:58:30,042 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:58:30,058 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 14:58:30,061 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (370, 8)
+2025-05-11 14:58:36,067 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-11 14:58:36,068 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746964710.0359805, End: 1746964716.0679555, Duration: 6.03s
+2025-05-11 14:58:36,068 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=14:58:30, End=14:58:36, TotalMin=0.1
+2025-05-11 14:58:36,070 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:58:36,079 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 14:58:36,085 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (371, 8)
+2025-05-11 14:59:54,146 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'explorer'.
+2025-05-11 14:59:54,147 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746964716.0670815, End: 1746964794.1473758, Duration: 78.08s
+2025-05-11 14:59:54,147 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=main.py - time_logger - Visual Studio Code, Cat=Study, Start=14:58:36, End=14:59:54, TotalMin=1.3
+2025-05-11 14:59:54,151 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:59:54,177 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 14:59:54,183 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (372, 8)
+2025-05-11 14:59:57,186 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'firefox'.
+2025-05-11 14:59:57,187 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['\u200f\u200fמעבר בין משימות']', Start: 1746964794.1462157, End: 1746964797.1871662, Duration: 3.04s
+2025-05-11 14:59:57,187 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=‏‏מעבר בין משימות, Cat=Misc, Start=14:59:54, End=14:59:57, TotalMin=0.05
+2025-05-11 14:59:57,188 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 14:59:57,208 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 14:59:57,214 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (373, 8)
+2025-05-11 15:01:30,291 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'explorer'.
+2025-05-11 15:01:30,292 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Google Calendar - Week of June 29, 2025 — Mozilla Firefox']', Start: 1746964797.1859233, End: 1746964890.2925467, Duration: 93.11s
+2025-05-11 15:01:30,293 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Google Calendar - Week of June 29, 2025 — Mozilla Firefox, Cat=Break, Start=14:59:57, End=15:01:30, TotalMin=1.55
+2025-05-11 15:01:30,297 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:01:30,336 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:01:30,348 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (374, 8)
+2025-05-11 15:01:31,349 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Code'.
+2025-05-11 15:01:31,350 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['\u200f\u200fמעבר בין משימות']', Start: 1746964890.291361, End: 1746964891.350623, Duration: 1.06s
+2025-05-11 15:01:31,351 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=‏‏מעבר בין משימות, Cat=Misc, Start=15:01:30, End=15:01:31, TotalMin=0.02
+2025-05-11 15:01:31,356 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:01:31,384 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:01:31,394 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (375, 8)
+2025-05-11 15:01:56,429 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'explorer'.
+2025-05-11 15:01:56,430 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['tracker.py - time_logger - Visual Studio Code']', Start: 1746964891.3496153, End: 1746964916.4305663, Duration: 25.08s
+2025-05-11 15:01:56,430 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=tracker.py - time_logger - Visual Studio Code, Cat=Study, Start=15:01:31, End=15:01:56, TotalMin=0.42
+2025-05-11 15:01:56,436 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:01:56,461 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:01:56,464 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (376, 8)
+2025-05-11 15:01:57,241 - TimeTrackerApp - INFO - ui:316 - Close program sequence initiated by UI.
+2025-05-11 15:01:57,241 - TimeTrackerApp - INFO - tracker:195 - stop_tracking called.
+2025-05-11 15:01:57,242 - TimeTrackerApp - INFO - tracker:198 - Attempting to join tracking thread...
+2025-05-11 15:01:57,465 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['\u200f\u200fמעבר בין משימות']', Start: 1746964916.4295053, End: 1746964917.465392, Duration: 1.04s
+2025-05-11 15:01:57,466 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=‏‏מעבר בין משימות, Cat=Misc, Start=15:01:56, End=15:01:57, TotalMin=0.02
+2025-05-11 15:01:57,468 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:01:57,477 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:01:57,479 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (377, 8)
+2025-05-11 15:01:57,480 - TimeTrackerApp - INFO - logger:301 - Category map saved to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 15:01:57,480 - TimeTrackerApp - INFO - tracker:212 - User category data update requested (via logger instance).
+2025-05-11 15:01:57,481 - TimeTrackerApp - INFO - tracker:160 - Window tracking thread stopped.
+2025-05-11 15:01:57,482 - TimeTrackerApp - INFO - tracker:203 - Tracking thread successfully joined.
+2025-05-11 15:01:58,520 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
+2025-05-11 15:01:58,520 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
+2025-05-11 15:01:58,562 - TimeTrackerApp - INFO - main:65 - Application exited.
+2025-05-11 15:02:01,579 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-11 15:02:01,580 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-11 15:02:01,580 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-11 15:02:01,676 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (377, 8)
+2025-05-11 15:02:01,678 - TimeTrackerApp - INFO - logger:312 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 15:02:01,679 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-11 15:02:01,680 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-11 15:02:01,680 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-11 15:02:01,789 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-11 15:02:01,859 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-11 15:02:01,859 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-11 15:02:01,859 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-11 15:02:01,861 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-11 15:02:01,861 - TimeTrackerApp - INFO - tracker:189 - start_tracking called, new tracking thread initiated.
+2025-05-11 15:02:01,863 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-11 15:02:01,864 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'python'.
+2025-05-11 15:02:05,867 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-11 15:02:05,868 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746964921.861912, End: 1746964925.8682396, Duration: 4.01s
+2025-05-11 15:02:05,868 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:02:01, End=15:02:05, TotalMin=0.07
+2025-05-11 15:02:05,873 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:02:05,898 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:02:05,904 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (378, 8)
+2025-05-11 15:02:28,923 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-11 15:02:28,923 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746964925.867561, End: 1746964948.9238167, Duration: 23.06s
+2025-05-11 15:02:28,924 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=main.py - time_logger - Visual Studio Code, Cat=Study, Start=15:02:05, End=15:02:28, TotalMin=0.38
+2025-05-11 15:02:28,926 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:02:28,944 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:02:28,948 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (379, 8)
+2025-05-11 15:02:40,960 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-11 15:02:40,960 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746964948.9225667, End: 1746964960.9607308, Duration: 12.04s
+2025-05-11 15:02:40,961 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:02:28, End=15:02:40, TotalMin=0.2
+2025-05-11 15:02:40,964 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:02:40,985 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:02:40,991 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (380, 8)
+2025-05-11 15:03:13,018 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-11 15:03:13,019 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['tracker.py - time_logger - Visual Studio Code']', Start: 1746964960.9598563, End: 1746964993.01925, Duration: 32.06s
+2025-05-11 15:03:13,019 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=tracker.py - time_logger - Visual Studio Code, Cat=Study, Start=15:02:40, End=15:03:13, TotalMin=0.53
+2025-05-11 15:03:13,021 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:03:13,032 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:03:13,035 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (381, 8)
+2025-05-11 15:03:14,830 - TimeTrackerApp - INFO - ui:316 - Close program sequence initiated by UI.
+2025-05-11 15:03:14,831 - TimeTrackerApp - INFO - tracker:195 - stop_tracking called.
+2025-05-11 15:03:14,831 - TimeTrackerApp - INFO - tracker:198 - Attempting to join tracking thread...
+2025-05-11 15:03:15,036 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746964993.0183115, End: 1746964995.0364587, Duration: 2.02s
+2025-05-11 15:03:15,036 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:03:13, End=15:03:15, TotalMin=0.03
+2025-05-11 15:03:15,039 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:03:15,055 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:03:15,058 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (382, 8)
+2025-05-11 15:03:15,059 - TimeTrackerApp - INFO - logger:301 - Category map saved to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 15:03:15,059 - TimeTrackerApp - INFO - tracker:212 - User category data update requested (via logger instance).
+2025-05-11 15:03:15,060 - TimeTrackerApp - INFO - tracker:160 - Window tracking thread stopped.
+2025-05-11 15:03:15,061 - TimeTrackerApp - INFO - tracker:203 - Tracking thread successfully joined.
+2025-05-11 15:03:16,397 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
+2025-05-11 15:03:16,398 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
+2025-05-11 15:03:16,458 - TimeTrackerApp - INFO - main:65 - Application exited.
+2025-05-11 15:03:19,809 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-11 15:03:19,810 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-11 15:03:19,810 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-11 15:03:19,908 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (382, 8)
+2025-05-11 15:03:19,910 - TimeTrackerApp - INFO - logger:312 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 15:03:19,911 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-11 15:03:19,912 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-11 15:03:19,912 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-11 15:03:19,989 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-11 15:03:20,046 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-11 15:03:20,047 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-11 15:03:20,047 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-11 15:03:20,048 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-11 15:03:20,048 - TimeTrackerApp - INFO - tracker:189 - start_tracking called, new tracking thread initiated.
+2025-05-11 15:03:20,049 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-11 15:03:20,052 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'python'.
+2025-05-11 15:03:22,058 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-11 15:03:22,058 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746965000.049021, End: 1746965002.0589306, Duration: 2.01s
+2025-05-11 15:03:22,059 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:03:20, End=15:03:22, TotalMin=0.03
+2025-05-11 15:03:22,061 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:03:22,081 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:03:22,088 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (383, 8)
+2025-05-11 15:04:19,137 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'explorer'.
+2025-05-11 15:04:19,138 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746965002.058377, End: 1746965059.1380837, Duration: 57.08s
+2025-05-11 15:04:19,138 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=main.py - time_logger - Visual Studio Code, Cat=Study, Start=15:03:22, End=15:04:19, TotalMin=0.95
+2025-05-11 15:04:19,141 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:04:19,167 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:04:19,175 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (384, 8)
+2025-05-11 15:05:37,242 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:05:37,242 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1746965059.1367269, End: 1746965137.2428315, Duration: 78.11s
+2025-05-11 15:05:37,243 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=explorer, Cat=Misc, Start=15:04:19, End=15:05:37, TotalMin=1.3
+2025-05-11 15:05:37,245 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:05:37,276 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:05:37,283 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (385, 8)
+2025-05-11 15:06:49,341 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'explorer'.
+2025-05-11 15:06:49,342 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit)']', Start: 1746965137.241809, End: 1746965209.3425665, Duration: 72.10s
+2025-05-11 15:06:49,343 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit), Cat=Study, Start=15:05:37, End=15:06:49, TotalMin=1.2
+2025-05-11 15:06:49,346 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:06:49,380 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:06:49,388 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (386, 8)
+2025-05-11 15:06:50,390 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 15:06:50,391 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1746965209.341492, End: 1746965210.3918731, Duration: 1.05s
+2025-05-11 15:06:50,392 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=explorer, Cat=Misc, Start=15:06:49, End=15:06:50, TotalMin=0.02
+2025-05-11 15:06:50,396 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:06:50,422 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:06:50,431 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (387, 8)
+2025-05-11 15:11:53,666 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'python'.
+2025-05-11 15:11:53,667 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746965210.390434, End: 1746965513.6671479, Duration: 303.28s
+2025-05-11 15:11:53,667 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:06:50, End=15:11:53, TotalMin=5.05
+2025-05-11 15:11:53,670 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:11:53,682 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:11:53,684 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (388, 8)
+2025-05-11 15:11:57,690 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Visual Paradigm'.
+2025-05-11 15:11:57,691 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746965513.6644018, End: 1746965517.6913624, Duration: 4.03s
+2025-05-11 15:11:57,691 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:11:53, End=15:11:57, TotalMin=0.07
+2025-05-11 15:11:57,694 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:11:57,726 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:11:57,736 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (389, 8)
+2025-05-11 15:12:01,740 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 15:12:01,740 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Exporting']', Start: 1746965517.690332, End: 1746965521.7406006, Duration: 4.05s
+2025-05-11 15:12:01,740 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Exporting, Cat=Study, Start=15:11:57, End=15:12:01, TotalMin=0.07
+2025-05-11 15:12:01,742 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:12:01,755 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:12:01,758 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (390, 8)
+2025-05-11 15:12:02,759 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'python'.
+2025-05-11 15:12:02,760 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1746965521.7397454, End: 1746965522.7606802, Duration: 1.02s
+2025-05-11 15:12:02,761 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=explorer, Cat=Misc, Start=15:12:01, End=15:12:02, TotalMin=0.02
+2025-05-11 15:12:02,763 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:12:02,781 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:12:02,784 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (391, 8)
+2025-05-11 15:12:03,785 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-11 15:12:03,786 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746965522.7593493, End: 1746965523.786535, Duration: 1.03s
+2025-05-11 15:12:03,787 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:12:02, End=15:12:03, TotalMin=0.02
+2025-05-11 15:12:03,790 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:12:03,815 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:12:03,823 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (392, 8)
+2025-05-11 15:12:47,884 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'Visual Paradigm'.
+2025-05-11 15:12:47,886 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746965523.7855234, End: 1746965567.8865547, Duration: 44.10s
+2025-05-11 15:12:47,887 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=main.py - time_logger - Visual Studio Code, Cat=Study, Start=15:12:03, End=15:12:47, TotalMin=0.74
+2025-05-11 15:12:47,890 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:12:47,918 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:12:47,926 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (393, 8)
+2025-05-11 15:12:53,931 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Photos'.
+2025-05-11 15:12:53,931 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Open Exported File']', Start: 1746965567.8834326, End: 1746965573.931605, Duration: 6.05s
+2025-05-11 15:12:53,931 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Open Exported File, Cat=Study, Start=15:12:47, End=15:12:53, TotalMin=0.1
+2025-05-11 15:12:53,935 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:12:53,968 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:12:53,973 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (394, 8)
+2025-05-11 15:13:07,985 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Photos' to 'Visual Paradigm'.
+2025-05-11 15:13:07,986 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Photos', Title: '['Photos']', Start: 1746965573.93071, End: 1746965587.9862726, Duration: 14.06s
+2025-05-11 15:13:07,986 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Photos, Win=Photos, Cat=Study, Start=15:12:53, End=15:13:07, TotalMin=0.23
+2025-05-11 15:13:07,990 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:13:08,021 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:13:08,031 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (395, 8)
+2025-05-11 15:13:54,066 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Code'.
+2025-05-11 15:13:54,067 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746965587.9853315, End: 1746965634.0671134, Duration: 46.08s
+2025-05-11 15:13:54,067 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:13:07, End=15:13:54, TotalMin=0.77
+2025-05-11 15:13:54,070 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:13:54,099 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:13:54,109 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (396, 8)
+2025-05-11 15:14:50,155 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-11 15:14:50,155 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['logger.py - time_logger - Visual Studio Code']', Start: 1746965634.0659444, End: 1746965690.1558497, Duration: 56.09s
+2025-05-11 15:14:50,156 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=logger.py - time_logger - Visual Studio Code, Cat=Study, Start=15:13:54, End=15:14:50, TotalMin=0.93
+2025-05-11 15:14:50,160 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:14:50,178 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:14:50,182 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (397, 8)
+2025-05-11 15:14:50,299 - TimeTrackerApp - INFO - ui:316 - Close program sequence initiated by UI.
+2025-05-11 15:14:50,299 - TimeTrackerApp - INFO - tracker:195 - stop_tracking called.
+2025-05-11 15:14:50,299 - TimeTrackerApp - INFO - tracker:198 - Attempting to join tracking thread...
+2025-05-11 15:14:51,183 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746965690.154555, End: 1746965691.183351, Duration: 1.03s
+2025-05-11 15:14:51,183 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:14:50, End=15:14:51, TotalMin=0.02
+2025-05-11 15:14:51,185 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:14:51,198 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:14:51,200 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (398, 8)
+2025-05-11 15:14:51,202 - TimeTrackerApp - INFO - logger:301 - Category map saved to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 15:14:51,203 - TimeTrackerApp - INFO - tracker:212 - User category data update requested (via logger instance).
+2025-05-11 15:14:51,203 - TimeTrackerApp - INFO - tracker:160 - Window tracking thread stopped.
+2025-05-11 15:14:51,204 - TimeTrackerApp - INFO - tracker:203 - Tracking thread successfully joined.
+2025-05-11 15:14:52,091 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
+2025-05-11 15:14:52,092 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
+2025-05-11 15:14:52,136 - TimeTrackerApp - INFO - main:65 - Application exited.
+2025-05-11 15:14:55,239 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-11 15:14:55,240 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-11 15:14:55,240 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-11 15:14:55,374 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (398, 8)
+2025-05-11 15:14:55,376 - TimeTrackerApp - INFO - logger:312 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 15:14:55,377 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-11 15:14:55,377 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-11 15:14:55,377 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-11 15:14:55,451 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-11 15:14:55,510 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-11 15:14:55,511 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-11 15:14:55,512 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-11 15:14:55,513 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-11 15:14:55,513 - TimeTrackerApp - INFO - tracker:189 - start_tracking called, new tracking thread initiated.
+2025-05-11 15:14:55,513 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-11 15:14:55,514 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'python'.
+2025-05-11 15:14:55,515 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'None' to 'python'.
+2025-05-11 15:14:57,519 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Visual Paradigm'.
+2025-05-11 15:14:57,519 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'python' to 'Visual Paradigm'.
+2025-05-11 15:14:57,522 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746965695.5135186, End: 1746965697.522531, Duration: 2.01s
+2025-05-11 15:14:57,522 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:14:55, End=15:14:57, TotalMin=0.03
+2025-05-11 15:14:57,526 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:14:57,541 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:14:57,547 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (399, 8)
+2025-05-11 15:15:02,551 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Photos'.
+2025-05-11 15:15:02,552 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'Photos'.
+2025-05-11 15:15:02,552 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Open Exported File']', Start: 1746965697.5189893, End: 1746965702.5527692, Duration: 5.03s
+2025-05-11 15:15:02,553 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Open Exported File, Cat=Study, Start=15:14:57, End=15:15:02, TotalMin=0.08
+2025-05-11 15:15:02,555 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:15:02,581 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:15:02,584 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (400, 8)
+2025-05-11 15:15:12,591 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Photos' to 'Visual Paradigm'.
+2025-05-11 15:15:12,591 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Photos' to 'Visual Paradigm'.
+2025-05-11 15:15:12,592 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Photos', Title: '['Decision Tree2.jpg']', Start: 1746965702.5514565, End: 1746965712.5925794, Duration: 10.04s
+2025-05-11 15:15:12,592 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Photos, Win=Decision Tree2.jpg, Cat=Study, Start=15:15:02, End=15:15:12, TotalMin=0.17
+2025-05-11 15:15:12,597 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:15:12,624 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:15:12,631 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (401, 8)
+2025-05-11 15:16:20,683 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'python'.
+2025-05-11 15:16:20,684 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'python'.
+2025-05-11 15:16:20,684 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746965712.5911667, End: 1746965780.6844614, Duration: 68.09s
+2025-05-11 15:16:20,684 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:15:12, End=15:16:20, TotalMin=1.13
+2025-05-11 15:16:20,686 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:16:20,706 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:16:20,709 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (402, 8)
+2025-05-11 15:16:21,710 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'explorer'.
+2025-05-11 15:16:21,711 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'python' to 'explorer'.
+2025-05-11 15:16:21,711 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746965780.683357, End: 1746965781.7116683, Duration: 1.03s
+2025-05-11 15:16:21,711 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:16:20, End=15:16:21, TotalMin=0.02
+2025-05-11 15:16:21,714 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:16:21,741 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:16:21,750 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (403, 8)
+2025-05-11 15:16:39,765 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'GoogleDriveFS'.
+2025-05-11 15:16:39,765 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'GoogleDriveFS'.
+2025-05-11 15:16:39,766 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1746965781.710632, End: 1746965799.766531, Duration: 18.06s
+2025-05-11 15:16:39,766 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=explorer, Cat=Misc, Start=15:16:21, End=15:16:39, TotalMin=0.3
+2025-05-11 15:16:39,768 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:16:39,800 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:16:39,806 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (404, 8)
+2025-05-11 15:16:43,810 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'GoogleDriveFS' to 'Visual Paradigm'.
+2025-05-11 15:16:43,810 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'GoogleDriveFS' to 'Visual Paradigm'.
+2025-05-11 15:16:43,811 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'GoogleDriveFS', Title: '['הפריטים הוסרו']', Start: 1746965799.7646348, End: 1746965803.8109992, Duration: 4.05s
+2025-05-11 15:16:43,811 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=GoogleDriveFS, Win=הפריטים הוסרו, Cat=Study, Start=15:16:39, End=15:16:43, TotalMin=0.07
+2025-05-11 15:16:43,814 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:16:43,845 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:16:43,856 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (405, 8)
+2025-05-11 15:16:46,859 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Code'.
+2025-05-11 15:16:46,859 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'Code'.
+2025-05-11 15:16:46,860 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Visual Paradigm']', Start: 1746965803.8097394, End: 1746965806.8604698, Duration: 3.05s
+2025-05-11 15:16:46,860 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Visual Paradigm, Cat=Study, Start=15:16:43, End=15:16:46, TotalMin=0.05
+2025-05-11 15:16:46,863 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:16:46,895 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:16:46,902 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (406, 8)
+2025-05-11 15:16:58,913 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'firefox'.
+2025-05-11 15:16:58,914 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Code' to 'firefox'.
+2025-05-11 15:16:58,914 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746965806.8591084, End: 1746965818.9145703, Duration: 12.06s
+2025-05-11 15:16:58,914 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=main.py - time_logger - Visual Studio Code, Cat=Study, Start=15:16:46, End=15:16:58, TotalMin=0.2
+2025-05-11 15:16:58,919 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:16:58,959 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:16:58,969 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (407, 8)
+2025-05-11 15:17:16,982 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'python'.
+2025-05-11 15:17:16,983 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'python'.
+2025-05-11 15:17:16,983 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Gemini — Mozilla Firefox']', Start: 1746965818.9131553, End: 1746965836.9836829, Duration: 18.07s
+2025-05-11 15:17:16,983 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Gemini — Mozilla Firefox, Cat=Break, Start=15:16:58, End=15:17:16, TotalMin=0.3
+2025-05-11 15:17:16,985 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:17:17,002 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:17:17,005 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (408, 8)
+2025-05-11 15:17:18,008 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'explorer'.
+2025-05-11 15:17:18,008 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'python' to 'explorer'.
+2025-05-11 15:17:18,013 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746965836.9823542, End: 1746965838.0138443, Duration: 1.03s
+2025-05-11 15:17:18,014 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:17:16, End=15:17:18, TotalMin=0.02
+2025-05-11 15:17:18,028 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:17:18,180 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:17:18,213 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (409, 8)
+2025-05-11 15:17:25,246 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 15:17:25,246 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 15:17:25,247 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1746965838.0071752, End: 1746965845.247519, Duration: 7.24s
+2025-05-11 15:17:25,247 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=explorer, Cat=Misc, Start=15:17:18, End=15:17:25, TotalMin=0.12
+2025-05-11 15:17:25,252 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:17:25,297 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:17:25,308 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (410, 8)
+2025-05-11 15:17:28,966 - TimeTrackerApp - INFO - ui:292 - Show graph button clicked.
+2025-05-11 15:17:28,966 - TimeTrackerApp - INFO - graph:58 - show_graph called.
+2025-05-11 15:17:28,967 - TimeTrackerApp - INFO - graph:32 - Found 1 historical CSV files in C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log
+2025-05-11 15:17:28,992 - TimeTrackerApp - DEBUG - graph:44 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\log_202504_235515.csv. Shape: (99, 8)
+2025-05-11 15:17:28,993 - TimeTrackerApp - INFO - graph:54 - Historical data loaded and merged. Total historical entries: 99
+2025-05-11 15:17:28,994 - TimeTrackerApp - DEBUG - graph:76 - Combined DataFrame for graph created. Shape: (509, 8)
+2025-05-11 15:17:28,999 - TimeTrackerApp - DEBUG - graph:109 - Data for today (11/05/2025): 64 entries.
+2025-05-11 15:17:29,050 - TimeTrackerApp - DEBUG - graph:166 - Updating stats for selected category: All Categories
+2025-05-11 15:17:29,052 - TimeTrackerApp - DEBUG - graph:195 - Productivity stats updated for UI. Category: All Categories
+2025-05-11 15:17:29,080 - TimeTrackerApp - DEBUG - graph:98 - Top ten programs calculated. Found: 10
+2025-05-11 15:17:29,544 - TimeTrackerApp - INFO - graph:288 - Graph drawn successfully.
+2025-05-11 15:17:29,546 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'python'.
+2025-05-11 15:17:29,546 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'python'.
+2025-05-11 15:17:29,546 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Visual Paradigm']', Start: 1746965845.2457674, End: 1746965849.5466275, Duration: 4.30s
+2025-05-11 15:17:29,546 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Visual Paradigm, Cat=Study, Start=15:17:25, End=15:17:29, TotalMin=0.07
+2025-05-11 15:17:29,548 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:17:29,563 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:17:29,567 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (411, 8)
+2025-05-11 15:17:31,861 - TimeTrackerApp - INFO - graph:308 - Graph window closed.
+2025-05-11 15:17:33,571 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'explorer'.
+2025-05-11 15:17:33,571 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'python' to 'explorer'.
+2025-05-11 15:17:33,572 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746965849.3116617, End: 1746965853.5721164, Duration: 4.26s
+2025-05-11 15:17:33,572 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:17:29, End=15:17:33, TotalMin=0.07
+2025-05-11 15:17:33,575 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:17:33,613 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:17:33,625 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (412, 8)
+2025-05-11 15:17:38,629 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 15:17:38,630 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 15:17:38,631 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['HW 2 - סייר הקבצים']', Start: 1746965853.5707757, End: 1746965858.631015, Duration: 5.06s
+2025-05-11 15:17:38,631 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=HW 2 - סייר הקבצים, Cat=Misc, Start=15:17:33, End=15:17:38, TotalMin=0.08
+2025-05-11 15:17:38,634 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:17:38,665 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:17:38,673 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (413, 8)
+2025-05-11 15:17:41,676 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 15:17:41,676 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 15:17:41,678 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Visual Paradigm Standard']', Start: 1746965858.6296256, End: 1746965861.6779523, Duration: 3.05s
+2025-05-11 15:17:41,678 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Visual Paradigm Standard, Cat=Study, Start=15:17:38, End=15:17:41, TotalMin=0.05
+2025-05-11 15:17:41,682 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:17:41,715 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:17:41,727 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (414, 8)
+2025-05-11 15:17:42,729 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 15:17:42,729 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 15:17:42,730 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['HW 2 - סייר הקבצים']', Start: 1746965861.6762915, End: 1746965862.730478, Duration: 1.05s
+2025-05-11 15:17:42,730 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=HW 2 - סייר הקבצים, Cat=Misc, Start=15:17:41, End=15:17:42, TotalMin=0.02
+2025-05-11 15:17:42,734 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:17:42,763 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:17:42,773 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (415, 8)
+2025-05-11 15:21:57,081 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 15:21:57,081 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 15:21:57,082 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework - Visual Paradigm Standard']', Start: 1746965862.7289188, End: 1746966117.082393, Duration: 254.35s
+2025-05-11 15:21:57,083 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework - Visual Paradigm Standard, Cat=Study, Start=15:17:42, End=15:21:57, TotalMin=4.24
+2025-05-11 15:21:57,087 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:21:57,117 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:21:57,126 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (416, 8)
+2025-05-11 15:22:01,130 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:22:01,131 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:22:01,134 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['\u200f\u200fמעבר בין משימות']', Start: 1746966117.080803, End: 1746966121.134034, Duration: 4.05s
+2025-05-11 15:22:01,136 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=‏‏מעבר בין משימות, Cat=Misc, Start=15:21:57, End=15:22:01, TotalMin=0.07
+2025-05-11 15:22:01,139 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:22:01,172 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:22:01,177 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (417, 8)
+2025-05-11 15:22:11,185 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'explorer'.
+2025-05-11 15:22:11,186 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'explorer'.
+2025-05-11 15:22:11,187 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit)']', Start: 1746966121.1302617, End: 1746966131.1870568, Duration: 10.06s
+2025-05-11 15:22:11,187 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit), Cat=Study, Start=15:22:01, End=15:22:11, TotalMin=0.17
+2025-05-11 15:22:11,190 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:22:11,221 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:22:11,230 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (418, 8)
+2025-05-11 15:22:12,231 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 15:22:12,231 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'Visual Paradigm'.
+2025-05-11 15:22:12,232 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['HW 2 - סייר הקבצים']', Start: 1746966131.185292, End: 1746966132.2324698, Duration: 1.05s
+2025-05-11 15:22:12,232 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=HW 2 - סייר הקבצים, Cat=Misc, Start=15:22:11, End=15:22:12, TotalMin=0.02
+2025-05-11 15:22:12,235 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:22:12,264 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:22:12,274 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (419, 8)
+2025-05-11 15:22:14,277 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:22:14,278 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:22:14,279 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746966132.2315025, End: 1746966134.2793012, Duration: 2.05s
+2025-05-11 15:22:14,279 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:22:12, End=15:22:14, TotalMin=0.03
+2025-05-11 15:22:14,282 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:22:14,309 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:22:14,320 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (420, 8)
+2025-05-11 15:22:46,347 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:22:46,347 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:22:46,349 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Google Calendar - Week of May 11, 2025 — Mozilla Firefox']', Start: 1746966134.2774646, End: 1746966166.3488944, Duration: 32.07s
+2025-05-11 15:22:46,349 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Google Calendar - Week of May 11, 2025 — Mozilla Firefox, Cat=Break, Start=15:22:14, End=15:22:46, TotalMin=0.53
+2025-05-11 15:22:46,352 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:22:46,377 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:22:46,384 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (421, 8)
+2025-05-11 15:22:55,393 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:22:55,393 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:22:55,394 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746966166.3466606, End: 1746966175.3943086, Duration: 9.05s
+2025-05-11 15:22:55,394 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:22:46, End=15:22:55, TotalMin=0.15
+2025-05-11 15:22:55,397 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:22:55,430 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:22:55,440 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (422, 8)
+2025-05-11 15:22:59,443 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:22:59,444 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:22:59,444 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Gemini — Mozilla Firefox']', Start: 1746966175.3927555, End: 1746966179.4448705, Duration: 4.05s
+2025-05-11 15:22:59,445 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Gemini — Mozilla Firefox, Cat=Break, Start=15:22:55, End=15:22:59, TotalMin=0.07
+2025-05-11 15:22:59,448 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:22:59,482 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:22:59,490 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (423, 8)
+2025-05-11 15:23:39,525 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:23:39,526 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:23:39,526 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746966179.4434237, End: 1746966219.5268953, Duration: 40.08s
+2025-05-11 15:23:39,527 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:22:59, End=15:23:39, TotalMin=0.67
+2025-05-11 15:23:39,530 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:23:39,564 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:23:39,574 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (424, 8)
+2025-05-11 15:23:45,579 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:23:45,580 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:23:45,581 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Gemini — Mozilla Firefox']', Start: 1746966219.525476, End: 1746966225.580954, Duration: 6.06s
+2025-05-11 15:23:45,581 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Gemini — Mozilla Firefox, Cat=Break, Start=15:23:39, End=15:23:45, TotalMin=0.1
+2025-05-11 15:23:45,584 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:23:45,613 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:23:45,622 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (425, 8)
+2025-05-11 15:23:49,626 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:23:49,627 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:23:49,627 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746966225.5795374, End: 1746966229.6277435, Duration: 4.05s
+2025-05-11 15:23:49,628 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:23:45, End=15:23:49, TotalMin=0.07
+2025-05-11 15:23:49,631 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:23:49,664 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:23:49,674 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (426, 8)
+2025-05-11 15:24:08,690 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:24:08,690 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:24:08,692 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Gemini — Mozilla Firefox']', Start: 1746966229.6263995, End: 1746966248.6924965, Duration: 19.07s
+2025-05-11 15:24:08,692 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Gemini — Mozilla Firefox, Cat=Break, Start=15:23:49, End=15:24:08, TotalMin=0.32
+2025-05-11 15:24:08,697 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:24:08,722 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:24:08,735 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (427, 8)
+2025-05-11 15:24:18,745 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:24:18,745 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:24:18,746 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746966248.6898592, End: 1746966258.7463315, Duration: 10.06s
+2025-05-11 15:24:18,746 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:24:08, End=15:24:18, TotalMin=0.17
+2025-05-11 15:24:18,750 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:24:18,796 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:24:18,805 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (428, 8)
+2025-05-11 15:24:22,809 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:24:22,810 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:24:22,811 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Gemini — Mozilla Firefox']', Start: 1746966258.7450917, End: 1746966262.8110158, Duration: 4.07s
+2025-05-11 15:24:22,811 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Gemini — Mozilla Firefox, Cat=Break, Start=15:24:18, End=15:24:22, TotalMin=0.07
+2025-05-11 15:24:22,814 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:24:22,846 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:24:22,855 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (429, 8)
+2025-05-11 15:24:32,862 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:24:32,862 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:24:32,863 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746966262.809601, End: 1746966272.8632703, Duration: 10.05s
+2025-05-11 15:24:32,863 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:24:22, End=15:24:32, TotalMin=0.17
+2025-05-11 15:24:32,866 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:24:32,914 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:24:32,925 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (430, 8)
+2025-05-11 15:24:38,930 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:24:38,930 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:24:38,931 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Gemini — Mozilla Firefox']', Start: 1746966272.8620837, End: 1746966278.9316435, Duration: 6.07s
+2025-05-11 15:24:38,931 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Gemini — Mozilla Firefox, Cat=Break, Start=15:24:32, End=15:24:38, TotalMin=0.1
+2025-05-11 15:24:38,935 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:24:38,971 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:24:38,983 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (431, 8)
+2025-05-11 15:24:55,996 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:24:55,997 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:24:55,998 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746966278.9300203, End: 1746966295.9979672, Duration: 17.07s
+2025-05-11 15:24:55,998 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:24:38, End=15:24:55, TotalMin=0.28
+2025-05-11 15:24:56,002 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:24:56,043 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:24:56,055 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (432, 8)
+2025-05-11 15:25:00,059 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:25:00,060 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:25:00,060 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Gemini — Mozilla Firefox']', Start: 1746966295.996458, End: 1746966300.0607047, Duration: 4.06s
+2025-05-11 15:25:00,061 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Gemini — Mozilla Firefox, Cat=Break, Start=15:24:55, End=15:25:00, TotalMin=0.07
+2025-05-11 15:25:00,064 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:25:00,092 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:25:00,102 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (433, 8)
+2025-05-11 15:25:06,106 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:25:06,107 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'firefox'.
+2025-05-11 15:25:06,108 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746966300.059535, End: 1746966306.1079214, Duration: 6.05s
+2025-05-11 15:25:06,108 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:25:00, End=15:25:06, TotalMin=0.1
+2025-05-11 15:25:06,111 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:25:06,140 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:25:06,149 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (434, 8)
+2025-05-11 15:25:15,155 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:25:15,155 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Visual Paradigm'.
+2025-05-11 15:25:15,156 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Gemini — Mozilla Firefox']', Start: 1746966306.1063476, End: 1746966315.1565776, Duration: 9.05s
+2025-05-11 15:25:15,157 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Gemini — Mozilla Firefox, Cat=Break, Start=15:25:06, End=15:25:15, TotalMin=0.15
+2025-05-11 15:25:15,160 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:25:15,189 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:25:15,200 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (435, 8)
+2025-05-11 15:26:20,247 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 15:26:20,248 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 15:26:20,248 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746966315.1552525, End: 1746966380.2488606, Duration: 65.09s
+2025-05-11 15:26:20,249 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:25:15, End=15:26:20, TotalMin=1.08
+2025-05-11 15:26:20,252 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:26:20,274 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:26:20,283 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (436, 8)
+2025-05-11 15:26:22,285 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:26:22,286 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:26:22,287 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['\u200f\u200fמעבר בין משימות']', Start: 1746966380.24761, End: 1746966382.2869494, Duration: 2.04s
+2025-05-11 15:26:22,287 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=‏‏מעבר בין משימות, Cat=Misc, Start=15:26:20, End=15:26:22, TotalMin=0.03
+2025-05-11 15:26:22,290 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:26:22,316 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:26:22,324 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (437, 8)
+2025-05-11 15:26:43,343 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'firefox'.
+2025-05-11 15:26:43,343 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'firefox'.
+2025-05-11 15:26:43,344 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit)']', Start: 1746966382.2856002, End: 1746966403.3444734, Duration: 21.06s
+2025-05-11 15:26:43,344 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit), Cat=Study, Start=15:26:22, End=15:26:43, TotalMin=0.35
+2025-05-11 15:26:43,347 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:26:43,372 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:26:43,379 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (438, 8)
+2025-05-11 15:26:46,382 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Acrobat'.
+2025-05-11 15:26:46,382 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Acrobat'.
+2025-05-11 15:26:46,383 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Gemini — Mozilla Firefox']', Start: 1746966403.3432178, End: 1746966406.3834848, Duration: 3.04s
+2025-05-11 15:26:46,384 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Gemini — Mozilla Firefox, Cat=Break, Start=15:26:43, End=15:26:46, TotalMin=0.05
+2025-05-11 15:26:46,387 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:26:46,430 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:26:46,439 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (439, 8)
+2025-05-11 15:44:50,303 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'Idle'.
+2025-05-11 15:44:50,304 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'Idle'.
+2025-05-11 15:44:50,304 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit)']', Start: 1746966406.3822362, End: 1746967490.3046443, Duration: 1083.92s
+2025-05-11 15:44:50,304 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit), Cat=Study, Start=15:26:46, End=15:44:50, TotalMin=18.07
+2025-05-11 15:44:50,307 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:44:50,321 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:44:50,327 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (440, 8)
+2025-05-11 15:51:09,071 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Idle' to 'LockApp'.
+2025-05-11 15:51:09,071 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Idle' to 'LockApp'.
+2025-05-11 15:51:09,072 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Idle', Title: '['No Active Window']', Start: 1746967490.303797, End: 1746967869.072015, Duration: 378.77s
+2025-05-11 15:51:09,072 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Idle, Win=No Active Window, Cat=Misc, Start=15:44:50, End=15:51:09, TotalMin=6.31
+2025-05-11 15:51:09,073 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:51:09,108 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:51:09,120 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (441, 8)
+2025-05-11 15:51:11,125 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'LockApp' to 'Acrobat'.
+2025-05-11 15:51:11,126 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'LockApp' to 'Acrobat'.
+2025-05-11 15:51:11,126 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'LockApp', Title: '['מסך הנעילה המשמש כברירת מחדל ב- Windows']', Start: 1746967869.070829, End: 1746967871.126462, Duration: 2.06s
+2025-05-11 15:51:11,126 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=LockApp, Win=מסך הנעילה המשמש כברירת מחדל ב- Windows, Cat=Break, Start=15:51:09, End=15:51:11, TotalMin=0.03
+2025-05-11 15:51:11,127 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:51:11,134 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:51:11,136 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (442, 8)
+2025-05-11 15:51:12,137 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'Visual Paradigm'.
+2025-05-11 15:51:12,137 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'Visual Paradigm'.
+2025-05-11 15:51:12,138 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit)']', Start: 1746967871.1258032, End: 1746967872.138026, Duration: 1.01s
+2025-05-11 15:51:12,138 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit), Cat=Study, Start=15:51:11, End=15:51:12, TotalMin=0.02
+2025-05-11 15:51:12,140 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:51:12,148 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:51:12,150 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (443, 8)
+2025-05-11 15:51:29,162 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 15:51:29,162 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'explorer'.
+2025-05-11 15:51:29,163 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746967872.1373665, End: 1746967889.1631012, Duration: 17.03s
+2025-05-11 15:51:29,163 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:51:12, End=15:51:29, TotalMin=0.28
+2025-05-11 15:51:29,164 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:51:29,180 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:51:29,184 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (444, 8)
+2025-05-11 15:51:30,184 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:51:30,185 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:51:30,185 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1746967889.162459, End: 1746967890.185359, Duration: 1.02s
+2025-05-11 15:51:30,185 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=explorer, Cat=Misc, Start=15:51:29, End=15:51:30, TotalMin=0.02
+2025-05-11 15:51:30,186 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:51:30,197 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:51:30,199 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (445, 8)
+2025-05-11 15:51:38,204 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'Visual Paradigm'.
+2025-05-11 15:51:38,205 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'Visual Paradigm'.
+2025-05-11 15:51:38,205 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit)']', Start: 1746967890.1847718, End: 1746967898.2055078, Duration: 8.02s
+2025-05-11 15:51:38,205 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit), Cat=Study, Start=15:51:30, End=15:51:38, TotalMin=0.13
+2025-05-11 15:51:38,206 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:51:38,215 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:51:38,217 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (446, 8)
+2025-05-11 15:52:00,233 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Acrobat'.
+2025-05-11 15:52:00,233 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'Acrobat'.
+2025-05-11 15:52:00,233 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746967898.2047904, End: 1746967920.2338514, Duration: 22.03s
+2025-05-11 15:52:00,233 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:51:38, End=15:52:00, TotalMin=0.37
+2025-05-11 15:52:00,234 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:52:00,242 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:52:00,245 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (447, 8)
+2025-05-11 15:52:05,248 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'Visual Paradigm'.
+2025-05-11 15:52:05,249 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'Visual Paradigm'.
+2025-05-11 15:52:05,249 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit)']', Start: 1746967920.2332146, End: 1746967925.2494159, Duration: 5.02s
+2025-05-11 15:52:05,249 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit), Cat=Study, Start=15:52:00, End=15:52:05, TotalMin=0.08
+2025-05-11 15:52:05,250 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:52:05,258 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:52:05,262 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (448, 8)
+2025-05-11 15:52:08,263 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Acrobat'.
+2025-05-11 15:52:08,263 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'Acrobat'.
+2025-05-11 15:52:08,264 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746967925.248838, End: 1746967928.2641292, Duration: 3.02s
+2025-05-11 15:52:08,264 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:52:05, End=15:52:08, TotalMin=0.05
+2025-05-11 15:52:08,265 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:52:08,274 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:52:08,276 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (449, 8)
+2025-05-11 15:52:09,277 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'Visual Paradigm'.
+2025-05-11 15:52:09,277 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'Visual Paradigm'.
+2025-05-11 15:52:09,278 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit)']', Start: 1746967928.263527, End: 1746967929.2780056, Duration: 1.01s
+2025-05-11 15:52:09,278 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit), Cat=Study, Start=15:52:08, End=15:52:09, TotalMin=0.02
+2025-05-11 15:52:09,280 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:52:09,289 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:52:09,292 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (450, 8)
+2025-05-11 15:52:21,300 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Visual Paradigm' to 'Acrobat'.
+2025-05-11 15:52:21,300 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Visual Paradigm' to 'Acrobat'.
+2025-05-11 15:52:21,301 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Visual Paradigm', Title: '['Hebrew Library System Homework * - Visual Paradigm Standard']', Start: 1746967929.2771795, End: 1746967941.3013437, Duration: 12.02s
+2025-05-11 15:52:21,301 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Visual Paradigm, Win=Hebrew Library System Homework * - Visual Paradigm Standard, Cat=Study, Start=15:52:09, End=15:52:21, TotalMin=0.2
+2025-05-11 15:52:21,302 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:52:21,309 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:52:21,312 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (451, 8)
+2025-05-11 15:52:22,313 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'python'.
+2025-05-11 15:52:22,313 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'python'.
+2025-05-11 15:52:22,315 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit)']', Start: 1746967941.30058, End: 1746967942.3150706, Duration: 1.01s
+2025-05-11 15:52:22,315 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit), Cat=Study, Start=15:52:21, End=15:52:22, TotalMin=0.02
+2025-05-11 15:52:22,317 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:52:22,324 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:52:22,326 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (452, 8)
+2025-05-11 15:52:23,328 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-11 15:52:23,328 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'python' to 'Code'.
+2025-05-11 15:52:23,328 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746967942.312988, End: 1746967943.3288832, Duration: 1.02s
+2025-05-11 15:52:23,329 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:52:22, End=15:52:23, TotalMin=0.02
+2025-05-11 15:52:23,330 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:52:23,336 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:52:23,338 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (453, 8)
+2025-05-11 15:56:20,508 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-11 15:56:20,509 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Code' to 'python'.
+2025-05-11 15:56:20,509 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1746967943.3280725, End: 1746968180.5098133, Duration: 237.18s
+2025-05-11 15:56:20,510 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=main.py - time_logger - Visual Studio Code, Cat=Study, Start=15:52:23, End=15:56:20, TotalMin=3.95
+2025-05-11 15:56:20,512 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:56:20,519 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:56:20,521 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (454, 8)
+2025-05-11 15:56:21,522 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Acrobat'.
+2025-05-11 15:56:21,522 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'python' to 'Acrobat'.
+2025-05-11 15:56:21,523 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746968180.5084493, End: 1746968181.5229998, Duration: 1.01s
+2025-05-11 15:56:21,523 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=15:56:20, End=15:56:21, TotalMin=0.02
+2025-05-11 15:56:21,524 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:56:21,532 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:56:21,534 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (455, 8)
+2025-05-11 15:56:22,535 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'firefox'.
+2025-05-11 15:56:22,535 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'firefox'.
+2025-05-11 15:56:22,535 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit)']', Start: 1746968181.5223505, End: 1746968182.5358872, Duration: 1.01s
+2025-05-11 15:56:22,535 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=מערכת לניהול ספריה - תרגיל בית 2.pdf - Adobe Acrobat (64-bit), Cat=Study, Start=15:56:21, End=15:56:22, TotalMin=0.02
+2025-05-11 15:56:22,537 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:56:22,544 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:56:22,546 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (456, 8)
+2025-05-11 15:56:33,555 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'explorer'.
+2025-05-11 15:56:33,555 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'explorer'.
+2025-05-11 15:56:33,556 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['Gemini — Mozilla Firefox']', Start: 1746968182.5353081, End: 1746968193.5563943, Duration: 11.02s
+2025-05-11 15:56:33,556 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=Gemini — Mozilla Firefox, Cat=Break, Start=15:56:22, End=15:56:33, TotalMin=0.18
+2025-05-11 15:56:33,558 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:56:33,565 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:56:33,567 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (457, 8)
+2025-05-11 15:56:40,571 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'firefox'.
+2025-05-11 15:56:40,571 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'firefox'.
+2025-05-11 15:56:40,572 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1746968193.5551271, End: 1746968200.57223, Duration: 7.02s
+2025-05-11 15:56:40,572 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=explorer, Cat=Misc, Start=15:56:33, End=15:56:40, TotalMin=0.12
+2025-05-11 15:56:40,573 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:56:40,580 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:56:40,582 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (458, 8)
+2025-05-11 15:57:58,638 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'explorer'.
+2025-05-11 15:57:58,638 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'explorer'.
+2025-05-11 15:57:58,638 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['קורס: תכנון ותפעול תהליך האספקה בארגון (51132) 2025-2 | בראודה 2024 - 2025 — Mozilla Firefox']', Start: 1746968200.5714426, End: 1746968278.6387115, Duration: 78.07s
+2025-05-11 15:57:58,638 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=קורס: תכנון ותפעול תהליך האספקה בארגון (51132) 2025-2 | בראודה 2024 - 2025 — Mozilla Firefox, Cat=Break, Start=15:56:40, End=15:57:58, TotalMin=1.3
+2025-05-11 15:57:58,639 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:57:58,646 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:57:58,650 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (459, 8)
+2025-05-11 15:58:04,654 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:58:04,654 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:58:04,654 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1746968278.6381264, End: 1746968284.654608, Duration: 6.02s
+2025-05-11 15:58:04,654 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=explorer, Cat=Misc, Start=15:57:58, End=15:58:04, TotalMin=0.1
+2025-05-11 15:58:04,655 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:58:04,665 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:58:04,669 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (460, 8)
+2025-05-11 15:59:08,711 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'explorer'.
+2025-05-11 15:59:08,712 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'explorer'.
+2025-05-11 15:59:08,712 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['Real, Relevant,  Surprising and Fresh: Cisco Brand (Animated) - Adobe Acrobat (64-bit)']', Start: 1746968284.6540048, End: 1746968348.7123642, Duration: 64.06s
+2025-05-11 15:59:08,712 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=Real, Relevant,  Surprising and Fresh: Cisco Brand (Animated) - Adobe Acrobat (64-bit), Cat=Study, Start=15:58:04, End=15:59:08, TotalMin=1.07
+2025-05-11 15:59:08,713 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:59:08,721 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:59:08,723 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (461, 8)
+2025-05-11 15:59:14,728 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:59:14,728 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-11 15:59:14,728 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['הרצאות - סייר הקבצים']', Start: 1746968348.7118084, End: 1746968354.7285986, Duration: 6.02s
+2025-05-11 15:59:14,728 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=הרצאות - סייר הקבצים, Cat=Misc, Start=15:59:08, End=15:59:14, TotalMin=0.1
+2025-05-11 15:59:14,730 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 15:59:14,739 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 15:59:14,743 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (462, 8)
+2025-05-11 16:00:37,800 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'firefox'.
+2025-05-11 16:00:37,801 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'firefox'.
+2025-05-11 16:00:37,801 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['Real, Relevant,  Surprising and Fresh: Cisco Brand (Animated) - Adobe Acrobat (64-bit)']', Start: 1746968354.728115, End: 1746968437.8014252, Duration: 83.07s
+2025-05-11 16:00:37,801 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=Real, Relevant,  Surprising and Fresh: Cisco Brand (Animated) - Adobe Acrobat (64-bit), Cat=Study, Start=15:59:14, End=16:00:37, TotalMin=1.38
+2025-05-11 16:00:37,802 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:00:37,808 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:00:37,810 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (463, 8)
+2025-05-11 16:01:11,832 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Acrobat'.
+2025-05-11 16:01:11,832 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Acrobat'.
+2025-05-11 16:01:11,833 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['קורס: אפיון וניתוח מערכות מידע (51429) 2025-2 | בראודה 2024 - 2025 — Mozilla Firefox']', Start: 1746968437.8008616, End: 1746968471.8330648, Duration: 34.03s
+2025-05-11 16:01:11,833 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=קורס: אפיון וניתוח מערכות מידע (51429) 2025-2 | בראודה 2024 - 2025 — Mozilla Firefox, Cat=Break, Start=16:00:37, End=16:01:11, TotalMin=0.57
+2025-05-11 16:01:11,834 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:01:11,840 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:01:11,843 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (464, 8)
+2025-05-11 16:04:56,457 - TimeTrackerApp - INFO - ui:273 - Break time reached. Showing notification.
+2025-05-11 16:12:06,312 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'python'.
+2025-05-11 16:12:06,313 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Acrobat' to 'python'.
+2025-05-11 16:12:06,313 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['Acrobat']', Start: 1746968471.832348, End: 1746969126.3136344, Duration: 654.48s
+2025-05-11 16:12:06,313 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Acrobat, Win=Acrobat, Cat=Study, Start=16:01:11, End=16:12:06, TotalMin=10.91
+2025-05-11 16:12:06,317 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:12:06,325 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:12:06,327 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (465, 8)
+2025-05-11 16:12:07,508 - TimeTrackerApp - INFO - tracker:80 - Break timer countdown reset.
+2025-05-11 16:12:07,509 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-11 16:12:21,345 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'firefox'.
+2025-05-11 16:12:21,345 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'python' to 'firefox'.
+2025-05-11 16:12:21,345 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Break Time!']', Start: 1746969126.3118641, End: 1746969141.3457196, Duration: 15.03s
+2025-05-11 16:12:21,345 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Break Time!, Cat=Misc, Start=16:12:06, End=16:12:21, TotalMin=0.25
+2025-05-11 16:12:21,346 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:12:21,353 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:12:21,355 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (466, 8)
+2025-05-11 16:12:22,356 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'firefox' to 'Idle'.
+2025-05-11 16:12:22,357 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'firefox' to 'Idle'.
+2025-05-11 16:12:22,357 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'firefox', Title: '['תחנת מידע המכללה האקדמית להנדסה בראודה כרמיאל חיפוש קורסים במערכת — Mozilla Firefox']', Start: 1746969141.345023, End: 1746969142.3576, Duration: 1.01s
+2025-05-11 16:12:22,358 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=firefox, Win=תחנת מידע המכללה האקדמית להנדסה בראודה כרמיאל חיפוש קורסים במערכת — Mozilla Firefox, Cat=Break, Start=16:12:21, End=16:12:22, TotalMin=0.02
+2025-05-11 16:12:22,359 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:12:22,367 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:12:22,371 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (467, 8)
+2025-05-11 16:12:23,372 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Idle' to 'Code'.
+2025-05-11 16:12:23,372 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Idle' to 'Code'.
+2025-05-11 16:12:23,373 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Idle', Title: '['No Active Window']', Start: 1746969142.3566995, End: 1746969143.3732667, Duration: 1.02s
+2025-05-11 16:12:23,373 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Idle, Win=No Active Window, Cat=Misc, Start=16:12:22, End=16:12:23, TotalMin=0.02
+2025-05-11 16:12:23,375 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:12:23,382 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:12:23,384 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (468, 8)
+2025-05-11 16:14:02,450 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'explorer'.
+2025-05-11 16:14:02,451 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'Code' to 'explorer'.
+2025-05-11 16:14:02,452 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['time_tracker_app.log - time_logger - Visual Studio Code']', Start: 1746969143.372205, End: 1746969242.452325, Duration: 99.08s
+2025-05-11 16:14:02,452 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=time_tracker_app.log - time_logger - Visual Studio Code, Cat=Study, Start=16:12:23, End=16:14:02, TotalMin=1.65
+2025-05-11 16:14:02,454 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:14:02,460 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:14:02,463 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (469, 8)
+2025-05-11 16:14:03,467 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'python'.
+2025-05-11 16:14:03,467 - TimeTrackerApp - INFO - tracker:123 - Window changed from 'explorer' to 'python'.
+2025-05-11 16:14:03,467 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['\u200f\u200fמעבר בין משימות']', Start: 1746969242.4504426, End: 1746969243.467958, Duration: 1.02s
+2025-05-11 16:14:03,468 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=explorer, Win=‏‏מעבר בין משימות, Cat=Misc, Start=16:14:02, End=16:14:03, TotalMin=0.02
+2025-05-11 16:14:03,469 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:14:03,476 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:14:03,478 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (470, 8)
+2025-05-11 16:14:03,685 - TimeTrackerApp - INFO - ui:316 - Close program sequence initiated by UI.
+2025-05-11 16:14:03,686 - TimeTrackerApp - INFO - tracker:195 - stop_tracking called.
+2025-05-11 16:14:03,686 - TimeTrackerApp - INFO - tracker:198 - Attempting to join tracking thread...
+2025-05-11 16:14:04,479 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746969243.463713, End: 1746969244.4796786, Duration: 1.02s
+2025-05-11 16:14:04,480 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=16:14:03, End=16:14:04, TotalMin=0.02
+2025-05-11 16:14:04,482 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:14:04,489 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:14:04,492 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (471, 8)
+2025-05-11 16:14:04,493 - TimeTrackerApp - INFO - logger:301 - Category map saved to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 16:14:04,493 - TimeTrackerApp - INFO - tracker:212 - User category data update requested (via logger instance).
+2025-05-11 16:14:04,493 - TimeTrackerApp - INFO - tracker:160 - Window tracking thread stopped.
+2025-05-11 16:14:04,494 - TimeTrackerApp - INFO - tracker:203 - Tracking thread successfully joined.
+2025-05-11 16:14:05,619 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
+2025-05-11 16:14:05,619 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
+2025-05-11 16:15:15,047 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-11 16:15:15,048 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-11 16:15:15,048 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-11 16:15:15,132 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (471, 8)
+2025-05-11 16:15:15,134 - TimeTrackerApp - INFO - logger:312 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-11 16:15:15,135 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-11 16:15:15,135 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-11 16:15:15,135 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-11 16:15:15,195 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-11 16:15:15,223 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-11 16:15:15,224 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-11 16:15:15,224 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-11 16:15:15,225 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-11 16:15:15,225 - TimeTrackerApp - INFO - tracker:189 - start_tracking called, new tracking thread initiated.
+2025-05-11 16:15:15,225 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-11 16:15:15,226 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'python'.
+2025-05-11 16:15:17,797 - TimeTrackerApp - DEBUG - ui:61 - Change break time window opened.
+2025-05-11 16:15:20,421 - TimeTrackerApp - INFO - tracker:65 - Break time setting updated to 600 seconds.
+2025-05-11 16:15:20,422 - TimeTrackerApp - INFO - ui:84 - Break time interval changed to 10 minutes.
+2025-05-11 16:15:29,187 - TimeTrackerApp - INFO - ui:292 - Show graph button clicked.
+2025-05-11 16:15:29,188 - TimeTrackerApp - INFO - graph:58 - show_graph called.
+2025-05-11 16:15:29,188 - TimeTrackerApp - INFO - graph:32 - Found 1 historical CSV files in C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log
+2025-05-11 16:15:29,192 - TimeTrackerApp - DEBUG - graph:44 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\log_202504_235515.csv. Shape: (99, 8)
+2025-05-11 16:15:29,192 - TimeTrackerApp - INFO - graph:54 - Historical data loaded and merged. Total historical entries: 99
+2025-05-11 16:15:29,194 - TimeTrackerApp - DEBUG - graph:76 - Combined DataFrame for graph created. Shape: (570, 8)
+2025-05-11 16:15:29,195 - TimeTrackerApp - DEBUG - graph:109 - Data for today (11/05/2025): 125 entries.
+2025-05-11 16:15:29,210 - TimeTrackerApp - DEBUG - graph:166 - Updating stats for selected category: All Categories
+2025-05-11 16:15:29,211 - TimeTrackerApp - DEBUG - graph:195 - Productivity stats updated for UI. Category: All Categories
+2025-05-11 16:15:29,219 - TimeTrackerApp - DEBUG - graph:98 - Top ten programs calculated. Found: 10
+2025-05-11 16:15:29,412 - TimeTrackerApp - INFO - graph:288 - Graph drawn successfully.
+2025-05-11 16:15:33,825 - TimeTrackerApp - INFO - graph:308 - Graph window closed.
+2025-05-11 16:19:16,685 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-11 16:19:16,685 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746969315.2253788, End: 1746969556.6853971, Duration: 241.46s
+2025-05-11 16:19:16,685 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=16:15:15, End=16:19:16, TotalMin=4.02
+2025-05-11 16:19:16,689 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:19:16,698 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:19:16,701 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (472, 8)
+2025-05-11 16:19:34,714 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-11 16:19:34,714 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['ui.py - time_logger - Visual Studio Code']', Start: 1746969556.684637, End: 1746969574.714709, Duration: 18.03s
+2025-05-11 16:19:34,714 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=ui.py - time_logger - Visual Studio Code, Cat=Study, Start=16:19:16, End=16:19:34, TotalMin=0.3
+2025-05-11 16:19:34,716 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:19:34,723 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:19:34,725 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (473, 8)
+2025-05-11 16:19:41,051 - TimeTrackerApp - INFO - ui:292 - Show graph button clicked.
+2025-05-11 16:19:41,052 - TimeTrackerApp - INFO - graph:58 - show_graph called.
+2025-05-11 16:19:41,052 - TimeTrackerApp - INFO - graph:32 - Found 1 historical CSV files in C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log
+2025-05-11 16:19:41,055 - TimeTrackerApp - DEBUG - graph:44 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\log_202504_235515.csv. Shape: (99, 8)
+2025-05-11 16:19:41,056 - TimeTrackerApp - INFO - graph:54 - Historical data loaded and merged. Total historical entries: 99
+2025-05-11 16:19:41,057 - TimeTrackerApp - DEBUG - graph:76 - Combined DataFrame for graph created. Shape: (572, 8)
+2025-05-11 16:19:41,057 - TimeTrackerApp - DEBUG - graph:109 - Data for today (11/05/2025): 127 entries.
+2025-05-11 16:19:41,073 - TimeTrackerApp - DEBUG - graph:166 - Updating stats for selected category: All Categories
+2025-05-11 16:19:41,073 - TimeTrackerApp - DEBUG - graph:195 - Productivity stats updated for UI. Category: All Categories
+2025-05-11 16:19:41,081 - TimeTrackerApp - DEBUG - graph:98 - Top ten programs calculated. Found: 10
+2025-05-11 16:19:41,241 - TimeTrackerApp - INFO - graph:288 - Graph drawn successfully.
+2025-05-11 16:19:52,289 - TimeTrackerApp - INFO - graph:308 - Graph window closed.
+2025-05-11 16:25:21,114 - TimeTrackerApp - INFO - ui:273 - Break time reached. Showing notification.
+2025-05-11 16:25:57,077 - TimeTrackerApp - INFO - tracker:80 - Break timer countdown reset.
+2025-05-11 16:25:57,079 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-11 16:26:07,663 - TimeTrackerApp - DEBUG - ui:61 - Change break time window opened.
+2025-05-11 16:26:10,424 - TimeTrackerApp - INFO - tracker:65 - Break time setting updated to 3000 seconds.
+2025-05-11 16:26:10,425 - TimeTrackerApp - INFO - ui:84 - Break time interval changed to 50 minutes.
+2025-05-11 16:26:12,168 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-11 16:26:12,168 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746969574.7140584, End: 1746969972.1685452, Duration: 397.45s
+2025-05-11 16:26:12,168 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=16:19:34, End=16:26:12, TotalMin=6.62
+2025-05-11 16:26:12,169 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:26:12,176 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:26:12,179 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (474, 8)
+2025-05-11 16:26:16,183 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-11 16:26:16,184 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['ui.py - time_logger - Visual Studio Code']', Start: 1746969972.16829, End: 1746969976.1840677, Duration: 4.02s
+2025-05-11 16:26:16,184 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=Code, Win=ui.py - time_logger - Visual Studio Code, Cat=Study, Start=16:26:12, End=16:26:16, TotalMin=0.07
+2025-05-11 16:26:16,185 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:26:16,191 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:26:16,194 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (475, 8)
+2025-05-11 16:26:19,197 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'GitHubDesktop'.
+2025-05-11 16:26:19,197 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1746969976.1825633, End: 1746969979.1972084, Duration: 3.01s
+2025-05-11 16:26:19,197 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=11/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=16:26:16, End=16:26:19, TotalMin=0.05
+2025-05-11 16:26:19,198 - TimeTrackerApp - DEBUG - logger:106 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-11 16:26:19,205 - TimeTrackerApp - DEBUG - logger:199 - Session percentages calculated.
+2025-05-11 16:26:19,207 - TimeTrackerApp - INFO - logger:143 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (476, 8)

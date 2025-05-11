@@ -271,7 +271,7 @@ class TimeTrackerUI:
         if self.tracker.should_take_break():
             if not TimeTrackerUI._break_message_shown_this_cycle:
                 app_logger.info("Break time reached. Showing notification.")
-                messagebox.showinfo("Break Time!", "It's time to take a break.", parent=self.root)
+                messagebox.showinfo("Break Time!", "It's time to take a break.")
                 TimeTrackerUI._break_message_shown_this_cycle = True # Mark as shown
                 self.tracker.reset_break_timer_countdown() # Automatically reset after showing message
                 self.update_category_list() # Refresh categories listbox, might have new data after a long session
@@ -333,6 +333,7 @@ class TimeTrackerUI:
                         break
             
             app_logger.info("Destroying main application window.")
+            time.sleep(0.5)
             self.root.destroy()
             # self.root.quit() # destroy() usually handles this for Tk object.
         else:

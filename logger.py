@@ -71,7 +71,10 @@ class Logger:
 
         self.log.append([current_date_str, program, window, category,
                          start_time_str, end_time_str, total_time_minutes, "0%"]) # Placeholder for percent
-        app_logger.debug(f"Activity logged (in memory): Date={current_date_str}, Prog={program}, Win={window.split('\\')}, Cat={category}, Start={start_time_str}, End={end_time_str}, TotalMin={total_time_minutes}")
+        try:
+            app_logger.debug(f"Activity logged (in memory): Date={current_date_str}, Prog={program}, Win={window}, Cat={category}, Start={start_time_str}, End={end_time_str}, TotalMin={total_time_minutes}")
+        except:
+            app_logger.debug(f"Activity logged (in memory): Date={current_date_str}, Prog={program}, Win={window.split('\\')}, Cat={category}, Start={start_time_str}, End={end_time_str}, TotalMin={total_time_minutes}")
         self.save_log_to_csv()
 
 

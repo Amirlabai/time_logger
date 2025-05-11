@@ -120,6 +120,7 @@ class WindowTracker:
 
             if current_exe and current_exe != self.active_window_exe:
                 app_logger.debug(f"Window changed from '{self.active_window_exe}' to '{current_exe}'.")
+                #app_logger.info(f"Window changed from '{self.active_window_exe}' to '{current_exe}'.")
                 # Log activity for the PREVIOUS window before updating
                 if self.active_window_exe: # Ensure there was a previous active window
                     self.log_activity_for_current_window(self.active_window_title) # Use the stored title
