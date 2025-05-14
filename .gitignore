@@ -1,6 +1,8 @@
 # Ignore log and user files
 time_tracker_app.log
 user_programs.txt
+compile exe.txt
+nuitka-crash-report.xml
 
 # Python cache
 __pycache__/
@@ -8,4 +10,5 @@ __pycache__/
 
 # Ignore timeLog directory
 timeLog/
+build/
 

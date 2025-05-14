@@ -30,5 +30,8 @@
     "Visual Paradigm": "Study",
     "EaseOfAccessDialog": "Misc",
     "acrotray": "Study",
-    "PickerHost": "Study"
+    "PickerHost": "Study",
+    "getworkingdays setup.tmp": "Study",
+    "getworkingdays": "Study",
+    "WindowsTerminal": "Misc"
 }

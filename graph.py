@@ -19,6 +19,19 @@ class GraphDisplay:
         # self.df_all_data = self.load_historical_data() # Load historical data once on init or lazily
         app_logger.info("GraphDisplay initialized.")
 
+    def remove_dup_func(self, df):
+        # Specify the column to exclude from the duplicate check
+        column_to_exclude = 'total_time'
+
+        # Get a list of columns to consider for finding duplicates
+        columns_to_consider = df.columns.difference([column_to_exclude])
+
+        # Remove duplicates based on 'columns_to_consider', keeping the first occurrence
+        df_deduplicated = df.drop_duplicates(subset=columns_to_consider, keep='first')
+
+        #print("\nDataFrame after removing duplicates (excluding '{}'):".format(column_to_exclude))
+        return(df_deduplicated)
+
     def load_historical_data(self): # Renamed from get_history
         historical_dfs = []
         # CORRECTED: Use configured path
@@ -50,9 +63,12 @@ class GraphDisplay:
             return pd.DataFrame()
 
         merged_df = pd.concat(historical_dfs, ignore_index=True)
+        removed_duplicates = self.remove_dup_func(merged_df)
+        app_logger.info(f"Removed {len(merged_df) - len(removed_duplicates)} duplicate entries.")
+        #print(f"clean {removed_duplicates.shape}, not clean {merged_df.shape}")
         # merged_df.sort_index(inplace=True) # Not needed if index is default range index
-        app_logger.info(f"Historical data loaded and merged. Total historical entries: {len(merged_df)}")
-        return merged_df
+        app_logger.info(f"Historical data loaded and merged. Total historical entries: {len(removed_duplicates)}")
+        return removed_duplicates
 
     def show_graph(self, current_day_df_from_logger): # Parameter name changed for clarity
         app_logger.info("show_graph called.")
@@ -166,8 +182,8 @@ class GraphDisplay:
                 app_logger.debug(f"Updating stats for selected category: {selected_cat}")
 
                 # Filter data based on selected category
-                df_today_filtered = df_today[df_today['category'] == selected_cat] if selected_cat != "All Categories" else df_today
-                df_month_filtered = df_current_month[df_current_month['category'] == selected_cat] if selected_cat != "All Categories" else df_current_month
+                df_today_filtered = df_today[df_today['category'] == selected_cat] if selected_cat != "All Categories" else df_today[df_today['category'] != "Break"]
+                df_month_filtered = df_current_month[df_current_month['category'] == selected_cat] if selected_cat != "All Categories" else df_current_month[df_current_month['category'] != "Break"]
                 df_overall_filtered = df_combined[df_combined['category'] == selected_cat] if selected_cat != "All Categories" else df_combined
 
                 # Recalculate sums for filtered data
