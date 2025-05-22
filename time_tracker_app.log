@@ -9121,3 +9121,226 @@ TypeError: Cannot perform 'rand_' with a dtyped [bool] array and scalar of type 
 2025-05-14 11:50:50,596 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
 2025-05-14 11:50:50,597 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
 2025-05-14 11:50:51,170 - TimeTrackerApp - INFO - main:65 - Application exited.
+2025-05-14 11:55:03,647 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-14 11:55:03,647 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-14 11:55:03,648 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-14 11:55:03,733 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (1066, 8)
+2025-05-14 11:55:03,734 - TimeTrackerApp - INFO - logger:310 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-14 11:55:03,734 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-14 11:55:03,735 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-14 11:55:03,735 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-14 11:55:03,888 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-14 11:55:04,005 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-14 11:55:04,005 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-14 11:55:04,005 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-14 11:55:04,007 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-14 11:55:04,007 - TimeTrackerApp - INFO - tracker:189 - start_tracking called, new tracking thread initiated.
+2025-05-14 11:55:04,008 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-14 11:55:04,012 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'python'.
+2025-05-14 11:55:06,266 - TimeTrackerApp - INFO - ui:292 - Show graph button clicked.
+2025-05-14 11:55:06,267 - TimeTrackerApp - INFO - graph:74 - show_graph called.
+2025-05-14 11:55:06,268 - TimeTrackerApp - INFO - graph:45 - Found 4 historical CSV files in C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log
+2025-05-14 11:55:06,272 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\5.csv. Shape: (292, 8)
+2025-05-14 11:55:06,279 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\log_20254_153036.csv. Shape: (1801, 8)
+2025-05-14 11:55:06,286 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\log_20254_184634.csv. Shape: (1801, 8)
+2025-05-14 11:55:06,290 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\time_log_atrchibve.csv. Shape: (300, 8)
+2025-05-14 11:55:06,296 - TimeTrackerApp - INFO - graph:67 - Removed 2059 duplicate entries.
+2025-05-14 11:55:06,297 - TimeTrackerApp - INFO - graph:70 - Historical data loaded and merged. Total historical entries: 2135
+2025-05-14 11:55:06,301 - TimeTrackerApp - DEBUG - graph:92 - Combined DataFrame for graph created. Shape: (3201, 8)
+2025-05-14 11:55:06,303 - TimeTrackerApp - DEBUG - graph:125 - Data for today (14/05/2025): 1 entries.
+2025-05-14 11:55:06,333 - TimeTrackerApp - DEBUG - graph:182 - Updating stats for selected category: All Categories
+2025-05-14 11:55:06,336 - TimeTrackerApp - DEBUG - graph:211 - Productivity stats updated for UI. Category: All Categories
+2025-05-14 11:55:06,366 - TimeTrackerApp - DEBUG - graph:114 - Top ten programs calculated. Found: 10
+2025-05-14 11:55:06,662 - TimeTrackerApp - INFO - graph:304 - Graph drawn successfully.
+2025-05-14 11:55:09,519 - TimeTrackerApp - INFO - graph:324 - Graph window closed.
+2025-05-14 11:55:13,650 - TimeTrackerApp - INFO - ui:316 - Close program sequence initiated by UI.
+2025-05-14 11:55:13,650 - TimeTrackerApp - INFO - tracker:195 - stop_tracking called.
+2025-05-14 11:55:13,650 - TimeTrackerApp - INFO - tracker:198 - Attempting to join tracking thread...
+2025-05-14 11:55:14,026 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1747212904.0077853, End: 1747212914.0262618, Duration: 10.02s
+2025-05-14 11:55:14,026 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=14/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=11:55:04, End=11:55:14, TotalMin=0.17
+2025-05-14 11:55:14,031 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-14 11:55:14,050 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-14 11:55:14,057 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1067, 8)
+2025-05-14 11:55:14,058 - TimeTrackerApp - INFO - logger:299 - Category map saved to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-14 11:55:14,060 - TimeTrackerApp - INFO - tracker:212 - User category data update requested (via logger instance).
+2025-05-14 11:55:14,060 - TimeTrackerApp - INFO - tracker:160 - Window tracking thread stopped.
+2025-05-14 11:55:14,061 - TimeTrackerApp - INFO - tracker:203 - Tracking thread successfully joined.
+2025-05-14 11:55:15,361 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
+2025-05-14 11:55:15,361 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
+2025-05-14 11:55:15,923 - TimeTrackerApp - INFO - main:65 - Application exited.
+2025-05-20 17:46:24,166 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-20 17:46:24,166 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-20 17:46:24,167 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-20 17:46:24,329 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (1067, 8)
+2025-05-20 17:46:24,337 - TimeTrackerApp - INFO - logger:310 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-20 17:46:24,341 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-20 17:46:24,341 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-20 17:46:24,341 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-20 17:46:24,422 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-20 17:46:24,443 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-20 17:46:24,443 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-20 17:46:24,443 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-20 17:46:24,445 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-20 17:46:24,445 - TimeTrackerApp - INFO - tracker:189 - start_tracking called, new tracking thread initiated.
+2025-05-20 17:46:24,448 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'Code'.
+2025-05-20 17:46:24,447 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-20 17:46:26,451 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-20 17:46:26,451 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1747752384.4467835, End: 1747752386.451477, Duration: 2.00s
+2025-05-20 17:46:26,451 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=20/05/2025, Prog=Code, Win=main.py - time_logger - Visual Studio Code, Cat=Study, Start=17:46:24, End=17:46:26, TotalMin=0.03
+2025-05-20 17:46:26,461 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-20 17:46:26,527 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-20 17:46:26,537 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1068, 8)
+2025-05-20 17:46:29,831 - TimeTrackerApp - INFO - ui:292 - Show graph button clicked.
+2025-05-20 17:46:29,832 - TimeTrackerApp - INFO - graph:74 - show_graph called.
+2025-05-20 17:46:29,833 - TimeTrackerApp - INFO - graph:45 - Found 4 historical CSV files in C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log
+2025-05-20 17:46:29,858 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\5.csv. Shape: (292, 8)
+2025-05-20 17:46:29,883 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\log_20254_153036.csv. Shape: (1801, 8)
+2025-05-20 17:46:29,904 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\log_20254_184634.csv. Shape: (1801, 8)
+2025-05-20 17:46:29,919 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\time_log_atrchibve.csv. Shape: (300, 8)
+2025-05-20 17:46:29,926 - TimeTrackerApp - INFO - graph:67 - Removed 2059 duplicate entries.
+2025-05-20 17:46:29,926 - TimeTrackerApp - INFO - graph:70 - Historical data loaded and merged. Total historical entries: 2135
+2025-05-20 17:46:29,929 - TimeTrackerApp - DEBUG - graph:92 - Combined DataFrame for graph created. Shape: (3203, 8)
+2025-05-20 17:46:29,939 - TimeTrackerApp - DEBUG - graph:125 - Data for today (20/05/2025): 1 entries.
+2025-05-20 17:46:29,975 - TimeTrackerApp - DEBUG - graph:182 - Updating stats for selected category: All Categories
+2025-05-20 17:46:29,977 - TimeTrackerApp - DEBUG - graph:211 - Productivity stats updated for UI. Category: All Categories
+2025-05-20 17:46:30,008 - TimeTrackerApp - DEBUG - graph:114 - Top ten programs calculated. Found: 10
+2025-05-20 17:46:30,436 - TimeTrackerApp - INFO - graph:304 - Graph drawn successfully.
+2025-05-20 17:46:32,789 - TimeTrackerApp - DEBUG - graph:182 - Updating stats for selected category: Break
+2025-05-20 17:46:32,792 - TimeTrackerApp - DEBUG - graph:211 - Productivity stats updated for UI. Category: Break
+2025-05-20 17:46:34,029 - TimeTrackerApp - DEBUG - graph:182 - Updating stats for selected category: Misc
+2025-05-20 17:46:34,031 - TimeTrackerApp - DEBUG - graph:211 - Productivity stats updated for UI. Category: Misc
+2025-05-20 17:46:36,945 - TimeTrackerApp - INFO - graph:324 - Graph window closed.
+2025-05-20 17:46:42,199 - TimeTrackerApp - DEBUG - ui:151 - Export report dialog opened.
+2025-05-20 17:46:44,170 - TimeTrackerApp - INFO - logger:366 - Exporting activity report. Type: all, Start: None, End: None
+2025-05-20 17:46:44,171 - TimeTrackerApp - INFO - logger:323 - Consolidating all logged data.
+2025-05-20 17:46:44,171 - TimeTrackerApp - DEBUG - logger:330 - Found 4 historical CSV files in C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log
+2025-05-20 17:46:44,193 - TimeTrackerApp - INFO - logger:350 - Consolidated data for report. Total entries: 5262
+2025-05-20 17:46:57,096 - TimeTrackerApp - INFO - logger:425 - Report exported to C:/Users/amirl/OneDrive/Documents/GitHub/time_logger/timeLog/report/250520.csv
+2025-05-20 17:47:28,964 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'python' to 'Code'.
+2025-05-20 17:47:28,964 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1747752386.4501545, End: 1747752448.9644473, Duration: 62.51s
+2025-05-20 17:47:28,964 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=20/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=17:46:26, End=17:47:28, TotalMin=1.04
+2025-05-20 17:47:28,966 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-20 17:47:28,990 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-20 17:47:28,996 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1069, 8)
+2025-05-20 17:47:35,000 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-20 17:47:35,000 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['main.py - time_logger - Visual Studio Code']', Start: 1747752448.9641554, End: 1747752455.0006711, Duration: 6.04s
+2025-05-20 17:47:35,000 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=20/05/2025, Prog=Code, Win=main.py - time_logger - Visual Studio Code, Cat=Study, Start=17:47:28, End=17:47:35, TotalMin=0.1
+2025-05-20 17:47:35,002 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-20 17:47:35,017 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-20 17:47:35,023 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1070, 8)
+2025-05-20 17:47:35,164 - TimeTrackerApp - INFO - ui:316 - Close program sequence initiated by UI.
+2025-05-20 17:47:35,164 - TimeTrackerApp - INFO - tracker:195 - stop_tracking called.
+2025-05-20 17:47:35,164 - TimeTrackerApp - INFO - tracker:198 - Attempting to join tracking thread...
+2025-05-20 17:47:36,023 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1747752455.000109, End: 1747752456.023747, Duration: 1.02s
+2025-05-20 17:47:36,023 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=20/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=17:47:35, End=17:47:36, TotalMin=0.02
+2025-05-20 17:47:36,025 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-20 17:47:36,047 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-20 17:47:36,053 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1071, 8)
+2025-05-20 17:47:36,054 - TimeTrackerApp - INFO - logger:299 - Category map saved to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-20 17:47:36,055 - TimeTrackerApp - INFO - tracker:212 - User category data update requested (via logger instance).
+2025-05-20 17:47:36,055 - TimeTrackerApp - INFO - tracker:160 - Window tracking thread stopped.
+2025-05-20 17:47:36,056 - TimeTrackerApp - INFO - tracker:203 - Tracking thread successfully joined.
+2025-05-20 17:47:37,490 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
+2025-05-20 17:47:37,491 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
+2025-05-20 17:47:38,052 - TimeTrackerApp - INFO - main:65 - Application exited.
+2025-05-20 17:47:39,893 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-20 17:47:39,894 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-20 17:47:39,894 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-20 17:47:40,005 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (1071, 8)
+2025-05-20 17:47:40,007 - TimeTrackerApp - INFO - logger:310 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-20 17:47:40,007 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-20 17:47:40,008 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-20 17:47:40,008 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-20 17:47:40,041 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-20 17:47:40,099 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-20 17:47:40,099 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-20 17:47:40,099 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-20 17:47:40,100 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-20 17:47:40,100 - TimeTrackerApp - INFO - tracker:189 - start_tracking called, new tracking thread initiated.
+2025-05-20 17:47:40,101 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-20 17:47:40,103 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'python'.
+2025-05-20 17:47:41,463 - TimeTrackerApp - INFO - ui:292 - Show graph button clicked.
+2025-05-20 17:47:41,464 - TimeTrackerApp - INFO - graph:74 - show_graph called.
+2025-05-20 17:47:41,464 - TimeTrackerApp - INFO - graph:45 - Found 4 historical CSV files in C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log
+2025-05-20 17:47:41,470 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\5.csv. Shape: (292, 8)
+2025-05-20 17:47:41,479 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\log_20254_153036.csv. Shape: (1801, 8)
+2025-05-20 17:47:41,487 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\log_20254_184634.csv. Shape: (1801, 8)
+2025-05-20 17:47:41,489 - TimeTrackerApp - DEBUG - graph:57 - Successfully read historical data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\log\time_log_atrchibve.csv. Shape: (300, 8)
+2025-05-20 17:47:41,495 - TimeTrackerApp - INFO - graph:67 - Removed 2059 duplicate entries.
+2025-05-20 17:47:41,495 - TimeTrackerApp - INFO - graph:70 - Historical data loaded and merged. Total historical entries: 2135
+2025-05-20 17:47:41,497 - TimeTrackerApp - DEBUG - graph:92 - Combined DataFrame for graph created. Shape: (3206, 8)
+2025-05-20 17:47:41,498 - TimeTrackerApp - DEBUG - graph:125 - Data for today (20/05/2025): 4 entries.
+2025-05-20 17:47:41,521 - TimeTrackerApp - DEBUG - graph:182 - Updating stats for selected category: All Categories
+2025-05-20 17:47:41,523 - TimeTrackerApp - DEBUG - graph:211 - Productivity stats updated for UI. Category: All Categories
+2025-05-20 17:47:41,543 - TimeTrackerApp - DEBUG - graph:114 - Top ten programs calculated. Found: 10
+2025-05-20 17:47:41,785 - TimeTrackerApp - INFO - graph:304 - Graph drawn successfully.
+2025-05-20 17:47:58,391 - TimeTrackerApp - INFO - graph:324 - Graph window closed.
+2025-05-20 17:48:01,714 - TimeTrackerApp - INFO - ui:316 - Close program sequence initiated by UI.
+2025-05-20 17:48:01,714 - TimeTrackerApp - INFO - tracker:195 - stop_tracking called.
+2025-05-20 17:48:01,714 - TimeTrackerApp - INFO - tracker:198 - Attempting to join tracking thread...
+2025-05-20 17:48:02,131 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1747752460.1008732, End: 1747752482.131835, Duration: 22.03s
+2025-05-20 17:48:02,132 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=20/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=17:47:40, End=17:48:02, TotalMin=0.37
+2025-05-20 17:48:02,138 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-20 17:48:02,169 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-20 17:48:02,177 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1072, 8)
+2025-05-20 17:48:02,178 - TimeTrackerApp - INFO - logger:299 - Category map saved to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-20 17:48:02,179 - TimeTrackerApp - INFO - tracker:212 - User category data update requested (via logger instance).
+2025-05-20 17:48:02,179 - TimeTrackerApp - INFO - tracker:160 - Window tracking thread stopped.
+2025-05-20 17:48:02,180 - TimeTrackerApp - INFO - tracker:203 - Tracking thread successfully joined.
+2025-05-20 17:48:03,336 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
+2025-05-20 17:48:03,336 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
+2025-05-20 17:48:03,919 - TimeTrackerApp - INFO - main:65 - Application exited.
+2025-05-20 17:48:05,638 - TimeTrackerApp - INFO - main:20 - Successfully checked/created necessary directories.
+2025-05-20 17:48:05,639 - TimeTrackerApp - INFO - main:26 - Time Tracker application starting...
+2025-05-20 17:48:05,640 - TimeTrackerApp - DEBUG - utils:15 - Checking if file is open: C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv
+2025-05-20 17:48:05,776 - TimeTrackerApp - INFO - logger:41 - Loaded existing data from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Shape: (1072, 8)
+2025-05-20 17:48:05,777 - TimeTrackerApp - INFO - logger:310 - Category map loaded from C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-20 17:48:05,778 - TimeTrackerApp - INFO - logger:31 - Logger initialized for C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. Categories loaded: 3
+2025-05-20 17:48:05,779 - TimeTrackerApp - INFO - tracker:39 - WindowTracker initialized.
+2025-05-20 17:48:05,779 - TimeTrackerApp - INFO - graph:20 - GraphDisplay initialized.
+2025-05-20 17:48:05,864 - TimeTrackerApp - DEBUG - ui:245 - Category listbox updated.
+2025-05-20 17:48:05,915 - TimeTrackerApp - DEBUG - ui:147 - UI setup complete.
+2025-05-20 17:48:05,915 - TimeTrackerApp - INFO - ui:19 - TimeTrackerUI initialized.
+2025-05-20 17:48:05,963 - TimeTrackerApp - INFO - main:49 - Core components initialized.
+2025-05-20 17:48:05,964 - TimeTrackerApp - INFO - tracker:109 - Window tracking thread started.
+2025-05-20 17:48:05,964 - TimeTrackerApp - INFO - tracker:189 - start_tracking called, new tracking thread initiated.
+2025-05-20 17:48:05,965 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'None' to 'explorer'.
+2025-05-20 17:48:05,965 - TimeTrackerApp - INFO - main:51 - Window tracking started.
+2025-05-20 17:48:06,966 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'explorer' to 'Acrobat'.
+2025-05-20 17:48:06,966 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'explorer', Title: '['explorer']', Start: 1747752485.9648688, End: 1747752486.96687, Duration: 1.00s
+2025-05-20 17:48:06,967 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=20/05/2025, Prog=explorer, Win=explorer, Cat=Misc, Start=17:48:05, End=17:48:06, TotalMin=0.02
+2025-05-20 17:48:06,971 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-20 17:48:06,992 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-20 17:48:07,001 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1073, 8)
+2025-05-20 17:48:08,002 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Acrobat' to 'GitHubDesktop'.
+2025-05-20 17:48:08,003 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Acrobat', Title: '['1.01 - Adobe Acrobat (64-bit)']', Start: 1747752486.9658608, End: 1747752488.002974, Duration: 1.04s
+2025-05-20 17:48:08,003 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=20/05/2025, Prog=Acrobat, Win=1.01 - Adobe Acrobat (64-bit), Cat=Study, Start=17:48:06, End=17:48:08, TotalMin=0.02
+2025-05-20 17:48:08,005 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-20 17:48:08,035 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-20 17:48:08,043 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1074, 8)
+2025-05-20 17:48:30,064 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'GitHubDesktop' to 'Code'.
+2025-05-20 17:48:30,064 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'GitHubDesktop', Title: '['\u202aGitHub Desktop\u202c']', Start: 1747752488.002443, End: 1747752510.0646324, Duration: 22.06s
+2025-05-20 17:48:30,181 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-20 17:48:30,225 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-20 17:48:30,238 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1075, 8)
+2025-05-20 17:49:00,257 - TimeTrackerApp - DEBUG - tracker:122 - Window changed from 'Code' to 'python'.
+2025-05-20 17:49:00,257 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'Code', Title: '['VideoScalerInterface.py - Video-Editor - Visual Studio Code']', Start: 1747752510.0639637, End: 1747752540.2579434, Duration: 30.19s
+2025-05-20 17:49:00,258 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=20/05/2025, Prog=Code, Win=VideoScalerInterface.py - Video-Editor - Visual Studio Code, Cat=Study, Start=17:48:30, End=17:49:00, TotalMin=0.5
+2025-05-20 17:49:00,259 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-20 17:49:00,275 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-20 17:49:00,280 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1076, 8)
+2025-05-20 17:49:01,249 - TimeTrackerApp - INFO - ui:316 - Close program sequence initiated by UI.
+2025-05-20 17:49:01,249 - TimeTrackerApp - INFO - tracker:195 - stop_tracking called.
+2025-05-20 17:49:01,250 - TimeTrackerApp - INFO - tracker:198 - Attempting to join tracking thread...
+2025-05-20 17:49:01,280 - TimeTrackerApp - DEBUG - tracker:178 - Logging final activity for 'python', Title: '['Time Tracker']', Start: 1747752540.2573311, End: 1747752541.280828, Duration: 1.02s
+2025-05-20 17:49:01,281 - TimeTrackerApp - DEBUG - logger:75 - Activity logged (in memory): Date=20/05/2025, Prog=python, Win=Time Tracker, Cat=Misc, Start=17:49:00, End=17:49:01, TotalMin=0.02
+2025-05-20 17:49:01,282 - TimeTrackerApp - DEBUG - logger:104 - Date check for archival: Existing DF month = 5, New log month = 5
+2025-05-20 17:49:01,299 - TimeTrackerApp - DEBUG - logger:197 - Session percentages calculated.
+2025-05-20 17:49:01,306 - TimeTrackerApp - INFO - logger:141 - Saved updated log to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\timeLog\time_log.csv. DF shape: (1077, 8)
+2025-05-20 17:49:01,308 - TimeTrackerApp - INFO - logger:299 - Category map saved to C:\Users\amirl\OneDrive\Documents\GitHub\time_logger\user_programs.txt
+2025-05-20 17:49:01,308 - TimeTrackerApp - INFO - tracker:212 - User category data update requested (via logger instance).
+2025-05-20 17:49:01,308 - TimeTrackerApp - INFO - tracker:160 - Window tracking thread stopped.
+2025-05-20 17:49:01,309 - TimeTrackerApp - INFO - tracker:203 - Tracking thread successfully joined.
+2025-05-20 17:49:02,281 - TimeTrackerApp - INFO - ui:319 - User confirmed exit.
+2025-05-20 17:49:02,281 - TimeTrackerApp - INFO - ui:335 - Destroying main application window.
+2025-05-20 17:49:02,829 - TimeTrackerApp - INFO - main:65 - Application exited.
