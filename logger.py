@@ -138,7 +138,7 @@ class Logger:
             if not self.df.empty:
                 self.df = self.calculate_session_percentages(self.df)
                 self.df.to_csv(self.csv_file_path, index=False) # date_format not strictly needed if dates are strings
-                app_logger.info(f"Saved updated log to {self.csv_file_path}. DF shape: {self.df.shape}")
+                app_logger.info(f"Saved updated log to {str(self.csv_file_path).split("\\")[-1]}. DF shape: {self.df.shape}. Program: {self.df['program'].iloc[-1] if not self.df.empty else 'N/A'}")
             else:
                 app_logger.warning("DataFrame is empty after processing, nothing to save to main log file.")
 
