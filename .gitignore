@@ -1,7 +1,6 @@
 # Ignore log and user files
-time_tracker_app.log
-user_programs.txt
-compile exe.txt
+*.log
+*.txt
 nuitka-crash-report.xml
 
 # Python cache
