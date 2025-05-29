@@ -5,17 +5,17 @@ import os
 import sys
 # ADDED: Import config and app_logger
 # Get the absolute path of the directory containing main.py (prod/main/)
-main_script_dir = os.path.dirname(os.path.abspath(__file__))
+#main_script_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Get the absolute path of the 'prod' directory (parent of 'main')
-prod_dir = os.path.dirname(main_script_dir)
+#prod_dir = os.path.dirname(main_script_dir)
 
 # Construct the absolute path to the 'lib' directory (prod/lib/)
-lib_dir = os.path.join(prod_dir, 'lib')
+#lib_dir = os.path.join(prod_dir, 'lib')
 
 # Add the 'lib' directory to Python's module search path
-if lib_dir not in sys.path:
-    sys.path.insert(0, lib_dir) # insert at the beginning to prioritize it
+#if lib_dir not in sys.path:
+#    sys.path.insert(0, lib_dir) # insert at the beginning to prioritize it
 
 # Now you can import your modules from the lib directory
 

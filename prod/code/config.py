@@ -1,19 +1,44 @@
 # config.py
 import os
 from pathlib import Path
+import sys
 
 # --- Base Project Directory ---
-# Assuming config.py is in the project root. If not, adjust accordingly.
-# For a script, __file__ gives its path. For an executable, this might need adjustment.
-try:
-    PROJECT_ROOT = Path(__file__).parent.resolve()
-except NameError: # Fallback for interactive environments or if __file__ is not defined
-    PROJECT_ROOT = Path.cwd()
+def find_project_root(marker_filename=".project_root"):
+    """
+    Finds the project root by searching upwards for a marker file.
+    """
+    current_path = None
 
+    if getattr(sys, 'frozen', False) and hasattr(sys, '_MEIPASS'):
+        # For bundled executables, _MEIPASS is often the effective root
+        # or where extracted data resides. Adjust if your actual project root
+        # is relative to this (e.g., if you have a "src" subfolder within _MEIPASS).
+        current_path = Path(sys._MEIPASS).resolve()
+    else:
+        try:
+            # Start from the current script's directory
+            current_path = Path(__file__).parent.resolve()
+        except NameError:
+            # Fallback for interactive environments
+            current_path = Path.cwd().resolve()
 
+    # Iterate upwards until the marker file is found or we hit the root
+    for parent in [current_path] + list(current_path.parents):
+        if (parent / marker_filename).exists():
+            return parent
+    
+    # If not found, fall back to a reasonable default or raise an error
+    print(f"Warning: Project root marker '{marker_filename}' not found. "
+          f"Falling back to initial path: {current_path}")
+    return current_path # Or raise FileNotFoundError("Project root marker not found!")
+
+PROJECT_ROOT = find_project_root()
+
+PROJECT_LIB = PROJECT_ROOT / "prod/lib"
 # --- Log Directories and Files ---
 LOG_BASE_DIR_NAME = "timeLog" # Name of the main logging directory
-LOG_BASE_DIR = PROJECT_ROOT / LOG_BASE_DIR_NAME # Base directory for all logs (e.g., C:\YourProject\timeLog)
+LOG_BASE_DIR = PROJECT_ROOT / PROJECT_LIB / LOG_BASE_DIR_NAME # Base directory for all logs (e.g., C:\YourProject\timeLog)
 
 MAIN_LOG_FILE_NAME = "time_log.csv"
 HISTORICAL_LOG_DIR_NAME = "log" # Subdirectory for archived CSV logs
@@ -31,7 +56,7 @@ USER_PROGRAMS_FILE_PATH = PROJECT_ROOT / USER_PROGRAMS_FILE_NAME # Stored in pro
 # --- Icon Paths ---
 # Store icons in an 'icons' folder in the project root
 ICON_DIR_NAME = "icons"
-ICON_DIR_PATH = PROJECT_ROOT / ICON_DIR_NAME
+ICON_DIR_PATH = PROJECT_ROOT / PROJECT_LIB / ICON_DIR_NAME
 TIMER_ICON_NAME = "timer_icon_32.ico"
 BARCHART_ICON_NAME = "barchart_32.ico"
 
