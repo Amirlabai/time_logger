@@ -1,6 +1,7 @@
 # Ignore log and user files
 *.log
 *.txt
+*.json
 nuitka-crash-report.xml
 
 # Python cache

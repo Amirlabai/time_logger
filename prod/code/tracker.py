@@ -22,7 +22,8 @@ class WindowTracker:
         self.running = True
         self.active_window_exe = None # Store executable name
         self.active_window_title = None # Store window title
-        
+        self.run_break_time = False
+
         self.current_session_total_time_seconds = 0 # Time spent in current self.active_window_exe
         
         if break_time_seconds is None:
@@ -44,6 +45,10 @@ class WindowTracker:
         hours, remainder = divmod(time_frame, 3600)
         minutes, seconds = divmod(remainder, 60)
         return f"{hours:02}:{minutes:02}:{seconds:02}"
+    
+    @property
+    def is_running_break_time(self):
+        return self.run_break_time
     
     @property
     def is_running(self):
@@ -70,6 +75,21 @@ class WindowTracker:
         # Reset current break countdown when setting changes
         self._break_timer_absolute_start_epoch = time.time()
         self._break_time_counter_seconds = self._break_time
+
+    @is_running_break_time.setter # Renamed, and setter now acts on _break_time
+    def is_running_break_time(self, flag):
+        if isinstance(flag, bool):
+            self.run_break_time = flag
+            if flag:
+                app_logger.info("Break time started")
+                self._break_timer_absolute_start_epoch = time.time() - (self._break_time - self._break_time_counter_seconds)
+            else:
+                app_logger.info("Break time stopped")
+        else:
+            messagebox.showerror("Invalid input", f"must be a boolean input")
+            self.run_break_time = False # Reset to default
+            app_logger.warning(f"Invalid flag input. Reset to default {self._break_time}.")
+        # Reset current break countdown when setting changes
 
 
     # Removed break_timer_start property as it's an epoch time, not for display
@@ -111,8 +131,8 @@ class WindowTracker:
 
         while self.running:
             current_time_epoch = time.time()
-            self._break_time_counter_seconds = self._break_time - (current_time_epoch - self._break_timer_absolute_start_epoch)
-
+            if self.run_break_time:
+                self._break_time_counter_seconds = self._break_time - (current_time_epoch - self._break_timer_absolute_start_epoch)
             # if self.should_take_break(): # Break check handled by UI now via property
             #     self._break_timer_absolute_start_epoch = current_time_epoch # Reset timer after break indication
 

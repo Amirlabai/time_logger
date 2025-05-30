@@ -109,7 +109,7 @@ class GraphDisplay:
             try:
                 # Sum 'total_time' (which is in minutes)
                 value_counts = df_source.groupby(["program", "category"])["total_time"].sum()
-                top_10 = value_counts.nlargest(10) # Use nlargest for Series
+                top_10 = value_counts.nlargest(len(value_counts)) # Use nlargest for Series
                 top_10_df = top_10.reset_index(name="Total Time (min)")
                 app_logger.debug(f"Top ten programs calculated. Found: {len(top_10_df)}")
                 return top_10_df
@@ -199,7 +199,7 @@ class GraphDisplay:
                 prod_month = ( (time_month_cat / 60) / (days_month_active * 16) * 100 ) if days_month_active > 0 else 0
                 prod_overall = ( (time_overall_cat / 60) / (days_overall_active * 16) * 100 ) if days_overall_active > 0 else 0
                 
-                cat_display_name = f"'{selected_cat}'" if selected_cat != "All Categories" else "Overall"
+                cat_display_name = f"{selected_cat}" if selected_cat != "All Categories" else "Overall"
 
                 stats_text = (
                     f"Displaying for: {cat_display_name}\n"
@@ -207,7 +207,7 @@ class GraphDisplay:
                     f"This Month: {format_time_display(time_month_cat)} ({days_month_active} active day(s)). Productivity: {prod_month:.1f}%\n"
                     f"Overall: {format_time_display(time_overall_cat)} ({days_overall_active} total active day(s)). Productivity: {prod_overall:.1f}%"
                 )
-                info_label.config(text=stats_text)
+                info_label.config(text=stats_text, anchor='w')
                 app_logger.debug(f"Productivity stats updated for UI. Category: {selected_cat}")
 
             category_dropdown.bind("<<ComboboxSelected>>", lambda event: update_displayed_stats())
@@ -222,7 +222,7 @@ class GraphDisplay:
             top_ten_outer_frame = tk.Frame(content_frame, bg=self.theme.activeButtonBg(), relief="sunken", borderwidth=1)
             top_ten_outer_frame.pack(side="left", fill="y", padx=(0,5), pady=5)
             
-            tk.Label(top_ten_outer_frame, text='Top 10 Tracked Programs (Overall)',
+            tk.Label(top_ten_outer_frame, text='Decending Time Tracked Programs (Overall)',
                      font=("Helvetica", 11, "bold"), bg=self.theme.activeButtonBg(), fg="white").pack(pady=5)
 
             top_ten_canvas = tk.Canvas(top_ten_outer_frame, bg=self.theme.activeButtonBg(), highlightthickness=0)

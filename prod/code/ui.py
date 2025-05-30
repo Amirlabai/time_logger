@@ -15,6 +15,8 @@ class TimeTrackerUI:
         self.graph_display = graph_display
         self.theme = theme
         self.logger = logger_instance # Use the passed logger object consistently
+        self.run_image = None
+        self.pause_image = None
         self.setup_ui()
         app_logger.info("TimeTrackerUI initialized.")
 
@@ -23,6 +25,7 @@ class TimeTrackerUI:
     def setup_ui(self):
         self.root.configure(bg=self.theme.windowBg())
         self.root.title("Time Tracker")
+        #self.root.attributes("-topmost", True)
         self.root.minsize(width=450, height=400) # Slightly increased minsize
 
         # CORRECTED: Use configured icon path and check existence
@@ -44,6 +47,20 @@ class TimeTrackerUI:
         self.categories_listbox.pack(pady=(0,5))
         self.update_category_list() # Initial population
 
+        # Add the "Edit Program Categories" button
+        edit_categories_button = tk.Button(
+            self.root, # Or button_frame if you have one
+            text="Edit Program Categories",
+            command=lambda: self.logger.open_edit_program_categories_window(self.root),
+            bg=self.theme.buttonBg(), fg="white", font=("Helvetica", "10", "bold"),
+            activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2
+        )
+        # Example packing, adjust as per your layout
+        # If you have a dedicated 'button_frame':
+        # edit_categories_button.pack(pady=5)
+        # If packing directly to root, decide where:
+        edit_categories_button.pack(pady=(5,5))
+
         # categories_discription = tk.Label(self.root, text="Category entry: name (count) | percentage", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "8"))
         # categories_discription.pack() # Removed, description integrated into label above
 
@@ -64,6 +81,14 @@ class TimeTrackerUI:
             top_change_time_window.transient(self.root) # Associate with main window
             top_change_time_window.grab_set() # Modal
             top_change_time_window.attributes("-topmost", True)
+            timer_icon_path_str = str(config.TIMER_ICON_PATH)
+            if os.path.exists(timer_icon_path_str):
+                try:
+                    top_change_time_window.iconbitmap(timer_icon_path_str)
+                except tk.TclError as e:
+                    app_logger.warning(f"Failed to set timer icon ({timer_icon_path_str}): {e}. Using default.")
+            else:
+                app_logger.warning(f"Timer icon not found at {timer_icon_path_str}. Using default.")
 
             current_break_setting_minutes = self.tracker._break_time // 60
 
@@ -100,13 +125,45 @@ class TimeTrackerUI:
             self.tracker.reset_break_timer_countdown()
             app_logger.info("Break countdown timer reset via UI button.")
 
+        # Inside setup_ui(self):
+
+        def flag_breaktime():
+            app_logger.debug(f"[FLAG_BREAKTIME] Called. Initial self.tracker.is_running_break_time: {self.tracker.is_running_break_time}")
+            app_logger.debug(f"[FLAG_BREAKTIME] self.run_image obj: {self.run_image} (id: {id(self.run_image)}), self.pause_image obj: {self.pause_image} (id: {id(self.pause_image)})")
+
+            if self.tracker.is_running_break_time:
+                self.tracker.is_running_break_time = False
+                if self.run_image:
+                    self.run_countdown_button.config(image=self.run_image)
+                    self.run_countdown_button.image_ref = self.run_image # Keep ref
+                    app_logger.info("[FLAG_BREAKTIME] Set image to Play (run_image)")
+                else:
+                    self.run_countdown_button.config(image=None) # Fallback if run_image is somehow None
+                    app_logger.warning("[FLAG_BREAKTIME] Tried to set run_image, but it's None.")
+            else: # Not running, so start it and show pause
+                self.tracker.is_running_break_time = True
+                if self.pause_image:
+                    self.run_countdown_button.config(image=self.pause_image)
+                    self.run_countdown_button.image_ref = self.pause_image # Keep ref
+                    app_logger.info(f"[FLAG_BREAKTIME] Set image to Pause. self.pause_image is: {self.pause_image}")
+                else:
+                    # Important: What to do if pause_image is None?
+                    # Currently, it would try to set None, clearing the image.
+                    # Or you might want to keep the run_image or show text.
+                    self.run_countdown_button.config(image=None) # Or self.run_image if preferred as fallback
+                    app_logger.warning(f"[FLAG_BREAKTIME] Attempted to set pause image, but self.pause_image is None. Current button image: {self.run_countdown_button.cget('image')}")
+
+            # This log is useful to see what Tkinter thinks the image is after the change
+            app_logger.debug(f"[FLAG_BREAKTIME] Button image actually set to: {self.run_countdown_button.cget('image')}")
+            app_logger.debug(f"[FLAG_BREAKTIME] New self.tracker.is_running_break_time: {self.tracker.is_running_break_time}")
+
         break_timer_frame = tk.Frame(self.root, bg=self.theme.windowBg())
-        break_timer_frame.pack(pady=(10, 5))
+        break_timer_frame.pack(pady=(10, 5), expand=True)
 
         change_break_time_button = tk.Button(break_timer_frame, text="Set Break Interval", command=change_break_time_window, 
                                              bg=self.theme.buttonBg(), fg="white", font=("Helvetica", "10"),
                                              activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
-        change_break_time_button.grid(row=0, column=0, padx=5, pady=5)
+        change_break_time_button.grid(row=0, column=0, padx=5, pady=5, sticky='w')
         
         self.time_for_break_label = tk.Label(break_timer_frame, text=f"Break Interval: {self.tracker.break_time_setting_display}", 
                                              bg=self.theme.windowBg(), fg="white", font=("Helvetica", "10"))
@@ -120,6 +177,43 @@ class TimeTrackerUI:
         self.break_countdown_label = tk.Label(break_timer_frame, text=f"Time Until Next Break: {self.tracker.break_time_counter_display}", 
                                              bg=self.theme.windowBg(), fg="white", font=("Helvetica", "10", "bold"))
         self.break_countdown_label.grid(row=1, column=1, padx=5, pady=5, sticky="w")
+
+
+        # Set up the "Run Countdown" button with image from config.RUN_IMAGE_PATH
+        run_image_path_str = str(config.RUN_IMAGE_PATH)
+        if os.path.exists(run_image_path_str):
+            try:
+                self.run_image = tk.PhotoImage(file=run_image_path_str)
+            except Exception as e:
+                app_logger.warning(f"Failed to load run image ({run_image_path_str}): {e}. Using text only.")
+        else:
+            app_logger.warning(f"Run image not found at {run_image_path_str}. Using text only.")
+        
+        pause_image_path_str = str(config.PAUSE_IMAGE_PATH)
+        if os.path.exists(pause_image_path_str):
+            try:
+                self.pause_image = tk.PhotoImage(file=pause_image_path_str)
+            except Exception as e:
+                app_logger.warning(f"Failed to load run image ({pause_image_path_str}): {e}. Using text only.")
+        else:
+            app_logger.warning(f"Run image not found at {pause_image_path_str}. Using text only.")
+
+        self.run_countdown_button = tk.Button(
+            break_timer_frame,
+            image=self.run_image,
+            width=30,
+            height=30,
+            compound="left" if self.run_image else None,
+            bg=self.theme.buttonBg(),
+            fg="white",
+            font=("Helvetica", "10"),
+            activebackground=self.theme.activeButtonBg(),
+            activeforeground="white",
+            borderwidth=2,
+            command=flag_breaktime
+        )
+        self.run_countdown_button.image = self.run_image  # Keep a reference to avoid garbage collection
+        self.run_countdown_button.grid(row=0, rowspan=2, column=2, columnspan=2, padx=5, pady=5)
 
 
         button_frame = tk.Frame(self.root, bg=self.theme.windowBg()) # Changed to windowBg for consistency
@@ -146,7 +240,8 @@ class TimeTrackerUI:
         self.update_ui_elements() # Start UI update loop
         app_logger.debug("UI setup complete.")
 
-# ADDED: Method to open the export report dialog
+#   ADDED: Method to open the export report dialog
+
     def open_export_report_dialog(self):
         app_logger.debug("Export report dialog opened.")
         
@@ -157,6 +252,14 @@ class TimeTrackerUI:
         dialog.grab_set()
         dialog.attributes("-topmost", True)
         dialog.geometry("400x300") # Adjust size as needed
+        timer_icon_path_str = str(config.TIMER_ICON_PATH)
+        if os.path.exists(timer_icon_path_str):
+            try:
+                dialog.iconbitmap(timer_icon_path_str)
+            except tk.TclError as e:
+                app_logger.warning(f"Failed to set timer icon ({timer_icon_path_str}): {e}. Using default.")
+        else:
+            app_logger.warning(f"Timer icon not found at {timer_icon_path_str}. Using default.")
 
         # --- Radio buttons for report type ---
         report_type_var = tk.StringVar(value="all") # Default to "all"
@@ -222,6 +325,7 @@ class TimeTrackerUI:
         export_button.pack(pady=20)
 
         dialog.protocol("WM_DELETE_WINDOW", dialog.destroy)
+
 #   region update GUI
 
     def update_category_list(self):
@@ -243,7 +347,6 @@ class TimeTrackerUI:
         else:
             self.categories_listbox.insert(tk.END, "No activity logged yet.")
         app_logger.debug("Category listbox updated.")
-
 
     _break_message_shown_this_cycle = False # Class variable to track if break message shown for current cycle
 
@@ -271,7 +374,9 @@ class TimeTrackerUI:
         if self.tracker.should_take_break():
             if not TimeTrackerUI._break_message_shown_this_cycle:
                 app_logger.info("Break time reached. Showing notification.")
+                self.tracker.is_running_break_time = False
                 messagebox.showinfo("Break Time!", "It's time to take a break.")
+                self.tracker.is_running_break_time = True
                 TimeTrackerUI._break_message_shown_this_cycle = True # Mark as shown
                 self.tracker.reset_break_timer_countdown() # Automatically reset after showing message
                 self.update_category_list() # Refresh categories listbox, might have new data after a long session
