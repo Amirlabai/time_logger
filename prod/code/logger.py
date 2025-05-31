@@ -21,6 +21,7 @@ class Logger:
         # self.category_map = self.load_dict_from_txt() # Load after df to ensure CATEGORIES are updated by df too
         self.df = self.load_existing_data() # This will also update CATEGORIES from existing log
         self.category_map = self.load_dict_from_txt(str(config.USER_PROGRAMS_FILE_PATH)) # Ensure this has all known categories
+        self.program_vars = {} # Initialize here, will be used by the method
         
         # Initialize CATEGORIES from both existing log data and user_programs.txt
         self.CATEGORIES = set(self.category_map.values())
@@ -326,15 +327,15 @@ class Logger:
         app_logger.info(f"Category map file {file_path_str} not found or empty. Returning empty map.")
         return {}
     
-    def open_edit_program_categories_window(self,root):
+    def open_edit_program_categories_window(self, parent_root):
         app_logger.debug("Opening edit program categories window.")
-        edit_window = tk.Toplevel(root)
+        edit_window = tk.Toplevel(parent_root)
         edit_window.title("Edit Program Categories")
         edit_window.configure(bg=self.theme.windowBg())
-        edit_window.transient(root)
+        edit_window.transient(parent_root)
         edit_window.grab_set() # Make modal
-        edit_window.minsize(width=400, height=300)
-        #edit_window.attributes("-topmost", True)
+        edit_window.minsize(width=450, height=400) # Adjusted minsize for new elements
+
         timer_icon_path_str = str(config.TIMER_ICON_PATH)
         if os.path.exists(timer_icon_path_str):
             try:
@@ -344,24 +345,20 @@ class Logger:
         else:
             app_logger.warning(f"Timer icon not found at {timer_icon_path_str}. Using default.")
 
-        # Frame for scrollable content
-        main_frame = tk.Frame(edit_window,bg=self.theme.windowBg(), padx=10, pady=10)
-        main_frame.pack(expand=True, fill=tk.BOTH)
+        # --- Main frame for scrollable list ---
+        # This frame will contain the canvas and scrollbar
+        list_container_frame = tk.Frame(edit_window, bg=self.theme.windowBg())
+        list_container_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=(10, 5))
 
-        canvas = tk.Canvas(main_frame, bg=self.theme.windowBg(), highlightthickness=0)
+        canvas = tk.Canvas(list_container_frame, bg=self.theme.windowBg(), highlightthickness=0)
         canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
-        scrollbar = ttk.Scrollbar(main_frame, orient=tk.VERTICAL, command=canvas.yview)
+        scrollbar = ttk.Scrollbar(list_container_frame, orient=tk.VERTICAL, command=canvas.yview)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
         canvas.configure(yscrollcommand=scrollbar.set)
         
-        #scrollable_frame = ttk.Frame(canvas) # Use ttk.Frame for consistent styling if needed
-        # You might need to create a style for ttk.Frame if you want specific background for it
-        # Or use tk.Frame and configure its bg manually:
         scrollable_frame = tk.Frame(canvas, bg=self.theme.windowBg())
-
-
         canvas_window_id = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
 
         def configure_scroll_region(event):
@@ -373,8 +370,8 @@ class Logger:
         scrollable_frame.bind("<Configure>", configure_scroll_region)
         canvas.bind("<Configure>", configure_canvas_window)
 
-        # --- Mousewheel Scrolling Functionality (defined once) ---
-        def _handle_mousewheel(event):
+        # --- Mousewheel Scrolling Functionality ---
+        def _on_mousewheel_scroll(event):
             scroll_intensity = 0
             if hasattr(event, 'delta') and event.delta != 0:  # Windows/macOS
                 scroll_intensity = int(-1 * (event.delta / 120))
@@ -385,111 +382,252 @@ class Logger:
 
             if scroll_intensity != 0:
                 canvas.yview_scroll(scroll_intensity, "units")
-
-            # If the widget that received the event is a Combobox,
-            # we return "break" to prevent its default scroll action (changing value).
-            # The canvas scrolling has already been handled above.
-            if isinstance(event.widget, ttk.Combobox):
-                return "break"
-        
-        # Bind mousewheel events to the canvas and the scrollable_frame.
-        # Child widgets will also be bound individually.
-        for widget_to_bind in [canvas, scrollable_frame]:
-            widget_to_bind.bind_all("<MouseWheel>", _handle_mousewheel) # Use bind_all on edit_window or canvas
-            widget_to_bind.bind_all("<Button-4>", _handle_mousewheel)   # if issues persist with specific binds
-            widget_to_bind.bind_all("<Button-5>", _handle_mousewheel)   # Using bind_all on edit_window is safer for cleanup
-
-        # Clean up bind_all when the window closes
-        def on_edit_close():
-            # It's important to unbind what you used bind_all on.
-            # If you bound to edit_window directly for _handle_mousewheel:
-            # edit_window.unbind_all("<MouseWheel>")
-            # edit_window.unbind_all("<Button-4>")
-            # edit_window.unbind_all("<Button-5>")
-            # For now, the individual binds below are safer and don't require this specific unbind_all.
-            # The current binds on canvas/scrollable_frame are widget-specific and go away with widget.
-            edit_window.destroy()
-
-        edit_window.protocol("WM_DELETE_WINDOW", on_edit_close)
-        # Update cancel button command if it directly destroys
-        # cancel_button.config(command=on_edit_close)s
-
-        available_categories = ["Study", "Break", "Misc"] # Predefined categories
-        
-        program_vars = {} # To store StringVars for comboboxes
-
-        # Header
-        ttk.Label(scrollable_frame, text="Program Name", font=("Helvetica", "10", "bold"), background=self.theme.windowBg(), foreground="white").grid(row=0, column=0, padx=5, pady=5, sticky="w")
-        ttk.Label(scrollable_frame, text="Category", font=("Helvetica", "10", "bold"), background=self.theme.windowBg(), foreground="white").grid(row=0, column=1, padx=5, pady=5, sticky="w")
-
-        row_num = 1
-        # Sort items for consistent display order
-        sorted_programs = sorted(self.category_map.items())
-
-        for program_name, current_category in sorted_programs:
-            ttk.Label(scrollable_frame, text=program_name, background=self.theme.windowBg(), foreground="white").grid(row=row_num, column=0, padx=5, pady=2, sticky="w")
             
-            category_var = tk.StringVar(value=current_category)
-            # Ensure the current_category is in available_categories, otherwise Combobox might not select it
-            if current_category not in available_categories:
-                # Optionally add it, or default to the first one, or log a warning
-                # For now, we assume categories in the file are among the available_categories
-                # Or if not, the combobox will show current_category but it won't be selectable from dropdown
-                # unless it's in 'values'. Best to ensure data integrity or handle this case.
-                pass
+            # If the widget that triggered this is a Combobox, prevent its own scroll action.
+            if isinstance(event.widget, ttk.Combobox):
+                return "break" # Prevents the combobox from changing value on scroll
 
-            category_combo = ttk.Combobox(scrollable_frame, textvariable=category_var, values=available_categories, state="readonly", width=15)
-            if current_category in available_categories:
-                 category_combo.set(current_category)
-            elif available_categories:
-                 category_combo.set(available_categories[0]) # Default to first if current is not valid
+        def _bind_mousewheel_to_widget(widget):
+            widget.bind("<MouseWheel>", _on_mousewheel_scroll)
+            widget.bind("<Button-4>", _on_mousewheel_scroll)
+            widget.bind("<Button-5>", _on_mousewheel_scroll)
 
+        _bind_mousewheel_to_widget(canvas)
+        _bind_mousewheel_to_widget(scrollable_frame)
+        # Child widgets inside scrollable_frame will be bound in _populate_program_list
 
-            category_combo.grid(row=row_num, column=1, padx=5, pady=2, sticky="ew")
-            program_vars[program_name] = category_var
-            row_num += 1
+        available_categories = [] # Predefined categories
+        for i in self.CATEGORIES:
+            available_categories.append(i)
         
-        scrollable_frame.columnconfigure(0, weight=1) # Allow program name column to expand a bit
-        scrollable_frame.columnconfigure(1, weight=0)
+        # This dictionary will store StringVars for comboboxes in the list
+        # It's a member of the class (self.program_vars) to be accessible by helper methods
+        self.program_vars.clear() 
+
+        def _populate_program_list():
+            # Clear existing widgets from scrollable_frame
+            for widget in scrollable_frame.winfo_children():
+                widget.destroy()
+            
+            self.program_vars.clear() # Clear for repopulation
+
+            # Header
+            header_font = ("Helvetica", "10", "bold")
+            header_bg = self.theme.windowBg()
+            header_fg = 'white'
+            
+            ttk.Label(scrollable_frame, text="Program Name", font=header_font, background=header_bg, foreground=header_fg).grid(row=0, column=0, padx=5, pady=5, sticky="w")
+            ttk.Label(scrollable_frame, text="Category", font=header_font, background=header_bg, foreground=header_fg).grid(row=0, column=1, padx=5, pady=5, sticky="w")
+
+            row_num = 1
+            sorted_programs = sorted(self.category_map.items())
+
+            for program_name, current_category in sorted_programs:
+                label_bg = self.theme.windowBg()
+                label_fg = 'white'
+
+                program_label = ttk.Label(scrollable_frame, text=program_name, background=label_bg, foreground=label_fg)
+                program_label.grid(row=row_num, column=0, padx=5, pady=3, sticky="w")
+                _bind_mousewheel_to_widget(program_label)
+                
+                category_var = tk.StringVar(value=current_category)
+                
+                category_combo = ttk.Combobox(scrollable_frame, textvariable=category_var, values=available_categories, state="readonly", width=17)
+                if current_category in available_categories:
+                    category_combo.set(current_category)
+                elif available_categories: # Default to first if current not valid or not in list
+                    category_combo.set(available_categories[0])
+                
+                category_combo.grid(row=row_num, column=1, padx=5, pady=3, sticky="ew")
+                _bind_mousewheel_to_widget(category_combo)
+                
+                self.program_vars[program_name] = category_var
+                row_num += 1
+            
+            scrollable_frame.columnconfigure(0, weight=1) 
+            scrollable_frame.columnconfigure(1, weight=0) 
+
+            # Update canvas scrollregion after populating.
+            # Defer this to ensure all widgets are drawn and bbox is correct.
+            canvas.update_idletasks()
+            canvas.config(scrollregion=canvas.bbox("all"))
+
+        # --- New Entry Frame (for adding/updating programs) ---
+        new_entry_outer_frame = tk.Frame(edit_window, bg=self.theme.windowBg())
+        new_entry_outer_frame.pack(fill=tk.X, padx=10, pady=(0, 5)) # pady=(top, bottom)
+
+        # Add a separator or a label for this section
+        ttk.Separator(new_entry_outer_frame, orient='horizontal').pack(fill='x', pady=(2, 5))
+        section_label = ttk.Label(new_entry_outer_frame, text="Add or Update Program in List", font=("Helvetica", "10", "italic"), background=self.theme.windowBg(), foreground='white')
+        section_label.pack(pady=(0,5))
 
 
-        def save_program_categories():
+        new_entry_fields_frame = tk.Frame(new_entry_outer_frame, bg=self.theme.windowBg())
+        new_entry_fields_frame.pack(fill=tk.X)
+
+        ttk.Label(new_entry_fields_frame, text="Program Name:", background=self.theme.windowBg(), foreground='white').grid(row=0, column=0, padx=5, pady=3, sticky="w")
+        new_program_name_var = tk.StringVar()
+        new_program_name_entry = ttk.Entry(new_entry_fields_frame, textvariable=new_program_name_var, width=30)
+        new_program_name_entry.grid(row=0, column=1, padx=5, pady=3, sticky="ew")
+
+        ttk.Label(new_entry_fields_frame, text="Category:", background=self.theme.windowBg(), foreground='white').grid(row=1, column=0, padx=5, pady=3, sticky="w")
+        new_program_category_var = tk.StringVar()
+        new_program_category_combo = ttk.Combobox(new_entry_fields_frame, textvariable=new_program_category_var, values=available_categories, state="readonly", width=17)
+        if available_categories: new_program_category_combo.set(available_categories[0]) # Default selection
+        new_program_category_combo.grid(row=1, column=1, padx=5, pady=3, sticky="ew")
+
+        def add_or_update_program_in_list():
+            prog_name = new_program_name_var.get().strip()
+            prog_cat = new_program_category_var.get()
+
+            if not prog_name:
+                messagebox.showwarning("Input Error", "Program name cannot be empty.", parent=edit_window)
+                return
+            if not prog_cat: # Should not happen with readonly combobox if categories exist
+                messagebox.showwarning("Input Error", "Please select a category.", parent=edit_window)
+                return
+
+            self.category_map[prog_name] = prog_cat
+            _populate_program_list() # Refresh the entire list display
+
+            new_program_name_var.set("") # Clear input field
+            if available_categories: new_program_category_combo.set(available_categories[0]) # Reset combobox
+            app_logger.info(f"Program '{prog_name}' added/updated in UI list. Click 'Save Changes' to persist.")
+            new_program_name_entry.focus_set() # Set focus back to entry for quick additions
+
+        add_update_button = tk.Button(new_entry_fields_frame, text="Add / Update in List", command=add_or_update_program_in_list,
+                                     bg=self.theme.buttonBg(), fg='white', font=("Helvetica", "9"),
+                                     activebackground=self.theme.activeButtonBg(), activeforeground='white', borderwidth=1, relief=tk.SOLID)
+        add_update_button.grid(row=0, column=2, rowspan=2, padx=(10,5), pady=3, sticky="nswe") # Span 2 rows
+
+        new_entry_fields_frame.columnconfigure(1, weight=1) # Allow entry and combobox to expand
+
+        # Initial population of the list
+        _populate_program_list()
+
+        # --- Buttons Frame (Save/Cancel) ---
+        buttons_frame = tk.Frame(edit_window, bg=self.theme.windowBg())
+        buttons_frame.pack(side=tk.BOTTOM, fill=tk.X, pady=(5,10), padx=10)
+
+        def save_program_categories_and_close():
             updated_count = 0
-            for program_name, category_var in program_vars.items():
+            # Iterate through self.program_vars which reflects the current state of comboboxes
+            for program_name, category_var in self.program_vars.items():
                 new_category = category_var.get()
-                if self.category_map.get(program_name) != new_category:
+                # Check if this program is still in category_map (it should be if list is synced)
+                # and if its category has changed from what's in category_map (which might have been updated by "Add/Update")
+                # The primary source of truth for saving should be what's currently in the UI's StringVars
+                if program_name in self.category_map and self.category_map[program_name] != new_category :
+                    self.category_map[program_name] = new_category # Update the main map
+                    updated_count +=1
+                elif program_name not in self.category_map: # Should not happen if Add/Update syncs map
                     self.category_map[program_name] = new_category
                     updated_count +=1
+
+
+            # An alternative: self.category_map is already updated by "Add/Update Program in List".
+            # Here, we just need to ensure any changes made *directly in the list's comboboxes* are captured.
+            # The current self.program_vars reflects all items shown in the list.
+            temp_map_from_ui = {}
+            changes_made_in_list = False
+            for prog_name_in_var, cat_var in self.program_vars.items():
+                ui_category = cat_var.get()
+                temp_map_from_ui[prog_name_in_var] = ui_category
+                if self.category_map.get(prog_name_in_var) != ui_category:
+                    changes_made_in_list = True
             
-            if updated_count > 0:
+            if changes_made_in_list or updated_count > 0 : # updated_count for new items via add/update form
+                                                           # changes_made_in_list for direct combobox changes
+                # Consolidate: update self.category_map from temp_map_from_ui
+                # This ensures that what you see in the UI is what gets saved.
+                # Count actual changes against the original state before opening the window, or just save the current state.
+                # For simplicity, let's assume self.category_map is the state to save,
+                # and it has been updated by both the "Add/Update" form and direct combobox changes (via program_vars).
+
+                # Rebuild category_map based on the UI's current state (program_vars)
+                final_map_to_save = {}
+                final_updated_count = 0
+                original_map_snapshot = dict(self.category_map) # Take a snapshot before this window modified it (if needed for precise count)
+                                                                # For this example, we'll just count based on current self.category_map vs program_vars
+
+                for pn, cv in self.program_vars.items():
+                    new_cat = cv.get()
+                    final_map_to_save[pn] = new_cat
+                    if original_map_snapshot.get(pn) != new_cat: # Compare to original state if available
+                        final_updated_count +=1
+                
+                # If items were deleted from category_map by some other means and list not refreshed, they'd be lost.
+                # Current design: list always reflects category_map. So, program_vars is the authority for save.
+                self.category_map = final_map_to_save # Update the master map to what's in UI
+
                 self.save_dict_to_txt(str(config.USER_PROGRAMS_FILE_PATH))
-                app_logger.info(f"{updated_count} program categories updated and saved.")
-                messagebox.showinfo("Success", f"{updated_count} program categories updated successfully!", parent=edit_window)
+                self.update_csv_log() # Assuming this is a method of your class
+                app_logger.info(f"Program categories updated and saved. Total items: {len(self.category_map)}.")
+                messagebox.showinfo("Success", f"Program categories saved successfully!", parent=edit_window)
             else:
-                messagebox.showinfo("No Changes", "No category changes were made.", parent=edit_window)
-            
-            # Optionally, refresh any part of the main UI that depends on category_map
-            # For example, if self.update_category_list() re-reads or re-processes this map:
-            # self.update_category_list()
+                messagebox.showinfo("No Changes", "No category changes were made to save.", parent=edit_window)
             
             edit_window.destroy()
 
-        # --- Buttons Frame ---
-        buttons_frame = tk.Frame(edit_window, bg=self.theme.windowBg()) # Use ttk.Frame for consistency
-        buttons_frame.pack(side=tk.BOTTOM, fill=tk.X, pady=10, padx=10)
-        # Configure frame background if not using ttk styles properly
-        # buttons_frame.configure(bg=self.theme.windowBg()) # If it's a tk.Frame
-
-        save_button = tk.Button(buttons_frame, text="Save Changes", command=save_program_categories,
-                                   bg=self.theme.buttonBg(), fg="white", font=("Helvetica", "10", "bold"),
-                                   activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
+        save_button = tk.Button(buttons_frame, text="Save Changes", command=save_program_categories_and_close,
+                                bg=self.theme.buttonBg(), fg='white', font=("Helvetica", "10", "bold"),
+                                activebackground=self.theme.activeButtonBg(), activeforeground='white', borderwidth=2)
         save_button.pack(side=tk.RIGHT, padx=5)
 
         cancel_button = tk.Button(buttons_frame, text="Cancel", command=edit_window.destroy,
-                                  bg=self.theme.buttonBg(), fg="white", font=("Helvetica", "10"),
-                                  activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
+                                  bg=self.theme.buttonBg(), fg='white', font=("Helvetica", "10"),
+                                  activebackground=self.theme.activeButtonBg(), activeforeground='white', borderwidth=2)
         cancel_button.pack(side=tk.RIGHT, padx=5)
-    
+
+        edit_window.protocol("WM_DELETE_WINDOW", edit_window.destroy) # Ensure clean close
+
+        # Center the window
+        parent_root.update_idletasks()
+        x = parent_root.winfo_x() + (parent_root.winfo_width() // 2) - (edit_window.winfo_width() // 2)
+        y = parent_root.winfo_y() + (parent_root.winfo_height() // 2) - (edit_window.winfo_height() // 2)
+        edit_window.geometry(f"+{x}+{y}")
+        
+        new_program_name_entry.focus_set() # Initial focus on the new program name entry
+
+    def update_csv_log(self):
+        update_df = self.df.copy()
+        #self.category_map = self.load_dict_from_txt(str(config.USER_PROGRAMS_FILE_PATH)) # Ensure this is loaded
+
+        if not isinstance(self.category_map, dict):
+            print("Error: self.category_map is not a dictionary. Aborting update.")
+            return # Or raise an error
+
+        changes_made = False
+        for index, row_data in update_df.iterrows(): # Use index and row_data for clarity
+            program_name = row_data['program']
+            current_category = row_data['category']
+
+            # Safely get the new category from the map
+            # Provide a default or handle missing keys appropriately
+            new_category = self.category_map.get(program_name)
+
+            if new_category is None:
+                print(f"Warning: Program '{program_name}' not found in category_map. setting 'Misc'.")
+                update_df.loc[index, 'category'] = 'Misc' #  <--- CORRECT WAY TO MODIFY
+                changes_made = True
+
+            if current_category != new_category:
+                print(f"'{program_name}': Category '{current_category}' will change to '{new_category}'")
+                update_df.loc[index, 'category'] = new_category #  <--- CORRECT WAY TO MODIFY
+                changes_made = True
+
+        if changes_made:
+            print("Saving updated CSV...")
+            update_df.to_csv(self.csv_file_path, index=False)
+            self.df = self.load_existing_data() # Reload the newly saved data
+            print("CSV updated and data reloaded.")
+        else:
+            print("No changes detected. CSV not modified.")
+            # Optionally, you might still want to reload if the file could have been changed externally
+            # self.df = self.load_existing_data()
+        
+        
+
 # ADDED: Method to get all data (current + historical)
     def get_all_logged_data(self):
         app_logger.info("Consolidating all logged data.")
