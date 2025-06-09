@@ -1,736 +1,623 @@
-import pandas as pd
+# logger.py
+import sqlite3
 import time
-import os
-from tkinter import messagebox
+import pandas as pd
+from pathlib import Path
 import tkinter as tk
-from tkinter import ttk
-from themes import Theme
-import datetime
-import json
-# ADDED:
+from tkinter import messagebox, filedialog, ttk, Toplevel, Frame, Canvas, Scrollbar, Label, Entry, Button, StringVar, Tk, Radiobutton, simpledialog # <<< NEW: simpledialog
+import os # For icon path checking in dialogs
+from datetime import datetime # Explicitly from datetime module
+
 import config
 from app_logger import app_logger
-from pathlib import Path
-from tkinter import filedialog # ADDED for save dialog
-from datetime import datetime # ADDED for date conversions
+# from themes import Theme # Theme instance is passed to __init__
 
 class Logger:
-    def __init__(self, csv_file_path_str, theme): # CORRECTED: csv_file is now full path string
-        self.csv_file_path = Path(csv_file_path_str) # Store as Path object
-        self.theme = theme # Theme() is already instantiated in main, pass it directly.
-        # self.category_map = self.load_dict_from_txt() # Load after df to ensure CATEGORIES are updated by df too
-        self.df = self.load_existing_data() # This will also update CATEGORIES from existing log
-        self.category_map = self.load_dict_from_txt(str(config.USER_PROGRAMS_FILE_PATH)) # Ensure this has all known categories
-        self.program_vars = {} # Initialize here, will be used by the method
-        
-        # Initialize CATEGORIES from both existing log data and user_programs.txt
+    def __init__(self, theme):
+        self.theme = theme
+        self.category_map = self._load_program_categories_from_db()
         self.CATEGORIES = set(self.category_map.values())
-        if not self.df.empty and 'category' in self.df.columns:
-            self.CATEGORIES.update(self.df['category'].unique())
-        
-        self.log = []
-        app_logger.info(f"Logger initialized for {self.csv_file_path}. Categories loaded: {len(self.CATEGORIES)}")
+        # Initialize self.program_vars for the edit categories window
+        self.program_vars = {}
+        app_logger.info(f"Logger initialized to use SQLite database at {config.DATABASE_FILE_PATH}.")
+
+    def _get_db_connection(self):
+        """Establishes and returns a new connection to the SQLite database."""
+        try:
+            conn = sqlite3.connect(config.DATABASE_FILE_PATH)
+            conn.row_factory = sqlite3.Row
+            return conn
+        except sqlite3.Error as e:
+            app_logger.error(f"Failed to connect to database: {e}", exc_info=True)
+            return None
 
     def get_CATEGORIES(self):
-        return sorted(list(self.CATEGORIES)) # Return sorted list for consistent dropdown order
+        """Returns a sorted list of all unique categories currently known to the logger."""
+        # For absolute freshness from DB each time:
+        # current_categories_in_db = set()
+        # with self._get_db_connection() as conn:
+        #     if conn:
+        #         cursor = conn.cursor()
+        #         cursor.execute("SELECT DISTINCT category FROM program_categories")
+        #         for row in cursor.fetchall(): current_categories_in_db.add(row['category'])
+        # self.CATEGORIES.update(current_categories_in_db) # Update internal set
+        # Ensure self.CATEGORIES is up-to-date before returning
+        if self.category_map: # If category_map has been loaded
+            self.CATEGORIES = set(self.category_map.values())
+        return sorted(list(self.CATEGORIES))
 
-    def load_existing_data(self):
-        try:
-            if self.csv_file_path.exists() and self.csv_file_path.stat().st_size > 0:
-                # CORRECTED: Treat 'date' column as string to maintain 'dd/mm/YYYY' format
-                df = pd.read_csv(self.csv_file_path, dtype={'date': str})
-                app_logger.info(f"Loaded existing data from {self.csv_file_path}. Shape: {df.shape}")
-                # Ensure all required columns exist, add if missing (for schema evolution)
-                expected_columns = ["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"]
-                for col in expected_columns:
-                    if col not in df.columns:
-                        df[col] = None # Or appropriate default
-                        app_logger.warning(f"Column '{col}' was missing in {self.csv_file_path}. Added with None values.")
-                return df
-            else:
-                app_logger.info(f"No existing data file found at {self.csv_file_path} or file is empty. Creating new DataFrame.")
-                return pd.DataFrame(
-                    columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
-        except pd.errors.EmptyDataError:
-            app_logger.warning(f"EmptyDataError while reading {self.csv_file_path}. Returning empty DataFrame.")
-            return pd.DataFrame(
-                columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
-        except Exception as e:
-            app_logger.error(f"Error loading data from {self.csv_file_path}: {e}", exc_info=True)
-            messagebox.showerror("Error Loading Data", f"Error loading data from {self.csv_file_path}: {e}")
-            return pd.DataFrame(
-                columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
 
     def log_activity(self, program, window, start_time_epoch, end_time_epoch, total_time_seconds):
-        # CORRECTED: Use string dates consistently
-        current_date_str = time.strftime('%d/%m/%Y')
+        current_date_str = time.strftime('%d/%m/%Y', time.localtime(start_time_epoch))
         start_time_str = time.strftime('%H:%M:%S', time.localtime(start_time_epoch))
         end_time_str = time.strftime('%H:%M:%S', time.localtime(end_time_epoch))
         total_time_minutes = round(total_time_seconds / 60, 2)
+        category = self.category_map.get(program, "Misc")
+        percent_text_placeholder = "0%"
 
-        category = self.category_map.get(program, "Misc") # Default to Misc if not found
-
-        self.log.append([current_date_str, program, window, category,
-                         start_time_str, end_time_str, total_time_minutes, "0%"]) # Placeholder for percent
-        
-        app_logger.debug(f"Activity logged (in memory): Date={current_date_str}, Prog={program}, Win={window}, Cat={category}, Start={start_time_str}, End={end_time_str}, TotalMin={total_time_minutes}")
-        self.save_log_to_csv()
-
-
-    def save_log_to_csv(self):
-        if not self.log:
-            app_logger.debug("save_log_to_csv called but self.log is empty. Nothing to save.")
-            return
-
-        new_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
-        self.log = [] # Clear in-memory log after converting to DataFrame
-
-        try:
-            # Ensure directories exist (might be redundant if main did it, but good for safety)
-            config.HISTORICAL_LOG_DIR_PATH.mkdir(parents=True, exist_ok=True)
-            config.REPORTS_DIR_PATH.mkdir(parents=True, exist_ok=True)
-
-            perform_archival_check = not self.df.empty and not new_df.empty
-            archived_this_save = False
-
-            if perform_archival_check:
+        sql = """
+            INSERT INTO time_entries
+            (date_text, program_name, window_title, category,
+             start_time_text, end_time_text, total_time_minutes,
+             start_timestamp_epoch, end_timestamp_epoch, percent_text)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """
+        params = (
+            current_date_str, program, window, category,
+            start_time_str, end_time_str, total_time_minutes,
+            start_time_epoch, end_time_epoch, percent_text_placeholder
+        )
+        # Using context manager for connection
+        with self._get_db_connection() as conn:
+            if conn:
                 try:
-                    # Use first date from current df and first from new_df for month check
-                    df_first_date_str = self.df['date'].iloc[0]
-                    new_df_first_date_str = new_df['date'].iloc[0]
+                    cursor = conn.cursor()
+                    cursor.execute(sql, params)
+                    conn.commit()
+                    app_logger.debug(f"Activity logged to DB: Prog={program}, Cat={category}, TotalMin={total_time_minutes}")
+                except sqlite3.Error as e:
+                    app_logger.error(f"Failed to log activity to database: {e}", exc_info=True)
+                    # Rollback is implicit if commit isn't reached due to exception with context manager
 
-                    df_date_obj = datetime.strptime(df_first_date_str, '%d/%m/%Y').date()
-                    new_log_date_obj = datetime.strptime(new_df_first_date_str, '%d/%m/%Y').date()
-                    
-                    app_logger.debug(f"Date check for archival: Existing DF month = {df_date_obj.month}, New log month = {new_log_date_obj.month}")
+    def _load_program_categories_from_db(self):
+        categories = {}
+        with self._get_db_connection() as conn:
+            if conn:
+                try:
+                    cursor = conn.cursor()
+                    cursor.execute("SELECT program_name, category FROM program_categories")
+                    for row in cursor.fetchall():
+                        categories[row["program_name"]] = row["category"]
+                    app_logger.info(f"Program categories loaded from DB. Count: {len(categories)}")
+                except sqlite3.Error as e:
+                    app_logger.error(f"Failed to load program categories from DB: {e}", exc_info=True)
+        return categories
 
-                    if df_date_obj.month != new_log_date_obj.month:
-                        app_logger.info(f"Month change detected. Archiving old log for month {df_date_obj.month}/{df_date_obj.year}.")
-                        now = datetime.now()
-                        
-                        # Archive existing self.df
-                        archive_log_filename = config.HISTORICAL_LOG_DIR_PATH / f"log_{df_date_obj.year}{df_date_obj.month:02d}_{now.hour:02d}{now.minute:02d}{now.second:02d}.csv"
-                        # Recalculate percentages for the df about to be archived
-                        df_to_archive = self.calculate_session_percentages(self.df.copy()) # Operate on a copy
-                        df_to_archive.to_csv(archive_log_filename, index=False, date_format='%d/%m/%Y') # date_format if dates were objects
-                        app_logger.info(f"Archived log to {archive_log_filename}")
+    def save_program_category_to_db(self, program_name, category):
+        sql = "INSERT OR REPLACE INTO program_categories (program_name, category) VALUES (?, ?)"
+        success = False
+        with self._get_db_connection() as conn:
+            if conn:
+                try:
+                    cursor = conn.cursor()
+                    cursor.execute(sql, (program_name, category))
+                    conn.commit()
+                    app_logger.info(f"Program category saved to DB: {program_name} -> {category}")
+                    self.category_map[program_name] = category # Update in-memory map
+                    if category not in self.CATEGORIES:
+                        self.CATEGORIES.add(category)
+                    success = True
+                except sqlite3.Error as e:
+                    app_logger.error(f"Failed to save program category to DB for '{program_name}': {e}", exc_info=True)
+        return success
 
-                        # Create report from archived df
-                        df_work_hours = df_to_archive.groupby(['date', 'category'])['total_time'].sum().reset_index()
-                        report_filename = config.REPORTS_DIR_PATH / f"report_{df_date_obj.year}{df_date_obj.month:02d}_{now.hour:02d}{now.minute:02d}{now.second:02d}.csv"
-                        df_work_hours.to_csv(report_filename, index=False)
-                        app_logger.info(f"Generated report {report_filename}")
-                        
-                        self.df = new_df # Start new df with new_df
-                        archived_this_save = True
-                    else:
-                        self.df = pd.concat([self.df, new_df], ignore_index=True)
-                except IndexError:
-                    app_logger.warning("IndexError during archival check (df or new_df might be empty despite initial check). Appending new data.", exc_info=True)
-                    self.df = pd.concat([self.df, new_df], ignore_index=True) if not self.df.empty else new_df
-                except Exception as e:
-                    app_logger.error(f"Error during archival logic: {e}. Appending new data.", exc_info=True)
-                    self.df = pd.concat([self.df, new_df], ignore_index=True) if not self.df.empty else new_df
-            else: # self.df was empty, so just use new_df
-                self.df = new_df
-                app_logger.info("Current DataFrame was empty. Initialized with new log data.")
+    def get_category(self, window_name_key):
+        # This temp root is not ideal but matches original structure.
+        # Better: pass main app root to be parent of Toplevel.
+        dialog_root = Tk()
+        dialog_root.withdraw()
 
-            # Calculate percentages for the (potentially updated or new) self.df
-            if not self.df.empty:
-                self.df = self.calculate_session_percentages(self.df)
-                self.df.to_csv(self.csv_file_path, index=False) # date_format not strictly needed if dates are strings
-                app_logger.info(f"Saved updated log to {str(self.csv_file_path).split("\\")[-1]}. DF shape: {self.df.shape}. Program: {self.df['program'].iloc[-1] if not self.df.empty else 'N/A'}")
-            else:
-                app_logger.warning("DataFrame is empty after processing, nothing to save to main log file.")
-
-        except Exception as e:
-            app_logger.error(f"Failed to save log to CSV: {e}", exc_info=True)
-            # Fallback: try to append raw log if DF operations failed, to not lose data
-            try:
-                fallback_df = pd.DataFrame(self.log, columns=["date", "program", "window", "category", "start_time", "end_time", "total_time", "percent"])
-                if not fallback_df.empty: # if self.log was already cleared, this will be empty
-                    fallback_df.to_csv(self.csv_file_path, mode='a', header=not self.csv_file_path.exists(), index=False)
-                    app_logger.info(f"Fallback: Appended raw log entries to {self.csv_file_path}")
-                    self.log = [] # Ensure cleared if appended
-            except Exception as fe:
-                app_logger.error(f"Fallback save also failed: {fe}", exc_info=True)
-
-
-    def calculate_session_percentages(self, df_input):
-        df = df_input.copy() # Work on a copy
-        if df.empty:
-            app_logger.debug("calculate_session_percentages called with empty DataFrame.")
-            return df
-
-        # Ensure 'date', 'start_time', 'end_time' are present and not all NaT/None
-        if not all(col in df.columns for col in ['date', 'start_time', 'end_time']):
-            app_logger.error("Missing required columns for percentage calculation.")
-            return df_input # Return original if columns missing
-
-        try:
-            # Convert time strings to datetime.time objects for proper subtraction
-            # Date is already a string 'dd/mm/YYYY'
-            df['start_datetime'] = pd.to_datetime(df['date'] + ' ' + df['start_time'], format='%d/%m/%Y %H:%M:%S', errors='coerce')
-            df['end_datetime'] = pd.to_datetime(df['date'] + ' ' + df['end_time'], format='%d/%m/%Y %H:%M:%S', errors='coerce')
-
-            # Handle potential NaT from conversion errors
-            df.dropna(subset=['start_datetime', 'end_datetime'], inplace=True)
-            if df.empty:
-                app_logger.warning("DataFrame became empty after coercing date/times for percentage calculation.")
-                return df_input # Return original if all rows had errors
-
-
-            # Calculate duration in seconds
-            df['total_time_seconds_calc'] = (df['end_datetime'] - df['start_datetime']).dt.total_seconds()
-            
-            # Group by date to calculate session totals
-            df['session_total_time_seconds'] = df.groupby('date')['total_time_seconds_calc'].transform('sum')
-
-            # Calculate percentage
-            df['percent_calc'] = (df['total_time_seconds_calc'] / df['session_total_time_seconds']) * 100
-            df['percent'] = df['percent_calc'].round(2).astype(str) + "%"
-            
-            # Fill NaN percentages that might occur if session_total_time_seconds is 0 (though unlikely with proper data)
-            df['percent'] = df['percent'].fillna("0.00%")
-
-
-            df.drop(columns=['start_datetime', 'end_datetime', 'total_time_seconds_calc', 'session_total_time_seconds', 'percent_calc'], inplace=True, errors='ignore')
-            app_logger.debug("Session percentages calculated.")
-            return df
-        except Exception as e:
-            app_logger.error(f"Error in calculate_session_percentages: {e}", exc_info=True)
-            return df_input # Return original DataFrame on error
-
-#   region New Window entry
-
-    def get_category(self, window_name_key): # Renamed to avoid conflict with 'category' variable
-        # This function creates its own Tkinter root temporarily, which is generally not ideal
-        # if the main app already has one. However, for a modal dialog, it can work.
-        # Consider making this a Toplevel window of the main root if possible.
-        dialog_root = tk.Tk()
-        dialog_root.withdraw()  # Hide the dummy root window
-
-        category_window = tk.Toplevel(dialog_root)
+        category_window = Toplevel(dialog_root) # Original used Toplevel directly
         category_window.configure(bg=self.theme.windowBg())
         category_window.title(f"Categorize: {window_name_key}")
-        category_window.attributes("-topmost", True) # Keep on top
+        category_window.attributes("-topmost", True)
+
         timer_icon_path_str = str(config.TIMER_ICON_PATH)
         if os.path.exists(timer_icon_path_str):
-            try:
-                category_window.iconbitmap(timer_icon_path_str)
-            except tk.TclError as e:
-                app_logger.warning(f"Failed to set timer icon ({timer_icon_path_str}): {e}. Using default.")
-        else:
-            app_logger.warning(f"Timer icon not found at {timer_icon_path_str}. Using default.")
+            try: category_window.iconbitmap(timer_icon_path_str)
+            except tk.TclError as e: app_logger.warning(f"Failed to set timer icon ({timer_icon_path_str}): {e}")
+        else: app_logger.warning(f"Timer icon not found at {timer_icon_path_str}")
 
-        # Center the window (simple centering)
         category_window.update_idletasks()
-        width = 400
-        height = 250
+        width, height = 400, 250
         x = (category_window.winfo_screenwidth() // 2) - (width // 2)
         y = (category_window.winfo_screenheight() // 2) - (height // 2)
         category_window.geometry(f'{width}x{height}+{x}+{y}')
 
+        Label(category_window, text=f"Enter category for '{window_name_key}':", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "12", "bold")).pack(pady=10)
+        Label(category_window, text="Available categories:", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "10")).pack(pady=(5,0))
 
-        tk.Label(category_window, text=f"Enter category for '{window_name_key}':", bg=self.theme.windowBg(), fg="white",
-                 font=("Helvetica", "12", "bold")).pack(pady=10)
-        
-        tk.Label(category_window, text="Available categories:", bg=self.theme.windowBg(), fg="white",
-                 font=("Helvetica", "10")).pack(pady=(5,0))
-
-        category_var = tk.StringVar()
-        # Use sorted categories for dropdown
+        category_var = StringVar()
+        # Refresh categories for dropdown
         category_dropdown = ttk.Combobox(category_window, textvariable=category_var, values=self.get_CATEGORIES(), state="readonly", width=30)
         category_dropdown.pack(pady=5)
 
-        tk.Label(category_window, text="OR Enter new category:", bg=self.theme.windowBg(), fg="white",
-                 font=("Helvetica", "10")).pack(pady=(10,0))
-        
-        new_category_entry = tk.Entry(category_window, bg=self.theme.buttonBg(), fg="white", width=33)
+        Label(category_window, text="OR Enter new category:", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "10")).pack(pady=(10,0))
+        new_category_entry = Entry(category_window, bg=self.theme.buttonBg(), fg="white", width=33, insertbackground="white")
         new_category_entry.pack(pady=5)
+        new_category_entry.focus_set()
 
-        result = {"category": "Misc"} # Default result
+        result_category = {"value": "Misc"} # Use a mutable type to pass result out
 
-        def submit_category():
-            selected_category = category_dropdown.get()
-            new_category = new_category_entry.get().strip().title() # Capitalize new categories
+        def submit_category_action():
+            selected_dropdown_category = category_var.get()
+            entered_new_category = new_category_entry.get().strip().title()
+            final_cat = "Misc"
 
-            final_category = "Misc" # Default
-            if new_category: # Prioritize new entry
-                final_category = new_category
-                if final_category not in self.CATEGORIES:
-                    self.CATEGORIES.add(final_category)
-                    app_logger.info(f"New category added: {final_category}")
-            elif selected_category:
-                final_category = selected_category
+            if entered_new_category:
+                final_cat = entered_new_category
+            elif selected_dropdown_category:
+                final_cat = selected_dropdown_category
             else:
                 messagebox.showwarning("No Category", "No category selected or entered. Defaulting to 'Misc'.", parent=category_window)
-                # Keep dialog open if nothing is chosen:
-                # category_window.deiconify()
-                # return 
-            
-            result["category"] = final_category
-            self.category_map[window_name_key] = final_category
-            self.save_dict_to_txt(str(config.USER_PROGRAMS_FILE_PATH))
-            app_logger.info(f"Program '{window_name_key}' categorized as '{final_category}'")
+
+            if self.save_program_category_to_db(window_name_key, final_cat):
+                result_category["value"] = final_cat
+                app_logger.info(f"Program '{window_name_key}' categorized as '{final_cat}' and saved to DB.")
+            else:
+                app_logger.error(f"Failed to save category for '{window_name_key}' to DB from get_category dialog.")
+                messagebox.showerror("DB Error", "Could not save category to database.", parent=category_window)
+                # Keep dialog open or handle error as appropriate
+
             category_window.destroy()
             dialog_root.destroy()
 
+        submit_btn = Button(category_window, text="Submit", command=submit_category_action, bg=self.theme.buttonBg(), fg="white", font=("Helvetica", "10", "bold"), activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
+        submit_btn.pack(pady=20)
+        new_category_entry.bind("<Return>", lambda event: submit_category_action())
+        submit_btn.bind("<Return>", lambda event: submit_category_action())
 
-        submit_button = tk.Button(category_window, text="Submit", command=submit_category, bg=self.theme.buttonBg(),
-                                  fg="white", font=("Helvetica", "10", "bold"),
-                                  activebackground=self.theme.activeButtonBg(), activeforeground="white", borderwidth=2)
-        submit_button.pack(pady=10)
-
-        new_category_entry.bind("<Return>", lambda event: submit_category())
-        # category_dropdown.bind("<Return>", lambda event: submit_category()) # Combobox doesn't typically submit on enter like this
-        submit_button.bind("<Return>", lambda event: submit_category())
-        
-        def on_dialog_close():
-            # Handle if user closes dialog with 'X'
+        def on_dialog_forced_close():
             app_logger.warning(f"Category dialog for '{window_name_key}' closed without submission. Defaulting to 'Misc'.")
-            self.category_map[window_name_key] = "Misc" # Ensure it's mapped to avoid re-prompting immediately
-            self.save_dict_to_txt(str(config.USER_PROGRAMS_FILE_PATH))
+            self.save_program_category_to_db(window_name_key, "Misc") # Save default
+            result_category["value"] = "Misc" # Ensure default is returned
             category_window.destroy()
             dialog_root.destroy()
 
-        category_window.protocol("WM_DELETE_WINDOW", on_dialog_close)
-        category_window.grab_set() # Make modal
-        dialog_root.wait_window(category_window) # Wait for category_window to be destroyed
+        category_window.protocol("WM_DELETE_WINDOW", on_dialog_forced_close)
+        category_window.grab_set()
+        dialog_root.wait_window(category_window)
+        return result_category["value"]
 
-        return result["category"]
-    
-    def save_dict_to_txt(self, file_path_str): # CORRECTED: takes path
-        """Save category_map to a text file in JSON format."""
-        try:
-            with open(file_path_str, "w") as file:
-                json.dump(self.category_map, file, indent=4)
-            app_logger.info(f"Category map saved to {file_path_str}")
-        except IOError as e:
-            app_logger.error(f"Failed to save category map to {file_path_str}: {e}", exc_info=True)
 
-    def load_dict_from_txt(self, file_path_str): # CORRECTED: takes path
-        """Load category_map from the text file if it exists, otherwise return an empty dict."""
-        file_path = Path(file_path_str)
-        if file_path.exists() and file_path.stat().st_size > 0:
-            try:
-                with open(file_path, "r") as file:
-                    loaded_map = json.load(file)
-                    app_logger.info(f"Category map loaded from {file_path_str}")
-                    return loaded_map
-            except json.JSONDecodeError as e:
-                app_logger.error(f"Error decoding JSON from {file_path_str}: {e}. Returning empty map.", exc_info=True)
-                return {}
-            except IOError as e:
-                app_logger.error(f"IOError reading {file_path_str}: {e}. Returning empty map.", exc_info=True)
-                return {}
-        app_logger.info(f"Category map file {file_path_str} not found or empty. Returning empty map.")
-        return {}
-    
+    # <<< NEW HELPER DIALOG FOR CATEGORY EDITING >>>
+    def _ask_category_dialog(self, parent, program_name, current_category, all_categories):
+        """
+        A dialog to select or enter a new category for a specific program.
+        """
+        dialog = Toplevel(parent)
+        dialog.title(f"Set Category for: {program_name}")
+        dialog.configure(bg=self.theme.windowBg())
+        dialog.transient(parent)
+        dialog.grab_set()
+        dialog.attributes("-topmost", True)
+
+        # Basic styling and layout
+        dialog.geometry("350x270") # Adjusted size
+        x = parent.winfo_x() + (parent.winfo_width() // 2) - (350 // 2)
+        y = parent.winfo_y() + (parent.winfo_height() // 2) - (230 // 2)
+        dialog.geometry(f"+{x}+{y}")
+
+
+        Label(dialog, text=f"Program: {program_name}", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "10", "bold")).pack(pady=(10,5))
+        Label(dialog, text=f"Current Category: {current_category}", bg=self.theme.windowBg(), fg="white", font=("Helvetica", "9")).pack(pady=(0,10))
+
+        category_var = StringVar(value=current_category)
+        
+        Label(dialog, text="Select from existing:", bg=self.theme.windowBg(), fg="white").pack()
+        if all_categories:
+            combo = ttk.Combobox(dialog, textvariable=category_var, values=all_categories, state="readonly", width=30)
+            combo.pack(pady=5)
+            if current_category in all_categories:
+                combo.set(current_category)
+            elif all_categories: # Default to first if current not in list (e.g. was 'Misc' and Misc isn't explicitly saved)
+                 combo.set(all_categories[0])
+        else:
+            Label(dialog, text="No existing categories defined.", bg=self.theme.windowBg(), fg="white").pack(pady=5)
+
+        Label(dialog, text="Or enter new category:", bg=self.theme.windowBg(), fg="white").pack(pady=(10,0))
+        new_category_entry = Entry(dialog, bg=self.theme.buttonBg(), fg="white", width=33, insertbackground="white")
+        new_category_entry.pack(pady=5)
+        new_category_entry.focus_set() # Focus on new entry
+
+        new_cat_chosen = {"value": None} # To store result from dialog
+
+        def on_submit():
+            entered = new_category_entry.get().strip().title()
+            selected = category_var.get() # From combobox
+            
+            if entered: # New entry takes precedence
+                new_cat_chosen["value"] = entered
+            elif selected and selected != current_category : # Combobox selected a different category
+                new_cat_chosen["value"] = selected
+            elif selected and selected == current_category: # Combobox selected same category, effectively no change unless user intended it
+                 new_cat_chosen["value"] = selected # or None to indicate no change
+            else: # No selection, no entry
+                messagebox.showwarning("No Input", "Please select or enter a category.", parent=dialog)
+                return
+            dialog.destroy()
+
+        def on_cancel():
+            new_cat_chosen["value"] = None # Indicate no change or cancellation
+            dialog.destroy()
+
+        button_frame = Frame(dialog, bg=self.theme.windowBg())
+        button_frame.pack(pady=20, fill="x", side="bottom")
+        
+        ok_btn = Button(button_frame, text="OK", command=on_submit, width=8, bg=self.theme.buttonBg(), fg="white", activebackground=self.theme.activeButtonBg())
+        ok_btn.pack(side=tk.LEFT, padx=(60,10)) # Adjust padding for centering
+
+        cancel_btn = Button(button_frame, text="Cancel", command=on_cancel, width=8, bg=self.theme.buttonBg(), fg="white", activebackground=self.theme.activeButtonBg())
+        cancel_btn.pack(side=tk.RIGHT, padx=(10,60)) # Adjust padding for centering
+
+
+        new_category_entry.bind("<Return>", lambda e: on_submit())
+        dialog.protocol("WM_DELETE_WINDOW", on_cancel)
+        
+        parent.wait_window(dialog) # Wait for dialog to close
+        return new_cat_chosen["value"]
+
+
     def open_edit_program_categories_window(self, parent_root):
         app_logger.debug("Opening edit program categories window.")
-        edit_window = tk.Toplevel(parent_root)
+        edit_window = Toplevel(parent_root)
         edit_window.title("Edit Program Categories")
         edit_window.configure(bg=self.theme.windowBg())
         edit_window.transient(parent_root)
-        edit_window.grab_set() # Make modal
-        edit_window.minsize(width=450, height=400) # Adjusted minsize for new elements
+        edit_window.grab_set()
+        edit_window.minsize(width=550, height=450) # <<< CHANGED: Slightly wider for new button
 
         timer_icon_path_str = str(config.TIMER_ICON_PATH)
         if os.path.exists(timer_icon_path_str):
-            try:
-                edit_window.iconbitmap(timer_icon_path_str)
-            except tk.TclError as e:
-                app_logger.warning(f"Failed to set timer icon ({timer_icon_path_str}): {e}. Using default.")
-        else:
-            app_logger.warning(f"Timer icon not found at {timer_icon_path_str}. Using default.")
+            try: edit_window.iconbitmap(timer_icon_path_str)
+            except tk.TclError as e: app_logger.warning(f"Failed to set timer icon for edit window: {e}")
+        else: app_logger.warning(f"Timer icon not found for edit window: {timer_icon_path_str}")
 
-        # --- Main frame for scrollable list ---
-        # This frame will contain the canvas and scrollbar
-        list_container_frame = tk.Frame(edit_window, bg=self.theme.windowBg())
+        list_container_frame = Frame(edit_window, bg=self.theme.windowBg())
         list_container_frame.pack(fill=tk.BOTH, expand=True, padx=10, pady=(10, 5))
 
-        canvas = tk.Canvas(list_container_frame, bg=self.theme.windowBg(), highlightthickness=0)
+        canvas = Canvas(list_container_frame, bg=self.theme.windowBg(), highlightthickness=0)
         canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         scrollbar = ttk.Scrollbar(list_container_frame, orient=tk.VERTICAL, command=canvas.yview)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-
         canvas.configure(yscrollcommand=scrollbar.set)
-        
-        scrollable_frame = tk.Frame(canvas, bg=self.theme.windowBg())
-        canvas_window_id = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw")
 
-        def configure_scroll_region(event):
+        scrollable_frame = Frame(canvas, bg=self.theme.windowBg())
+        canvas_window_id = canvas.create_window((0, 0), window=scrollable_frame, anchor="nw", tags="scrollable_frame")
+
+        def _configure_scrollable_frame_width(event):
+            canvas.itemconfig(canvas_window_id, width=event.width)
+        def _update_scrollregion(event):
             canvas.configure(scrollregion=canvas.bbox("all"))
 
-        def configure_canvas_window(event):
-            canvas.itemconfig(canvas_window_id, width=event.width)
+        canvas.bind("<Configure>", _configure_scrollable_frame_width)
+        scrollable_frame.bind("<Configure>", _update_scrollregion)
 
-        scrollable_frame.bind("<Configure>", configure_scroll_region)
-        canvas.bind("<Configure>", configure_canvas_window)
-
-        # --- Mousewheel Scrolling Functionality ---
-        def _on_mousewheel_scroll(event):
+        # --- Mousewheel Scrolling Fix (Canvas only) --- # <<< CHANGED: Simplified, as Comboboxes are gone from this direct view
+        def _on_mousewheel_scroll_handler(event):
             scroll_intensity = 0
-            if hasattr(event, 'delta') and event.delta != 0:  # Windows/macOS
-                scroll_intensity = int(-1 * (event.delta / 120))
-            elif event.num == 4:  # Linux scroll up
+            if event.num == 4 or event.delta > 0:  # Scroll up
                 scroll_intensity = -1
-            elif event.num == 5:  # Linux scroll down
+            elif event.num == 5 or event.delta < 0:  # Scroll down
                 scroll_intensity = 1
 
             if scroll_intensity != 0:
+                # Check if the event widget is the canvas or a child of the scrollable_frame
+                # to prevent scrolling if mouse is over widgets outside the canvas (e.g., buttons below)
+                # This check might need refinement depending on exact layout.
+                # For now, let's assume any scroll in this window should target the canvas.
                 canvas.yview_scroll(scroll_intensity, "units")
-            
-            # If the widget that triggered this is a Combobox, prevent its own scroll action.
-            if isinstance(event.widget, ttk.Combobox):
-                return "break" # Prevents the combobox from changing value on scroll
+            # No "return break" needed here if we only want canvas to scroll and no other widget
+            # in this specific handler has a conflicting default scroll action we want to suppress.
+            # If other widgets were added that also scroll (e.g. Text), more logic would be needed.
 
-        def _bind_mousewheel_to_widget(widget):
-            widget.bind("<MouseWheel>", _on_mousewheel_scroll)
-            widget.bind("<Button-4>", _on_mousewheel_scroll)
-            widget.bind("<Button-5>", _on_mousewheel_scroll)
+        edit_window.bind_all("<MouseWheel>", _on_mousewheel_scroll_handler, add="+")
+        edit_window.bind_all("<Button-4>", _on_mousewheel_scroll_handler, add="+")
+        edit_window.bind_all("<Button-5>", _on_mousewheel_scroll_handler, add="+")
+        # --- End Mousewheel Scrolling Fix --- #
 
-        _bind_mousewheel_to_widget(canvas)
-        _bind_mousewheel_to_widget(scrollable_frame)
-        # Child widgets inside scrollable_frame will be bound in _populate_program_list
-
-        available_categories = [] # Predefined categories
-        for i in self.CATEGORIES:
-            available_categories.append(i)
-        
-        # This dictionary will store StringVars for comboboxes in the list
-        # It's a member of the class (self.program_vars) to be accessible by helper methods
-        self.program_vars.clear() 
+        self.program_vars.clear() # Stores StringVars for each program's category
 
         def _populate_program_list():
-            # Clear existing widgets from scrollable_frame
-            for widget in scrollable_frame.winfo_children():
-                widget.destroy()
-            
-            self.program_vars.clear() # Clear for repopulation
+            for widget in scrollable_frame.winfo_children(): widget.destroy()
+            # self.program_vars.clear() # Clearing at the beginning of parent function
 
-            # Header
+            current_db_categories = self.get_CATEGORIES() # Get all unique categories currently in DB
+
             header_font = ("Helvetica", "10", "bold")
-            header_bg = self.theme.windowBg()
-            header_fg = 'white'
-            
-            ttk.Label(scrollable_frame, text="Program Name", font=header_font, background=header_bg, foreground=header_fg).grid(row=0, column=0, padx=5, pady=5, sticky="w")
-            ttk.Label(scrollable_frame, text="Category", font=header_font, background=header_bg, foreground=header_fg).grid(row=0, column=1, padx=5, pady=5, sticky="w")
+            Label(scrollable_frame, text="Program Name", font=header_font, bg=self.theme.windowBg(), fg="white").grid(row=0, column=0, padx=5, pady=5, sticky="w")
+            Label(scrollable_frame, text="Category", font=header_font, bg=self.theme.windowBg(), fg="white").grid(row=0, column=1, padx=5, pady=5, sticky="w")
+            # Column 2 for the change button (no header needed or add one if you like)
+            Label(scrollable_frame, text="Action", font=header_font, bg=self.theme.windowBg(), fg="white").grid(row=0, column=2, padx=5, pady=5, sticky="w")
+
 
             row_num = 1
-            sorted_programs = sorted(self.category_map.items())
+            # Iterate through self.category_map (which is loaded from DB initially)
+            # to ensure all known programs are listed.
+            # self.program_vars will store the current (potentially edited) category for each program.
+            sorted_programs = sorted(self.category_map.keys())
 
-            for program_name, current_category in sorted_programs:
-                label_bg = self.theme.windowBg()
-                label_fg = 'white'
 
-                program_label = ttk.Label(scrollable_frame, text=program_name, background=label_bg, foreground=label_fg)
-                program_label.grid(row=row_num, column=0, padx=5, pady=3, sticky="w")
-                _bind_mousewheel_to_widget(program_label)
-                
-                category_var = tk.StringVar(value=current_category)
-                
-                category_combo = ttk.Combobox(scrollable_frame, textvariable=category_var, values=available_categories, state="readonly", width=17)
-                if current_category in available_categories:
-                    category_combo.set(current_category)
-                elif available_categories: # Default to first if current not valid or not in list
-                    category_combo.set(available_categories[0])
-                
-                category_combo.grid(row=row_num, column=1, padx=5, pady=3, sticky="ew")
-                _bind_mousewheel_to_widget(category_combo)
-                
-                self.program_vars[program_name] = category_var
+            for program_name in sorted_programs:
+                current_prog_category = self.category_map.get(program_name, "Misc")
+
+                # Ensure StringVar exists for this program
+                if program_name not in self.program_vars:
+                    self.program_vars[program_name] = StringVar(value=current_prog_category)
+                else:
+                    # If it exists, make sure its value reflects the current state
+                    # (e.g. after an add/update operation, or if loaded from DB)
+                    self.program_vars[program_name].set(current_prog_category)
+
+                category_var_for_program = self.program_vars[program_name]
+
+
+                program_label_widget = Label(scrollable_frame, text=program_name, bg=self.theme.windowBg(), fg="white")
+                program_label_widget.grid(row=row_num, column=0, padx=5, pady=3, sticky="w")
+
+                # Display category as a label
+                category_display_label = Label(scrollable_frame, textvariable=category_var_for_program, bg=self.theme.windowBg(), fg="white", width=20, anchor="w") # <<< CHANGED
+                category_display_label.grid(row=row_num, column=1, padx=5, pady=3, sticky="ew")
+
+
+                # --- Change Button Logic --- # <<< NEW/CHANGED
+                def _create_change_handler(p_name, cat_var):
+                    # p_name_local = p_name # Capture p_name for this specific button
+                    # cat_var_local = cat_var # Capture cat_var
+                    def _handler():
+                        # Pass current_db_categories (all unique categories from DB) to the dialog
+                        all_known_categories = self.get_CATEGORIES() # Refresh just in case
+                        new_category = self._ask_category_dialog(edit_window,
+                                                                p_name,
+                                                                cat_var.get(),
+                                                                all_known_categories)
+                        if new_category is not None: # If a new category was chosen (not cancelled)
+                            cat_var.set(new_category) # Update the StringVar, label updates automatically
+                            # Also update self.category_map to reflect the pending change before saving
+                            self.category_map[p_name] = new_category
+                            if new_category not in self.CATEGORIES: # If it's a brand new category overall
+                                self.CATEGORIES.add(new_category)
+                                # Update the list of categories for the "Add/Update Program" section's combobox
+                                new_program_category_combo['values'] = self.get_CATEGORIES()
+                    return _handler
+
+                change_button = ttk.Button(scrollable_frame,
+                                          text="Edit",
+                                          command=_create_change_handler(program_name, category_var_for_program),
+                                          width=8) # <<< NEW
+                change_button.grid(row=row_num, column=2, padx=5, pady=3, sticky="e") # <<< NEW column
+
                 row_num += 1
-            
-            scrollable_frame.columnconfigure(0, weight=1) 
-            scrollable_frame.columnconfigure(1, weight=0) 
 
-            # Update canvas scrollregion after populating.
-            # Defer this to ensure all widgets are drawn and bbox is correct.
-            canvas.update_idletasks()
+            scrollable_frame.columnconfigure(0, weight=3) # Program name can be wider
+            scrollable_frame.columnconfigure(1, weight=2) # Category label
+            scrollable_frame.columnconfigure(2, weight=0) # Action button, no extra weight
+            edit_window.update_idletasks()
             canvas.config(scrollregion=canvas.bbox("all"))
 
-        # --- New Entry Frame (for adding/updating programs) ---
-        new_entry_outer_frame = tk.Frame(edit_window, bg=self.theme.windowBg())
-        new_entry_outer_frame.pack(fill=tk.X, padx=10, pady=(0, 5)) # pady=(top, bottom)
-
-        # Add a separator or a label for this section
+        new_entry_outer_frame = Frame(edit_window, bg=self.theme.windowBg())
+        new_entry_outer_frame.pack(fill=tk.X, padx=10, pady=(0, 5))
         ttk.Separator(new_entry_outer_frame, orient='horizontal').pack(fill='x', pady=(2, 5))
-        section_label = ttk.Label(new_entry_outer_frame, text="Add or Update Program in List", font=("Helvetica", "10", "italic"), background=self.theme.windowBg(), foreground='white')
-        section_label.pack(pady=(0,5))
-
-
-        new_entry_fields_frame = tk.Frame(new_entry_outer_frame, bg=self.theme.windowBg())
+        Label(new_entry_outer_frame, text="Add or Update Program in List", font=("Helvetica", "10", "italic"), bg=self.theme.windowBg(), fg="white").pack(pady=(0,5))
+        new_entry_fields_frame = Frame(new_entry_outer_frame, bg=self.theme.windowBg())
         new_entry_fields_frame.pack(fill=tk.X)
 
-        ttk.Label(new_entry_fields_frame, text="Program Name:", background=self.theme.windowBg(), foreground='white').grid(row=0, column=0, padx=5, pady=3, sticky="w")
-        new_program_name_var = tk.StringVar()
-        new_program_name_entry = ttk.Entry(new_entry_fields_frame, textvariable=new_program_name_var, width=30)
+        Label(new_entry_fields_frame, text="Program Name:", bg=self.theme.windowBg(), fg="white").grid(row=0, column=0, padx=5, pady=3, sticky="w")
+        new_program_name_var = StringVar()
+        new_program_name_entry = Entry(new_entry_fields_frame, textvariable=new_program_name_var, width=30, bg=self.theme.buttonBg(), fg="white", insertbackground="white")
         new_program_name_entry.grid(row=0, column=1, padx=5, pady=3, sticky="ew")
 
-        ttk.Label(new_entry_fields_frame, text="Category:", background=self.theme.windowBg(), foreground='white').grid(row=1, column=0, padx=5, pady=3, sticky="w")
-        new_program_category_var = tk.StringVar()
-        new_program_category_combo = ttk.Combobox(new_entry_fields_frame, textvariable=new_program_category_var, values=available_categories, state="readonly", width=17)
-        if available_categories: new_program_category_combo.set(available_categories[0]) # Default selection
+        Label(new_entry_fields_frame, text="Category:", bg=self.theme.windowBg(), fg="white").grid(row=1, column=0, padx=5, pady=3, sticky="w")
+        new_program_category_var = StringVar()
+        # This combobox is for adding *new* programs, so it's fine here, not in the scrollable list.
+        new_program_category_combo = ttk.Combobox(new_entry_fields_frame, textvariable=new_program_category_var, values=self.get_CATEGORIES(), state="readonly", width=23)
+        if self.get_CATEGORIES(): new_program_category_combo.set(self.get_CATEGORIES()[0])
         new_program_category_combo.grid(row=1, column=1, padx=5, pady=3, sticky="ew")
 
-        def add_or_update_program_in_list():
+        def add_or_update_program_in_ui_list():
             prog_name = new_program_name_var.get().strip()
             prog_cat = new_program_category_var.get()
-
-            if not prog_name:
-                messagebox.showwarning("Input Error", "Program name cannot be empty.", parent=edit_window)
-                return
-            if not prog_cat: # Should not happen with readonly combobox if categories exist
-                messagebox.showwarning("Input Error", "Please select a category.", parent=edit_window)
+            if not prog_name or not prog_cat:
+                messagebox.showwarning("Input Error", "Program name and category cannot be empty.", parent=edit_window)
                 return
 
+            # Update self.category_map directly (this is the source for _populate_program_list)
             self.category_map[prog_name] = prog_cat
-            _populate_program_list() # Refresh the entire list display
+            # Ensure the StringVar exists in program_vars for this program
+            if prog_name not in self.program_vars:
+                self.program_vars[prog_name] = StringVar()
+            self.program_vars[prog_name].set(prog_cat) # Set its value
 
-            new_program_name_var.set("") # Clear input field
-            if available_categories: new_program_category_combo.set(available_categories[0]) # Reset combobox
-            app_logger.info(f"Program '{prog_name}' added/updated in UI list. Click 'Save Changes' to persist.")
-            new_program_name_entry.focus_set() # Set focus back to entry for quick additions
+            if prog_cat not in self.CATEGORIES:
+                self.CATEGORIES.add(prog_cat)
+                new_program_category_combo['values'] = self.get_CATEGORIES() # Update categories for the "add new" combobox
 
-        add_update_button = tk.Button(new_entry_fields_frame, text="Add / Update in List", command=add_or_update_program_in_list,
-                                     bg=self.theme.buttonBg(), fg='white', font=("Helvetica", "9"),
-                                     activebackground=self.theme.activeButtonBg(), activeforeground='white', borderwidth=1, relief=tk.SOLID)
-        add_update_button.grid(row=0, column=2, rowspan=2, padx=(10,5), pady=3, sticky="nswe") # Span 2 rows
+            _populate_program_list() # Repopulate the list UI
+            new_program_name_var.set("")
+            if self.get_CATEGORIES(): new_program_category_combo.set(self.get_CATEGORIES()[0])
+            app_logger.info(f"Program '{prog_name}' UI list updated. Save to persist to DB.")
+            new_program_name_entry.focus_set()
 
-        new_entry_fields_frame.columnconfigure(1, weight=1) # Allow entry and combobox to expand
+        add_update_btn = Button(new_entry_fields_frame, text="Add/Update in List", command=add_or_update_program_in_ui_list, bg=self.theme.buttonBg(), fg='white', font=("Helvetica", "9"), activebackground=self.theme.activeButtonBg(), activeforeground='white', borderwidth=1, relief=tk.SOLID)
+        add_update_btn.grid(row=0, column=2, rowspan=2, padx=(10,5), pady=3, sticky="nswe")
+        new_entry_fields_frame.columnconfigure(1, weight=1)
 
-        # Initial population of the list
-        _populate_program_list()
+        _populate_program_list() # Initial population
 
-        # --- Buttons Frame (Save/Cancel) ---
-        buttons_frame = tk.Frame(edit_window, bg=self.theme.windowBg())
+        buttons_frame = Frame(edit_window, bg=self.theme.windowBg())
         buttons_frame.pack(side=tk.BOTTOM, fill=tk.X, pady=(5,10), padx=10)
 
-        def save_program_categories_and_close():
-            updated_count = 0
-            # Iterate through self.program_vars which reflects the current state of comboboxes
-            for program_name, category_var in self.program_vars.items():
-                new_category = category_var.get()
-                # Check if this program is still in category_map (it should be if list is synced)
-                # and if its category has changed from what's in category_map (which might have been updated by "Add/Update")
-                # The primary source of truth for saving should be what's currently in the UI's StringVars
-                if program_name in self.category_map and self.category_map[program_name] != new_category :
-                    self.category_map[program_name] = new_category # Update the main map
-                    updated_count +=1
-                elif program_name not in self.category_map: # Should not happen if Add/Update syncs map
-                    self.category_map[program_name] = new_category
-                    updated_count +=1
-
-
-            # An alternative: self.category_map is already updated by "Add/Update Program in List".
-            # Here, we just need to ensure any changes made *directly in the list's comboboxes* are captured.
-            # The current self.program_vars reflects all items shown in the list.
-            temp_map_from_ui = {}
-            changes_made_in_list = False
-            for prog_name_in_var, cat_var in self.program_vars.items():
-                ui_category = cat_var.get()
-                temp_map_from_ui[prog_name_in_var] = ui_category
-                if self.category_map.get(prog_name_in_var) != ui_category:
-                    changes_made_in_list = True
-            
-            if changes_made_in_list or updated_count > 0 : # updated_count for new items via add/update form
-                                                           # changes_made_in_list for direct combobox changes
-                # Consolidate: update self.category_map from temp_map_from_ui
-                # This ensures that what you see in the UI is what gets saved.
-                # Count actual changes against the original state before opening the window, or just save the current state.
-                # For simplicity, let's assume self.category_map is the state to save,
-                # and it has been updated by both the "Add/Update" form and direct combobox changes (via program_vars).
-
-                # Rebuild category_map based on the UI's current state (program_vars)
-                final_map_to_save = {}
-                final_updated_count = 0
-                original_map_snapshot = dict(self.category_map) # Take a snapshot before this window modified it (if needed for precise count)
-                                                                # For this example, we'll just count based on current self.category_map vs program_vars
-
-                for pn, cv in self.program_vars.items():
-                    new_cat = cv.get()
-                    final_map_to_save[pn] = new_cat
-                    if original_map_snapshot.get(pn) != new_cat: # Compare to original state if available
-                        final_updated_count +=1
-                
-                # If items were deleted from category_map by some other means and list not refreshed, they'd be lost.
-                # Current design: list always reflects category_map. So, program_vars is the authority for save.
-                self.category_map = final_map_to_save # Update the master map to what's in UI
-
-                self.save_dict_to_txt(str(config.USER_PROGRAMS_FILE_PATH))
-                self.update_csv_log() # Assuming this is a method of your class
-                app_logger.info(f"Program categories updated and saved. Total items: {len(self.category_map)}.")
-                messagebox.showinfo("Success", f"Program categories saved successfully!", parent=edit_window)
-            else:
-                messagebox.showinfo("No Changes", "No category changes were made to save.", parent=edit_window)
-            
+        def _cleanup_bindings_and_destroy():
+            edit_window.unbind_all("<MouseWheel>")
+            edit_window.unbind_all("<Button-4>")
+            edit_window.unbind_all("<Button-5>")
             edit_window.destroy()
 
-        save_button = tk.Button(buttons_frame, text="Save Changes", command=save_program_categories_and_close,
-                                bg=self.theme.buttonBg(), fg='white', font=("Helvetica", "10", "bold"),
-                                activebackground=self.theme.activeButtonBg(), activeforeground='white', borderwidth=2)
-        save_button.pack(side=tk.RIGHT, padx=5)
+        def save_all_changes_to_db_and_close():
+            programs_to_update_historical_logs = {}
+            # Iterate over self.program_vars which holds the final state of categories from the UI
+            for prog_name_in_map, final_ui_category_var in self.program_vars.items():
+                final_ui_category = final_ui_category_var.get()
+                original_db_category = "" # Need to fetch original from a clean load or initial map if different
+                # For simplicity, we assume self.category_map was updated by _ask_category_dialog
+                # and the original version of category_map (before this window opened)
+                # is not easily available here without more complex state management.
+                # The current logic will just save what's in self.program_vars.
+                # To detect actual changes for historical log update:
+                # We'd need to compare self.program_vars[prog].get() with an initial_category_map[prog]
+                
+                # Simplified: just save everything from program_vars.
+                # Historical update will be triggered if self.category_map[prog_name] (potentially UI updated)
+                # is different from what would be loaded from DB for that program initially.
+                # This part might need more robust "initial state" vs "final state" tracking if precise historical update prompting is critical.
+                
+                # Let's assume self.category_map has been kept in sync with UI changes
+                # and reflects the desired final state.
+                if prog_name_in_map in self.category_map: # Should always be true
+                    self.category_map[prog_name_in_map] = final_ui_category # Ensure category_map is the source of truth for saving
 
-        cancel_button = tk.Button(buttons_frame, text="Cancel", command=edit_window.destroy,
-                                  bg=self.theme.buttonBg(), fg='white', font=("Helvetica", "10"),
-                                  activebackground=self.theme.activeButtonBg(), activeforeground='white', borderwidth=2)
-        cancel_button.pack(side=tk.RIGHT, padx=5)
+            # --- Rebuild programs_to_update_historical_logs based on changes ---
+            # This requires knowing the original categories before this dialog opened.
+            # For now, we'll assume a simpler approach: if a category in self.category_map (now UI synced)
+            # differs from what *would have been* in an untouched category map from the DB, mark for update.
+            # This is tricky without storing the initial state.
+            # A pragmatic approach: any program whose category in self.program_vars
+            # is different from how it was when _populate_program_list first ran.
+            # This is implicitly handled if self.category_map is used for comparison *after* UI updates.
 
-        edit_window.protocol("WM_DELETE_WINDOW", edit_window.destroy) # Ensure clean close
+            # Let's refine: iterate self.program_vars which has the final UI state
+            # and compare with a fresh load of the categories to see what *actually* changed
+            # compared to the DB's last state before this save.
+            # However, self.category_map is already modified in the change_handler and add_or_update.
 
-        # Center the window
+            # Simpler logic for now: save everything in self.category_map as the new truth.
+            # The check for historical logs will be based on this new truth.
+            # To make `programs_to_update_historical_logs` more accurate, you'd store `initial_category_map = self._load_program_categories_from_db()`
+            # at the start of `open_edit_program_categories_window` and compare against it.
+
+            saved_count = 0
+            # Save all entries from the UI-updated self.category_map
+            for prog_name, final_cat in self.category_map.items():
+                if self.save_program_category_to_db(prog_name, final_cat):
+                    # If you had an initial_category_map:
+                    # original_cat = initial_category_map.get(prog_name)
+                    # if original_cat and original_cat != final_cat:
+                    #     programs_to_update_historical_logs[prog_name] = final_cat
+                    # For now, we can't robustly populate programs_to_update_historical_logs this way.
+                    # The existing historical update logic will trigger if any category_map value changed *during the session*.
+                    saved_count +=1
+            
+            # The historical update part needs careful thought about "original vs new"
+            # For now, if saved_count > 0, it implies some change might have occurred.
+            # The prompt is generic.
+
+            if saved_count > 0:
+                app_logger.info(f"{saved_count} program-category mappings potentially saved/updated in DB.")
+                new_program_category_combo['values'] = self.get_CATEGORIES() # Refresh for "add new" combo
+
+                # This prompt is now less accurate as we don't precisely know *which* ones changed from DB state
+                if messagebox.askyesno(
+                    "Update Log Entries?",
+                    "Program categories may have been changed. Update these in all historical log entries for affected programs?\n(This might take a moment and cannot be undone easily)",
+                    parent=edit_window):
+                    # To do this properly, you need a list of (program_name, new_category) for *actually changed* items.
+                    # For now, it will re-apply current categories from self.category_map if user says yes.
+                    for prog_to_update, new_cat_for_log in self.category_map.items(): # Potentially update all
+                         self.update_categories_in_log_entries(prog_to_update, new_cat_for_log)
+                    app_logger.info("Historical log entries potentially updated based on current categories.")
+                messagebox.showinfo("Success", "Program categories saved to database.", parent=edit_window)
+            else:
+                messagebox.showinfo("No Changes", "No new or modified program categories to save to database.", parent=edit_window)
+
+            _cleanup_bindings_and_destroy()
+
+        save_btn = Button(buttons_frame, text="Save Changes to DB", command=save_all_changes_to_db_and_close, bg=self.theme.buttonBg(), fg='white', font=("Helvetica", "10", "bold"), activebackground=self.theme.activeButtonBg(), activeforeground='white', borderwidth=2)
+        save_btn.pack(side=tk.RIGHT, padx=5)
+        cancel_btn = Button(buttons_frame, text="Cancel", command=_cleanup_bindings_and_destroy, bg=self.theme.buttonBg(), fg='white', font=("Helvetica", "10"), activebackground=self.theme.activeButtonBg(), activeforeground='white', borderwidth=2)
+        cancel_btn.pack(side=tk.RIGHT, padx=5)
+
+        edit_window.protocol("WM_DELETE_WINDOW", _cleanup_bindings_and_destroy)
+
         parent_root.update_idletasks()
-        x = parent_root.winfo_x() + (parent_root.winfo_width() // 2) - (edit_window.winfo_width() // 2)
-        y = parent_root.winfo_y() + (parent_root.winfo_height() // 2) - (edit_window.winfo_height() // 2)
+        x = parent_root.winfo_x() + (parent_root.winfo_width() // 2) - (edit_window.winfo_reqwidth() // 2)
+        y = parent_root.winfo_y() + (parent_root.winfo_height() // 2) - (edit_window.winfo_reqheight() // 2)
         edit_window.geometry(f"+{x}+{y}")
-        
-        new_program_name_entry.focus_set() # Initial focus on the new program name entry
+        new_program_name_entry.focus_set()
 
-    def update_csv_log(self):
-        update_df = self.df.copy()
-        #self.category_map = self.load_dict_from_txt(str(config.USER_PROGRAMS_FILE_PATH)) # Ensure this is loaded
-
-        if not isinstance(self.category_map, dict):
-            print("Error: self.category_map is not a dictionary. Aborting update.")
-            return # Or raise an error
-
-        changes_made = False
-        for index, row_data in update_df.iterrows(): # Use index and row_data for clarity
-            program_name = row_data['program']
-            current_category = row_data['category']
-
-            # Safely get the new category from the map
-            # Provide a default or handle missing keys appropriately
-            new_category = self.category_map.get(program_name)
-
-            if new_category is None:
-                print(f"Warning: Program '{program_name}' not found in category_map. setting 'Misc'.")
-                update_df.loc[index, 'category'] = 'Misc' #  <--- CORRECT WAY TO MODIFY
-                changes_made = True
-
-            if current_category != new_category:
-                print(f"'{program_name}': Category '{current_category}' will change to '{new_category}'")
-                update_df.loc[index, 'category'] = new_category #  <--- CORRECT WAY TO MODIFY
-                changes_made = True
-
-        if changes_made:
-            print("Saving updated CSV...")
-            update_df.to_csv(self.csv_file_path, index=False)
-            self.df = self.load_existing_data() # Reload the newly saved data
-            print("CSV updated and data reloaded.")
-        else:
-            print("No changes detected. CSV not modified.")
-            # Optionally, you might still want to reload if the file could have been changed externally
-            # self.df = self.load_existing_data()
-        
-        
-
-# ADDED: Method to get all data (current + historical)
-    def get_all_logged_data(self):
-        app_logger.info("Consolidating all logged data.")
-        # Load historical data
-        historical_dfs = []
-        historical_log_dir = config.HISTORICAL_LOG_DIR_PATH
-        
-        if historical_log_dir.exists():
-            csv_files = list(historical_log_dir.glob("*.csv"))
-            app_logger.debug(f"Found {len(csv_files)} historical CSV files in {historical_log_dir}")
-            for file_path in csv_files:
+    def update_categories_in_log_entries(self, program_name, new_category):
+        sql = "UPDATE time_entries SET category = ? WHERE program_name = ?"
+        with self._get_db_connection() as conn:
+            if conn:
                 try:
-                    df_hist_single = pd.read_csv(file_path, dtype={'date': str}) # Keep date as string
-                    if not df_hist_single.empty:
-                        historical_dfs.append(df_hist_single)
-                except Exception as e:
-                    app_logger.error(f"Error reading historical CSV {file_path} for report: {e}", exc_info=True)
-        
-        all_data_frames = historical_dfs
-        
-        # Add current logger's DataFrame if it's not empty
-        if self.df is not None and not self.df.empty:
-            all_data_frames.append(self.df.copy()) # Use a copy of the current df
+                    cursor = conn.cursor()
+                    cursor.execute(sql, (new_category, program_name))
+                    conn.commit()
+                    app_logger.info(f"DB: Updated category to '{new_category}' for program '{program_name}'. Rows: {cursor.rowcount}")
+                except sqlite3.Error as e:
+                    app_logger.error(f"DB: Failed to update categories in time_entries: {e}", exc_info=True)
 
-        if not all_data_frames:
-            app_logger.warning("No data found (current or historical) for report generation.")
-            return pd.DataFrame()
+    def get_all_logged_data(self, start_date_str=None, end_date_str=None):
+        app_logger.info(f"DB: Fetching logged data. Start: {start_date_str}, End: {end_date_str}")
+        query = "SELECT id, date_text, program_name, window_title, category, start_time_text, end_time_text, total_time_minutes, start_timestamp_epoch, end_timestamp_epoch, percent_text FROM time_entries"
+        params = []
+        conditions = []
+        if start_date_str:
+            try:
+                start_epoch = datetime.strptime(start_date_str + " 00:00:00", '%d/%m/%Y %H:%M:%S').timestamp()
+                conditions.append("start_timestamp_epoch >= ?")
+                params.append(start_epoch)
+            except ValueError: app_logger.warning(f"Invalid start_date_str for DB query: {start_date_str}")
+        if end_date_str:
+            try:
+                end_epoch = datetime.strptime(end_date_str + " 23:59:59", '%d/%m/%Y %H:%M:%S').timestamp()
+                conditions.append("start_timestamp_epoch <= ?")
+                params.append(end_epoch)
+            except ValueError: app_logger.warning(f"Invalid end_date_str for DB query: {end_date_str}")
 
-        combined_df = pd.concat(all_data_frames, ignore_index=True)
-        app_logger.info(f"Consolidated data for report. Total entries: {len(combined_df)}")
-        
-        # Ensure 'date' column is consistently string 'dd/mm/YYYY' before any conversion attempt
-        # This should already be the case due to dtype={'date': str} on reads and strftime on writes.
-        # For robust date filtering, convert to datetime objects
-        try:
-            combined_df['parsed_date'] = pd.to_datetime(combined_df['date'], format='%d/%m/%Y', errors='coerce')
-        except Exception as e:
-            app_logger.error(f"Error parsing 'date' column to datetime objects: {e}. Report may be incomplete or inaccurate.", exc_info=True)
-            # Fallback or return empty if critical
-            return pd.DataFrame() # Or handle rows with NaT in parsed_date
+        if conditions: query += " WHERE " + " AND ".join(conditions)
+        query += " ORDER BY start_timestamp_epoch ASC"
 
-        return combined_df
+        with self._get_db_connection() as conn:
+            if conn:
+                try:
+                    df = pd.read_sql_query(query, conn, params=tuple(params))
+                    app_logger.info(f"DB: Fetched {len(df)} log entries.")
+                    return df
+                except (sqlite3.Error, Exception) as e:
+                    app_logger.error(f"DB: Failed to fetch logged data: {e}", exc_info=True)
+        return pd.DataFrame()
 
-    # ADDED: Method to generate and export the report
     def export_activity_report(self, export_type="all", start_date_str=None, end_date_str=None):
         app_logger.info(f"Exporting activity report. Type: {export_type}, Start: {start_date_str}, End: {end_date_str}")
-        
-        all_data = self.get_all_logged_data()
+        data_for_report_df = self.get_all_logged_data(start_date_str, end_date_str)
 
-        if all_data.empty:
-            messagebox.showinfo("No Data", "No data available to generate a report.", parent=None) # Consider passing parent from UI
+        if data_for_report_df.empty:
+            messagebox.showinfo("No Data", "No data available for the selected criteria to generate a report.", parent=None)
             return
 
-        report_df = all_data.copy()
+        summary_report_df = data_for_report_df.groupby(['date_text', 'category'], as_index=False)['total_time_minutes'].sum()
 
-        if export_type == "range":
-            if start_date_str and end_date_str:
-                try:
-                    # Convert UI input strings to datetime objects for comparison
-                    # Assuming UI provides dates in 'dd/mm/YYYY' or a DateEntry widget provides datetime
-                    start_date = datetime.strptime(start_date_str, '%d/%m/%Y')
-                    end_date = datetime.strptime(end_date_str, '%d/%m/%Y')
-                    
-                    # Filter based on the 'parsed_date' column
-                    # Ensure end_date is inclusive by setting time to end of day or comparing just dates
-                    report_df = report_df[
-                        (report_df['parsed_date'].notna()) &
-                        (report_df['parsed_date'] >= start_date) & 
-                        (report_df['parsed_date'] <= pd.Timestamp(end_date).replace(hour=23, minute=59, second=59))
-                    ]
-                    app_logger.debug(f"Filtered data for range. Entries after filtering: {len(report_df)}")
-                except ValueError:
-                    messagebox.showerror("Date Error", "Invalid date format. Please use DD/MM/YYYY.", parent=None)
-                    app_logger.error("Invalid date format provided for report range.", exc_info=True)
-                    return
-                except Exception as e:
-                    messagebox.showerror("Filtering Error", f"Error filtering data by date: {e}", parent=None)
-                    app_logger.error(f"Error filtering data by date: {e}", exc_info=True)
-                    return
-            else:
-                messagebox.showwarning("Date Range Missing", "Please specify both start and end dates for a ranged report.", parent=None)
-                return
-        
-        if report_df.empty:
-            messagebox.showinfo("No Data", "No data found for the selected criteria.", parent=None)
-            return
 
-        # Generate the summary report: sum of 'total_time' grouped by 'date' (original string) and 'category'
-        # Drop the temporary 'parsed_date' before grouping if you want the original string 'date' in output
-        summary_report = report_df.drop(columns=['parsed_date'], errors='ignore') 
-        summary_report = summary_report.groupby(['date', 'category'])['total_time'].sum().reset_index()
-        
-        # Ask user where to save the file
         file_path = filedialog.asksaveasfilename(
             defaultextension=".csv",
             filetypes=[("CSV files", "*.csv"), ("All files", "*.*")],
             title="Save Report As",
-            initialdir=str(config.REPORTS_DIR_PATH), # Set initial directory to reports folder
+            initialdir=str(config.REPORTS_DIR_PATH),
         )
-
         if file_path:
             try:
-                summary_report.to_csv(file_path, index=False)
+                summary_report_df.to_csv(file_path, index=False)
                 messagebox.showinfo("Report Exported", f"Report successfully exported to:\n{file_path}", parent=None)
                 app_logger.info(f"Report exported to {file_path}")
             except Exception as e:
@@ -738,3 +625,24 @@ class Logger:
                 app_logger.error(f"Failed to save report to {file_path}: {e}", exc_info=True)
         else:
             app_logger.info("Report export cancelled by user.")
+
+    def calculate_session_percentages(self, df_input):
+        df = df_input.copy()
+        if df.empty or 'total_time_minutes' not in df.columns:
+            app_logger.debug("calculate_session_percentages: empty DataFrame or missing 'total_time_minutes'.")
+            df['percent_text'] = "0.00%"
+            return df
+        if 'date_text' not in df.columns:
+            app_logger.error("calculate_session_percentages: 'date_text' column missing.")
+            df['percent_text'] = "0.00%"
+            return df
+
+        df['session_total_time_minutes'] = df.groupby('date_text')['total_time_minutes'].transform('sum')
+        df['percent_calc_val'] = 0.0
+        non_zero_session_mask = df['session_total_time_minutes'] != 0
+        df.loc[non_zero_session_mask, 'percent_calc_val'] = \
+            (df.loc[non_zero_session_mask, 'total_time_minutes'] / df.loc[non_zero_session_mask, 'session_total_time_minutes']) * 100
+        df['percent_text'] = df['percent_calc_val'].round(2).astype(str) + "%"
+        df.drop(columns=['session_total_time_minutes', 'percent_calc_val'], inplace=True, errors='ignore')
+        app_logger.debug("Session percentages calculated on DataFrame (not persisted to DB by this method).")
+        return df

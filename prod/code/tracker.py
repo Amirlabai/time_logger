@@ -176,7 +176,7 @@ class WindowTracker:
         if self.active_window_exe:
             self.log_activity_for_current_window(self.active_window_title)
         
-        self.update_user_category_data() # Save category map on exit
+        #self.update_user_category_data() # Save category map on exit
         app_logger.info("Window tracking thread stopped.")
 
 
@@ -222,13 +222,3 @@ class WindowTracker:
             else:
                 app_logger.info("Tracking thread successfully joined.")
         self.thread = None
-
-
-    def update_user_category_data(self):
-        # This now directly calls the logger's method to save its category_map
-        # The category_map in this tracker is a reference to logger_instance.category_map
-        try:
-            self.logger_instance.save_dict_to_txt(str(config.USER_PROGRAMS_FILE_PATH))
-            app_logger.info("User category data update requested (via logger instance).")
-        except Exception as e:
-            app_logger.error(f"Failed to trigger save for user category data: {e}", exc_info=True)

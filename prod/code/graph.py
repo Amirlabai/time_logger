@@ -3,278 +3,215 @@ from tkinter import ttk, messagebox
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pandas as pd
-import glob
 import os
 from pathlib import Path
+from datetime import datetime # For date manipulations
 
-# ADDED:
 import config
 from app_logger import app_logger
 
 class GraphDisplay:
-    def __init__(self, logger_instance, theme): # CORRECTED: logger_instance
-        self.logger = logger_instance # Use the passed logger object
+    def __init__(self, logger_instance, theme):
+        self.logger = logger_instance 
         self.theme = theme
         self.is_open = False
-        # self.df_all_data = self.load_historical_data() # Load historical data once on init or lazily
-        app_logger.info("GraphDisplay initialized.")
+        self.graph_window_title = "Category Percentage Comparison"
+        app_logger.info("GraphDisplay initialized (SQLite mode).")
 
-    def remove_dup_func(self, df):
-        # Specify the column to exclude from the duplicate check
-        column_to_exclude = 'total_time'
+    def _fetch_and_prepare_data(self):
+        """Fetches all data from the logger and performs initial preparation."""
+        app_logger.debug("GraphDisplay: Fetching all data from logger.")
+        df_all_entries = self.logger.get_all_logged_data()
 
-        # Get a list of columns to consider for finding duplicates
-        columns_to_consider = df.columns.difference([column_to_exclude])
+        if df_all_entries.empty:
+            app_logger.warning("GraphDisplay: No data returned from logger.")
+            return pd.DataFrame(), pd.DataFrame(), pd.DataFrame() 
 
-        # Remove duplicates based on 'columns_to_consider', keeping the first occurrence
-        df_deduplicated = df.drop_duplicates(subset=columns_to_consider, keep='first')
+        df_all_entries['total_time_minutes'] = pd.to_numeric(df_all_entries['total_time_minutes'], errors='coerce').fillna(0)
+        df_all_entries['parsed_date'] = pd.to_datetime(df_all_entries['date_text'], format='%d/%m/%Y', errors='coerce')
+        df_all_entries.dropna(subset=['parsed_date'], inplace=True)
 
-        #print("\nDataFrame after removing duplicates (excluding '{}'):".format(column_to_exclude))
-        return(df_deduplicated)
+        if df_all_entries.empty:
+            app_logger.warning("GraphDisplay: Data became empty after date parsing/filtering.")
+            return pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
 
-    def load_historical_data(self): # Renamed from get_history
-        historical_dfs = []
-        # CORRECTED: Use configured path
-        historical_log_dir = config.HISTORICAL_LOG_DIR_PATH
+        today_dt = datetime.today().replace(hour=0, minute=0, second=0, microsecond=0)
+        current_month_start = today_dt.replace(day=1)
+
+        df_today = df_all_entries[df_all_entries['parsed_date'] == today_dt].copy()
+        df_this_month = df_all_entries[df_all_entries['parsed_date'] >= current_month_start].copy()
         
-        if not historical_log_dir.exists():
-            app_logger.warning(f"Historical log directory not found: {historical_log_dir}")
-            return pd.DataFrame()
+        app_logger.info(f"GraphDisplay: Data prepared. Today: {len(df_today)} entries, Month: {len(df_this_month)} entries, Overall: {len(df_all_entries)} entries.")
+        return df_today, df_this_month, df_all_entries
 
-        csv_files = list(historical_log_dir.glob("*.csv"))
-        app_logger.info(f"Found {len(csv_files)} historical CSV files in {historical_log_dir}")
-
-        if not csv_files:
-            app_logger.info(f"No historical CSV files found in {historical_log_dir}.")
-            return pd.DataFrame()
-
-        for file_path in csv_files:
-            try:
-                # CORRECTED: Treat 'date' column as string to maintain 'dd/mm/YYYY'
-                df = pd.read_csv(file_path, dtype={'date': str})
-                if not df.empty:
-                    historical_dfs.append(df)
-                app_logger.debug(f"Successfully read historical data from {file_path}. Shape: {df.shape}")
-            except Exception as e:
-                app_logger.error(f"Error reading historical CSV file {file_path}: {e}", exc_info=True)
+    def show_graph(self):
+        app_logger.info("GraphDisplay: show_graph called.")
         
-        if not historical_dfs:
-            app_logger.info("No data loaded from historical files (all empty or unreadable).")
-            return pd.DataFrame()
-
-        merged_df = pd.concat(historical_dfs, ignore_index=True)
-        removed_duplicates = self.remove_dup_func(merged_df)
-        app_logger.info(f"Removed {len(merged_df) - len(removed_duplicates)} duplicate entries.")
-        #print(f"clean {removed_duplicates.shape}, not clean {merged_df.shape}")
-        # merged_df.sort_index(inplace=True) # Not needed if index is default range index
-        app_logger.info(f"Historical data loaded and merged. Total historical entries: {len(removed_duplicates)}")
-        return removed_duplicates
-
-    def show_graph(self, current_day_df_from_logger): # Parameter name changed for clarity
-        app_logger.info("show_graph called.")
+        df_today, df_this_month, df_overall = self._fetch_and_prepare_data()
         
-        # Load historical data each time graph is shown to get latest archives, or cache it
-        df_historical = self.load_historical_data()
-        
-        # Combine current session data (passed in) with historical data
-        if current_day_df_from_logger.empty and df_historical.empty:
-            messagebox.showinfo("No Data", "No current or historical data available to display.", parent=None if not self.is_open else plt.get_current_fig_manager().window)
-            app_logger.warning("Graph requested, but no current or historical data found.")
+        if df_overall.empty:
+            messagebox.showinfo("No Data", "No current or historical data available to display.", 
+                                parent=None if not self.is_open else plt.get_current_fig_manager().window)
+            app_logger.warning("GraphDisplay: Graph requested, but no data found after fetching.")
             return
         
-        # Ensure 'date' column is string for consistent processing
-        current_day_df_from_logger['date'] = current_day_df_from_logger['date'].astype(str)
-        if not df_historical.empty:
-             df_historical['date'] = df_historical['date'].astype(str)
-        
-        # df_combined will hold today's data + all historical data for "Overall" stats
-        df_combined = pd.concat([df_historical, current_day_df_from_logger], ignore_index=True)
-        app_logger.debug(f"Combined DataFrame for graph created. Shape: {df_combined.shape}")
-
-        # df_current_month for "This Month" stats (from current_day_df_from_logger, as it's the live log)
-        # Assuming current_day_df_from_logger contains all entries for the current month being logged live
-        df_current_month = current_day_df_from_logger.copy()
-
-
-        def format_time_display(total_minutes): # Renamed from format_with_hours
-            if pd.isna(total_minutes): return "0 minutes"
+        def format_time_display(total_minutes):
+            if pd.isna(total_minutes) or total_minutes == 0: return "0 minutes"
             if total_minutes < 1: return f"{total_minutes * 60:.0f} seconds"
             if total_minutes < 60: return f"{total_minutes:.1f} minutes"
             return f"{total_minutes / 60:.2f} hours"
     
-        def get_top_ten_programs(df_source): # Renamed and clarified
-            if df_source.empty or 'program' not in df_source.columns or 'total_time' not in df_source.columns:
+        def get_top_ten_programs(df_source):
+            if df_source.empty or 'program_name' not in df_source.columns or 'total_time_minutes' not in df_source.columns:
                 app_logger.warning("get_top_ten_programs: DataFrame empty or missing required columns.")
-                return pd.DataFrame(columns=["program", "category", "Total Time (min)"]) # Return empty structure
+                return pd.DataFrame(columns=["program_name", "category", "Total Time (min)"])
             try:
-                # Sum 'total_time' (which is in minutes)
-                value_counts = df_source.groupby(["program", "category"])["total_time"].sum()
-                top_10 = value_counts.nlargest(len(value_counts)) # Use nlargest for Series
+                value_counts = df_source.groupby(["program_name", "category"])["total_time_minutes"].sum()
+                top_10 = value_counts.nlargest(10)
                 top_10_df = top_10.reset_index(name="Total Time (min)")
                 app_logger.debug(f"Top ten programs calculated. Found: {len(top_10_df)}")
                 return top_10_df
-            except KeyError:
-                app_logger.error("KeyError in get_top_ten_programs.", exc_info=True)
-                return pd.DataFrame(columns=["program", "category", "Total Time (min)"])
+            except KeyError as e:
+                app_logger.error(f"KeyError in get_top_ten_programs: {e}", exc_info=True)
+                return pd.DataFrame(columns=["program_name", "category", "Total Time (min)"])
 
-
+        graph_window = None # Define for except block
         try:
-            today_str = pd.Timestamp.today().normalize().strftime("%d/%m/%Y")
-            # df_today uses only the current_day_df_from_logger for "Today's" specific stats
-            df_today = current_day_df_from_logger[current_day_df_from_logger["date"] == today_str].copy()
-            app_logger.debug(f"Data for today ({today_str}): {len(df_today)} entries.")
-
-            if df_today.empty and df_combined.empty : # Check if really no data to show
-                messagebox.showinfo("No Data", "No data for today or overall to display graphs.", parent=plt.get_current_fig_manager().window if self.is_open else None)
-                app_logger.warning("show_graph: df_today is empty and df_combined is also empty. Cannot plot.")
-                return
-
-            category_var = tk.StringVar(value="All Categories") # Default to all
+            category_var = tk.StringVar(value="All Categories")
             
-            # Calculations for "Overall" (df_combined)
-            total_time_all_overall = df_combined["total_time"].sum() if not df_combined.empty else 0
-            total_days_overall = df_combined["date"].nunique() if not df_combined.empty else 0
-            
-            # Calculations for "Today" (df_today)
-            total_time_minutes_today = df_today["total_time"].sum() if not df_today.empty else 0
-            
-            # Calculations for "This Month" (df_current_month)
-            total_time_minutes_this_month = df_current_month["total_time"].sum() if not df_current_month.empty else 0
-            total_days_this_month = df_current_month["date"].nunique() if not df_current_month.empty else 0
-
-
-            # --- Graph Window Setup ---
-            graph_window = tk.Toplevel() # Let Tkinter manage parent if not specified
-            graph_window.title("Category Percentage Comparison")
+            graph_window = tk.Toplevel() 
+            graph_window.title(self.graph_window_title)
             graph_window.configure(bg=self.theme.windowBg())
-            # CORRECTED: Use configured icon path
+            graph_window.minsize(800, 600) # Set a reasonable minsize
+
             barchart_icon_path_str = str(config.BARCHART_ICON_PATH)
             if os.path.exists(barchart_icon_path_str):
-                try:
-                    graph_window.iconbitmap(barchart_icon_path_str)
-                except tk.TclError as e:
-                    app_logger.warning(f"Failed to set barchart icon ({barchart_icon_path_str}): {e}. Using default.")
-            else:
-                app_logger.warning(f"Barchart icon not found: {barchart_icon_path_str}. Using default.")
+                try: graph_window.iconbitmap(barchart_icon_path_str)
+                except tk.TclError as e: app_logger.warning(f"Failed to set barchart icon for graph window: {e}")
+            else: app_logger.warning(f"Barchart icon not found for graph window: {barchart_icon_path_str}")
             
-            self.is_open = True # Set flag after window creation
+            self.is_open = True
             graph_window.protocol("WM_DELETE_WINDOW", lambda: self.close_graph_window(graph_window))
 
-
-            # --- Info Frame (Productivity Stats) ---
             info_frame = tk.Frame(graph_window, bg=self.theme.windowBg())
             info_frame.pack(pady=10, padx=10, fill="x")
-
-            info_label = tk.Label(info_frame, text="Calculating stats...", justify="left",
-                                  font=("Helvetica", 10), bg=self.theme.windowBg(), fg="white")
+            info_label = tk.Label(info_frame, text="Calculating stats...", justify="left", font=("Helvetica", 10), bg=self.theme.windowBg(), fg="white")
             info_label.pack(side="left", fill="x", expand=True)
             
-            # Available categories for dropdown from the logger instance (which should be most up-to-date)
             available_categories = ["All Categories"] + self.logger.get_CATEGORIES()
-
-            category_dropdown = ttk.Combobox(info_frame, textvariable=category_var, 
-                                             values=available_categories, state="readonly", width=20)
+            category_dropdown = ttk.Combobox(info_frame, textvariable=category_var, values=available_categories, state="readonly", width=25)
             category_dropdown.pack(side="left", padx=10)
-            category_dropdown.set("All Categories") # Default selection
+            category_dropdown.set("All Categories")
 
             def update_displayed_stats():
                 selected_cat = category_var.get()
                 app_logger.debug(f"Updating stats for selected category: {selected_cat}")
 
-                # Filter data based on selected category
-                df_today_filtered = df_today[df_today['category'] == selected_cat] if selected_cat != "All Categories" else df_today[df_today['category'] != "Break"]
-                df_month_filtered = df_current_month[df_current_month['category'] == selected_cat] if selected_cat != "All Categories" else df_current_month[df_current_month['category'] != "Break"]
-                df_overall_filtered = df_combined[df_combined['category'] == selected_cat] if selected_cat != "All Categories" else df_combined
+                df_today_stat = df_today[(df_today['category'] == selected_cat) if selected_cat != "All Categories" else (df_today['category'] != "Break")]
+                df_month_stat = df_this_month[(df_this_month['category'] == selected_cat) if selected_cat != "All Categories" else (df_this_month['category'] != "Break")]
+                
+                if selected_cat == "All Categories":
+                    df_overall_stat = df_overall[df_overall['category'] != "Break"]
+                else:
+                    df_overall_stat = df_overall[df_overall['category'] == selected_cat]
 
-                # Recalculate sums for filtered data
-                time_today_cat = df_today_filtered['total_time'].sum() if not df_today_filtered.empty else 0
-                time_month_cat = df_month_filtered['total_time'].sum() if not df_month_filtered.empty else 0
-                days_month_active = df_month_filtered['date'].nunique() if not df_month_filtered.empty else 0
+                time_today_cat = df_today_stat['total_time_minutes'].sum()
+                time_month_cat = df_month_stat['total_time_minutes'].sum()
+                days_month_active = df_month_stat['parsed_date'].nunique() if not df_month_stat.empty else 0
+                time_overall_cat = df_overall_stat['total_time_minutes'].sum()
+                days_overall_active = df_overall_stat['parsed_date'].nunique() if not df_overall_stat.empty else 0
                 
-                time_overall_cat = df_overall_filtered['total_time'].sum() if not df_overall_filtered.empty else 0
-                days_overall_active = df_overall_filtered['date'].nunique() if not df_overall_filtered.empty else 0
+                prod_month = ((time_month_cat / 60) / (days_month_active * 16) * 100) if days_month_active > 0 and (time_month_cat > 0) else 0
+                prod_overall = ((time_overall_cat / 60) / (days_overall_active * 16) * 100) if days_overall_active > 0 and (time_overall_cat > 0) else 0
                 
-                # Productivity calculation (assuming 16 awake hours = 2/3 of a day)
-                # Total potential productive time = active_days * 16 hours
-                prod_month = ( (time_month_cat / 60) / (days_month_active * 16) * 100 ) if days_month_active > 0 else 0
-                prod_overall = ( (time_overall_cat / 60) / (days_overall_active * 16) * 100 ) if days_overall_active > 0 else 0
-                
-                cat_display_name = f"{selected_cat}" if selected_cat != "All Categories" else "Overall"
+                cat_display_name = f"{selected_cat}" if selected_cat != "All Categories" else "Productive"
 
                 stats_text = (
                     f"Displaying for: {cat_display_name}\n"
                     f"Today: {format_time_display(time_today_cat)}\n"
                     f"This Month: {format_time_display(time_month_cat)} ({days_month_active} active day(s)). Productivity: {prod_month:.1f}%\n"
-                    f"Overall: {format_time_display(time_overall_cat)} ({days_overall_active} total active day(s)). Productivity: {prod_overall:.1f}%"
+                    f"Overall: {format_time_display(time_overall_cat)} ({days_overall_active} total day(s) with data). Productivity: {prod_overall:.1f}%"
                 )
                 info_label.config(text=stats_text, anchor='w')
-                app_logger.debug(f"Productivity stats updated for UI. Category: {selected_cat}")
-
+            
             category_dropdown.bind("<<ComboboxSelected>>", lambda event: update_displayed_stats())
-            update_displayed_stats() # Initial call
+            update_displayed_stats()
 
-
-            # --- Main Content Frame (Top Ten + Graph) ---
             content_frame = tk.Frame(graph_window, bg=self.theme.buttonBg())
             content_frame.pack(pady=10, padx=10, fill="both", expand=True)
 
-            # --- Top Ten Programs Frame ---
             top_ten_outer_frame = tk.Frame(content_frame, bg=self.theme.activeButtonBg(), relief="sunken", borderwidth=1)
-            top_ten_outer_frame.pack(side="left", fill="y", padx=(0,5), pady=5)
+            top_ten_outer_frame.pack(side="left", fill="y", padx=(0,5), pady=5, ipadx=5, ipady=5)
             
-            tk.Label(top_ten_outer_frame, text='Decending Time Tracked Programs (Overall)',
-                     font=("Helvetica", 11, "bold"), bg=self.theme.activeButtonBg(), fg="white").pack(pady=5)
+            tk.Label(top_ten_outer_frame, text='Top Programs (Overall Time)',
+                     font=("Helvetica", 11, "bold"), bg=self.theme.activeButtonBg(), fg="white").pack(pady=(5,10))
 
-            top_ten_canvas = tk.Canvas(top_ten_outer_frame, bg=self.theme.activeButtonBg(), highlightthickness=0)
+            top_ten_canvas = tk.Canvas(top_ten_outer_frame, bg=self.theme.activeButtonBg(), highlightthickness=0, width=300) 
             top_ten_canvas.pack(side="left", fill="both", expand=True)
 
             top_ten_scrollbar = ttk.Scrollbar(top_ten_outer_frame, orient="vertical", command=top_ten_canvas.yview)
             top_ten_scrollbar.pack(side="right", fill="y")
             
             top_ten_canvas.configure(yscrollcommand=top_ten_scrollbar.set)
-            top_ten_inner_frame = tk.Frame(top_ten_canvas, bg=self.theme.activeButtonBg())
-            top_ten_canvas.create_window((0, 0), window=top_ten_inner_frame, anchor="nw")
-
-            top_ten_data = get_top_ten_programs(df_combined) # Use combined for overall top ten
-            if not top_ten_data.empty:
-                # Headers
-                tk.Label(top_ten_inner_frame, text='Program', font=("Helvetica", 9, "bold"), bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=0, column=0, padx=2, pady=1, sticky='w')
-                tk.Label(top_ten_inner_frame, text='Category', font=("Helvetica", 9, "bold"), bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=0, column=1, padx=2, pady=1, sticky='w')
-                tk.Label(top_ten_inner_frame, text='Time', font=("Helvetica", 9, "bold"), bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=0, column=2, padx=2, pady=1, sticky='w')
-                for index, row_data in top_ten_data.iterrows():
-                    tk.Label(top_ten_inner_frame, text=str(row_data['program'])[:20], font=("Consolas", 8), bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=index + 1, column=0, padx=2, pady=1, sticky='w')
-                    tk.Label(top_ten_inner_frame, text=str(row_data['category'])[:15], font=("Consolas", 8), bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=index + 1, column=1, padx=2, pady=1, sticky='w')
-                    tk.Label(top_ten_inner_frame, text=format_time_display(row_data['Total Time (min)']), font=("Consolas", 8), bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=index + 1, column=2, padx=2, pady=1, sticky='w')
-            else:
-                tk.Label(top_ten_inner_frame, text="No program data for top ten.", font=("Helvetica", 10), bg=self.theme.activeButtonBg(), fg="white").pack(padx=5, pady=5)
             
-            top_ten_inner_frame.update_idletasks() # Crucial for scrollregion
+            top_ten_inner_frame = tk.Frame(top_ten_canvas, bg=self.theme.activeButtonBg())
+            top_ten_canvas.create_window((0, 0), window=top_ten_inner_frame, anchor="nw", tags="inner_frame")
+
+            def _configure_inner_frame_width(event):
+                top_ten_canvas.itemconfig('inner_frame', width=event.width)
+            top_ten_canvas.bind('<Configure>', _configure_inner_frame_width)
+            
+            def _update_scrollregion(event):
+                 top_ten_canvas.configure(scrollregion=top_ten_canvas.bbox("all"))
+            top_ten_inner_frame.bind("<Configure>", _update_scrollregion)
+
+            top_ten_data = get_top_ten_programs(df_overall) 
+
+            for widget in top_ten_inner_frame.winfo_children():
+                widget.destroy()
+
+            if not top_ten_data.empty:
+                tk.Label(top_ten_inner_frame, text='Program', font=("Helvetica", 9, "bold"), 
+                         bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=0, column=0, padx=2, pady=1, sticky='nw')
+                tk.Label(top_ten_inner_frame, text='Category', font=("Helvetica", 9, "bold"), 
+                         bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=0, column=1, padx=2, pady=1, sticky='nw')
+                tk.Label(top_ten_inner_frame, text='Time', font=("Helvetica", 9, "bold"), 
+                         bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=0, column=2, padx=2, pady=1, sticky='ne')
+                
+                for index, row_data in top_ten_data.iterrows():
+                    program_display_name = str(row_data['program_name'])[:25] # Max length
+                    category_display_name = str(row_data['category'])[:15]
+                    time_display = format_time_display(row_data['Total Time (min)'])
+
+                    tk.Label(top_ten_inner_frame, text=program_display_name, font=("Consolas", 8), 
+                             bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=index + 1, column=0, padx=2, pady=1, sticky='w')
+                    tk.Label(top_ten_inner_frame, text=category_display_name, font=("Consolas", 8), 
+                             bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=index + 1, column=1, padx=2, pady=1, sticky='w')
+                    tk.Label(top_ten_inner_frame, text=time_display, font=("Consolas", 8), 
+                             bg=self.theme.activeButtonBg(), fg="white", anchor='w').grid(row=index + 1, column=2, padx=2, pady=1, sticky='e')
+            else:
+                tk.Label(top_ten_inner_frame, text="No program data for top ten.", 
+                         font=("Helvetica", 10), bg=self.theme.activeButtonBg(), fg="white").pack(padx=5, pady=5)
+            
+            top_ten_inner_frame.update_idletasks() 
             top_ten_canvas.config(scrollregion=top_ten_canvas.bbox("all"))
-
-
-            # --- Matplotlib Graph Frame ---
-            graph_plot_frame = tk.Frame(content_frame, bg=self.theme.buttonBg())
+            
+            graph_plot_frame = tk.Frame(content_frame, bg=self.theme.windowBg()) # Match theme
             graph_plot_frame.pack(side="left", fill="both", expand=True, padx=(5,0), pady=5)
             
-            fig, ax = plt.subplots(figsize=(8, 4.5), facecolor=self.theme.buttonBg()) # Adjusted size slightly
+            fig, ax = plt.subplots(figsize=(7, 5), facecolor=self.theme.windowBg()) # Adjusted figsize
             canvas = FigureCanvasTkAgg(fig, master=graph_plot_frame)
             canvas_widget = canvas.get_tk_widget()
             canvas_widget.pack(fill="both", expand=True)
 
-            if not df_today.empty: # Only plot if there's today data, otherwise overall might be plotted alone
-                cat_time_today = df_today.groupby("category")["total_time"].sum()
-                cat_perc_today = (cat_time_today / total_time_minutes_today * 100) if total_time_minutes_today > 0 else pd.Series(dtype='float64')
-            else: # If df_today is empty, create an empty Series to avoid errors
-                cat_perc_today = pd.Series(dtype='float64', index=pd.Index([], name='category'))
+            total_time_today_all_cats = df_today['total_time_minutes'].sum()
+            cat_time_today = df_today.groupby("category")["total_time_minutes"].sum()
+            cat_perc_today = (cat_time_today / total_time_today_all_cats * 100) if total_time_today_all_cats > 0 else pd.Series(dtype='float64')
 
+            total_time_overall_all_cats = df_overall['total_time_minutes'].sum()
+            cat_time_overall = df_overall.groupby("category")["total_time_minutes"].sum()
+            cat_perc_overall = (cat_time_overall / total_time_overall_all_cats * 100) if total_time_overall_all_cats > 0 else pd.Series(dtype='float64')
 
-            if not df_combined.empty:
-                cat_time_overall = df_combined.groupby("category")["total_time"].sum()
-                cat_perc_overall = (cat_time_overall / total_time_all_overall * 100) if total_time_all_overall > 0 else pd.Series(dtype='float64')
-            else:
-                cat_perc_overall = pd.Series(dtype='float64', index=pd.Index([], name='category'))
-
-            # Align categories for plotting
             all_plot_categories = sorted(list(set(cat_perc_today.index) | set(cat_perc_overall.index)))
             cat_perc_today = cat_perc_today.reindex(all_plot_categories, fill_value=0)
             cat_perc_overall = cat_perc_overall.reindex(all_plot_categories, fill_value=0)
@@ -286,36 +223,45 @@ class GraphDisplay:
             ax.bar([x + bar_width/2 for x in x_positions], cat_perc_overall, width=bar_width, label="Overall", color='orange', edgecolor='black')
 
             for i, val_today in enumerate(cat_perc_today):
-                if val_today > 0.1 : ax.text(x_positions[i] - bar_width/2, val_today + 0.5, f"{val_today:.1f}%", ha='center', va='bottom', fontsize=8, color="white", fontweight='bold')
+                if val_today > 0.1: 
+                    ax.text(x_positions[i] - bar_width/2, val_today + 0.5, f"{val_today:.1f}%", 
+                            ha='center', va='bottom', fontsize=7, color="white", fontweight='bold')
+            
             for i, val_overall in enumerate(cat_perc_overall):
-                 if val_overall > 0.1 : ax.text(x_positions[i] + bar_width/2, val_overall + 0.5, f"{val_overall:.1f}%", ha='center', va='bottom', fontsize=8, color="white", fontweight='bold')
+                if val_overall > 0.1: 
+                    ax.text(x_positions[i] + bar_width/2, val_overall + 0.5, f"{val_overall:.1f}%", 
+                            ha='center', va='bottom', fontsize=7, color="white", fontweight='bold')
 
-            ax.set_facecolor(self.theme.windowBg())
-            ax.set_ylabel("Percentage of Time (%)", color="white", fontsize=10)
-            ax.set_xlabel("Categories", color="white", fontsize=10)
-            ax.set_title("Category Time Percentage (Today vs Overall)", fontweight='bold', color="white", fontsize=12)
+            ax.set_facecolor(self.theme.activeButtonBg()) # Darker background for plot area
+            ax.set_ylabel("Percentage of Time (%)", color="white", fontsize=9)
+            ax.set_xlabel("Categories", color="white", fontsize=9)
+            ax.set_title("Category Time Percentage (Today vs Overall)", fontweight='bold', color="white", fontsize=11)
             ax.set_xticks(x_positions)
-            ax.set_xticklabels(all_plot_categories, rotation=30, ha="right", fontsize=9, color="white")
-            ax.tick_params(axis='y', colors='white', labelsize=9)
-            ax.legend(facecolor=self.theme.activeButtonBg(), labelcolor="white", edgecolor="gray")
-            ax.grid(axis='y', linestyle='--', alpha=0.3, color='gray')
-            fig.tight_layout() # Adjust layout to prevent labels overlapping
+            ax.set_xticklabels(all_plot_categories, rotation=25, ha="right", fontsize=8, color="white") # Adjusted rotation
+            ax.tick_params(axis='y', colors='white', labelsize=8)
+            ax.tick_params(axis='x', colors='white', labelsize=8)
+            legend = ax.legend(facecolor=self.theme.buttonBg(), labelcolor="white", edgecolor="gray")
+            legend.get_frame().set_alpha(None) # Make legend background solid
+            ax.grid(axis='y', linestyle='--', alpha=0.4, color='gray') # Slightly more visible grid
+            
+            fig.tight_layout(pad=1.5) 
             canvas.draw()
             app_logger.info("Graph drawn successfully.")
 
-            # Close button at the bottom of graph window
-            close_button = tk.Button(graph_window, text="Close Graph", command=lambda: self.close_graph_window(graph_window),
+            close_button_frame = tk.Frame(graph_window, bg=self.theme.windowBg())
+            close_button_frame.pack(fill=tk.X, pady=(5,10))
+            close_button = tk.Button(close_button_frame, text="Close Graph", command=lambda: self.close_graph_window(graph_window), 
                                      bg=self.theme.closeButtonBg(), fg="white", font=("Arial", "10", "bold"),
                                      activebackground=self.theme.closeActiveButtonBg(), activeforeground="white", borderwidth=2)
-            close_button.pack(pady=10)
+            close_button.pack() # Centered by default in its own frame
 
         except Exception as e:
             app_logger.error(f"Error showing graph: {e}", exc_info=True)
-            messagebox.showerror("Graph Error", f"An error occurred while generating the graph: {e}", parent=graph_window if self.is_open else None)
-            if self.is_open and 'graph_window' in locals() and graph_window.winfo_exists():
-                graph_window.destroy() # Close the problematic graph window
+            messagebox.showerror("Graph Error", f"An error occurred while generating the graph: {e}", 
+                                 parent=graph_window if graph_window and graph_window.winfo_exists() else None)
+            if self.is_open and graph_window and graph_window.winfo_exists(): # Check if graph_window was successfully created
+                graph_window.destroy()
             self.is_open = False
-
 
     def close_graph_window(self, window_instance):
         if window_instance and window_instance.winfo_exists():

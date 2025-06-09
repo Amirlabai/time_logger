@@ -40,13 +40,16 @@ PROJECT_LIB = PROJECT_ROOT / "prod/lib"
 LOG_BASE_DIR_NAME = "timeLog" # Name of the main logging directory
 LOG_BASE_DIR = PROJECT_ROOT / PROJECT_LIB / LOG_BASE_DIR_NAME # Base directory for all logs (e.g., C:\YourProject\timeLog)
 
-MAIN_LOG_FILE_NAME = "time_log.csv"
-HISTORICAL_LOG_DIR_NAME = "log" # Subdirectory for archived CSV logs
+#MAIN_LOG_FILE_NAME = "time_log.csv"
+#HISTORICAL_LOG_DIR_NAME = "log" # Subdirectory for archived CSV logs
 REPORTS_DIR_NAME = "report" # Subdirectory for monthly reports
 
+DATABASE_FILE_NAME = "time_tracker_data.sqlite"
+DATABASE_FILE_PATH = LOG_BASE_DIR / DATABASE_FILE_NAME # Or PROJECT_ROOT if preferred
+
 # Construct full paths
-MAIN_LOG_FILE_PATH = LOG_BASE_DIR / MAIN_LOG_FILE_NAME
-HISTORICAL_LOG_DIR_PATH = LOG_BASE_DIR / HISTORICAL_LOG_DIR_NAME
+#MAIN_LOG_FILE_PATH = LOG_BASE_DIR / MAIN_LOG_FILE_NAME
+#HISTORICAL_LOG_DIR_PATH = LOG_BASE_DIR / HISTORICAL_LOG_DIR_NAME
 REPORTS_DIR_PATH = LOG_BASE_DIR / REPORTS_DIR_NAME
 
 # --- User Data Files ---
@@ -77,7 +80,6 @@ def ensure_directories_exist():
     """Creates necessary log directories if they don't exist."""
     dirs_to_create = [
         LOG_BASE_DIR,
-        HISTORICAL_LOG_DIR_PATH,
         REPORTS_DIR_PATH,
         ICON_DIR_PATH # Also ensure icon dir path is considered, though icons should be pre-existing
     ]
@@ -95,8 +97,8 @@ if __name__ == "__main__":
     # Example of how to use and print paths
     print(f"Project Root: {PROJECT_ROOT}")
     print(f"Log Base Directory: {LOG_BASE_DIR}")
-    print(f"Main Log File: {MAIN_LOG_FILE_PATH}")
-    print(f"Historical Log Dir: {HISTORICAL_LOG_DIR_PATH}")
+    #print(f"Main Log File: {MAIN_LOG_FILE_PATH}")
+    #print(f"Historical Log Dir: {HISTORICAL_LOG_DIR_PATH}")
     print(f"Reports Dir: {REPORTS_DIR_PATH}")
     print(f"User Programs File: {USER_PROGRAMS_FILE_PATH}")
     print(f"Timer Icon: {TIMER_ICON_PATH}")
