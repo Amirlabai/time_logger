@@ -22,16 +22,24 @@ class Logger:
         self.df = self.load_existing_data() # This will also update CATEGORIES from existing log
         self.category_map = self.load_dict_from_txt(str(config.USER_PROGRAMS_FILE_PATH)) # Ensure this has all known categories
         self.program_vars = {} # Initialize here, will be used by the method
-        
+        self.CATEGORIES = set() # Initialize as a set to avoid duplicates
+
         # Initialize CATEGORIES from both existing log data and user_programs.txt
-        self.CATEGORIES = set(self.category_map.values())
+        temp_set = set(self.category_map.values())
         if not self.df.empty and 'category' in self.df.columns:
-            self.CATEGORIES.update(self.df['category'].unique())
+            temp_set.update(self.df['category'].unique())
+        
+        for value in temp_set:
+            if isinstance(value, str) and value.strip():
+                app_logger.warning(f"category '{value}' in category_map. added.")
+                # Remove from CATEGORIES set if present (avoid empty/invalid categories)
+                self.CATEGORIES.add(value)
         
         self.log = []
         app_logger.info(f"Logger initialized for {self.csv_file_path}. Categories loaded: {len(self.CATEGORIES)}")
 
     def get_CATEGORIES(self):
+        print(f"Current categories: {self.CATEGORIES}") # Debug print to see current categories
         return sorted(list(self.CATEGORIES)) # Return sorted list for consistent dropdown order
 
     def load_existing_data(self):
