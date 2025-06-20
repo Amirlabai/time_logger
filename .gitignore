@@ -17,3 +17,7 @@ build/
 Dockerfile
 .dockerignore
 
+/__pycache__
+user_programs.json
+user_programs.txt
+config.json

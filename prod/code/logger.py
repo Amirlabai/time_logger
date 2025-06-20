@@ -13,38 +13,32 @@ from app_logger import app_logger
 # from themes import Theme # Theme instance is passed to __init__
 
 class Logger:
-    def __init__(self, theme):
-        self.theme = theme
-        self.category_map = self._load_program_categories_from_db()
-        self.CATEGORIES = set(self.category_map.values())
-        # Initialize self.program_vars for the edit categories window
-        self.program_vars = {}
-        app_logger.info(f"Logger initialized to use SQLite database at {config.DATABASE_FILE_PATH}.")
+    def __init__(self, csv_file_path_str, theme): # CORRECTED: csv_file is now full path string
+        self.csv_file_path = Path(csv_file_path_str) # Store as Path object
+        self.theme = theme # Theme() is already instantiated in main, pass it directly.
+        # self.category_map = self.load_dict_from_txt() # Load after df to ensure CATEGORIES are updated by df too
+        self.df = self.load_existing_data() # This will also update CATEGORIES from existing log
+        self.category_map = self.load_dict_from_txt(str(config.USER_PROGRAMS_FILE_PATH)) # Ensure this has all known categories
+        self.program_vars = {} # Initialize here, will be used by the method
+        self.CATEGORIES = set() # Initialize as a set to avoid duplicates
 
-    def _get_db_connection(self):
-        """Establishes and returns a new connection to the SQLite database."""
-        try:
-            conn = sqlite3.connect(config.DATABASE_FILE_PATH)
-            conn.row_factory = sqlite3.Row
-            return conn
-        except sqlite3.Error as e:
-            app_logger.error(f"Failed to connect to database: {e}", exc_info=True)
-            return None
+        # Initialize CATEGORIES from both existing log data and user_programs.txt
+        temp_set = set(self.category_map.values())
+        if not self.df.empty and 'category' in self.df.columns:
+            temp_set.update(self.df['category'].unique())
+        
+        for value in temp_set:
+            if isinstance(value, str) and value.strip():
+                app_logger.warning(f"category '{value}' in category_map. added.")
+                # Remove from CATEGORIES set if present (avoid empty/invalid categories)
+                self.CATEGORIES.add(value)
+        
+        self.log = []
+        app_logger.info(f"Logger initialized for {self.csv_file_path}. Categories loaded: {len(self.CATEGORIES)}")
 
     def get_CATEGORIES(self):
-        """Returns a sorted list of all unique categories currently known to the logger."""
-        # For absolute freshness from DB each time:
-        # current_categories_in_db = set()
-        # with self._get_db_connection() as conn:
-        #     if conn:
-        #         cursor = conn.cursor()
-        #         cursor.execute("SELECT DISTINCT category FROM program_categories")
-        #         for row in cursor.fetchall(): current_categories_in_db.add(row['category'])
-        # self.CATEGORIES.update(current_categories_in_db) # Update internal set
-        # Ensure self.CATEGORIES is up-to-date before returning
-        if self.category_map: # If category_map has been loaded
-            self.CATEGORIES = set(self.category_map.values())
-        return sorted(list(self.CATEGORIES))
+        print(f"Current categories: {self.CATEGORIES}") # Debug print to see current categories
+        return sorted(list(self.CATEGORIES)) # Return sorted list for consistent dropdown order
 
 
     def log_activity(self, program, window, start_time_epoch, end_time_epoch, total_time_seconds):
