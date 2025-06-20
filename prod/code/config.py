@@ -40,6 +40,9 @@ PROJECT_LIB = PROJECT_ROOT / "prod/lib"
 LOG_BASE_DIR_NAME = "timeLog" # Name of the main logging directory
 LOG_BASE_DIR = PROJECT_ROOT / PROJECT_LIB / LOG_BASE_DIR_NAME # Base directory for all logs (e.g., C:\YourProject\timeLog)
 
+# --- Paths for Data Migration Script (migrate_data_to_sqlite.py) ---
+# The following paths are used by the one-time migration script.
+# They are no longer actively used by the main application.
 #MAIN_LOG_FILE_NAME = "time_log.csv"
 #HISTORICAL_LOG_DIR_NAME = "log" # Subdirectory for archived CSV logs
 REPORTS_DIR_NAME = "report" # Subdirectory for monthly reports
@@ -53,8 +56,8 @@ DATABASE_FILE_PATH = LOG_BASE_DIR / DATABASE_FILE_NAME # Or PROJECT_ROOT if pref
 REPORTS_DIR_PATH = LOG_BASE_DIR / REPORTS_DIR_NAME
 
 # --- User Data Files ---
-USER_PROGRAMS_FILE_NAME = "user_programs.json"
-USER_PROGRAMS_FILE_PATH = PROJECT_ROOT / USER_PROGRAMS_FILE_NAME # Stored in project root
+#USER_PROGRAMS_FILE_NAME = "user_programs.json"
+#USER_PROGRAMS_FILE_PATH = PROJECT_ROOT / USER_PROGRAMS_FILE_NAME # Stored in project root
 
 # --- Icon Paths ---
 # Store icons in an 'icons' folder in the project root
