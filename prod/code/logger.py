@@ -13,31 +13,20 @@ from app_logger import app_logger
 # from themes import Theme # Theme instance is passed to __init__
 
 class Logger:
-    def __init__(self, csv_file_path_str, theme): # CORRECTED: csv_file is now full path string
-        self.csv_file_path = Path(csv_file_path_str) # Store as Path object
+    def __init__(self, theme):
         self.theme = theme # Theme() is already instantiated in main, pass it directly.
-        # self.category_map = self.load_dict_from_txt() # Load after df to ensure CATEGORIES are updated by df too
-        self.df = self.load_existing_data() # This will also update CATEGORIES from existing log
-        self.category_map = self.load_dict_from_txt(str(config.USER_PROGRAMS_FILE_PATH)) # Ensure this has all known categories
+        self.category_map = self._load_program_categories_from_db()
         self.program_vars = {} # Initialize here, will be used by the method
-        self.CATEGORIES = set() # Initialize as a set to avoid duplicates
-
-        # Initialize CATEGORIES from both existing log data and user_programs.txt
-        temp_set = set(self.category_map.values())
-        if not self.df.empty and 'category' in self.df.columns:
-            temp_set.update(self.df['category'].unique())
         
-        for value in temp_set:
-            if isinstance(value, str) and value.strip():
-                app_logger.warning(f"category '{value}' in category_map. added.")
-                # Remove from CATEGORIES set if present (avoid empty/invalid categories)
-                self.CATEGORIES.add(value)
-        
-        self.log = []
-        app_logger.info(f"Logger initialized for {self.csv_file_path}. Categories loaded: {len(self.CATEGORIES)}")
+        self.CATEGORIES = set()
+        if self.category_map: # Ensure category_map is not None or empty
+            for category_value in self.category_map.values():
+                if isinstance(category_value, str) and category_value.strip():
+                    self.CATEGORIES.add(category_value)
+        app_logger.info(f"Logger initialized. Categories loaded from DB: {len(self.CATEGORIES)}")
 
     def get_CATEGORIES(self):
-        print(f"Current categories: {self.CATEGORIES}") # Debug print to see current categories
+        # print(f"Current categories: {self.CATEGORIES}") # Debug print to see current categories
         return sorted(list(self.CATEGORIES)) # Return sorted list for consistent dropdown order
 
 
