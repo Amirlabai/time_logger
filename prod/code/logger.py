@@ -582,16 +582,16 @@ class Logger:
                     app_logger.error(f"DB: Failed to fetch logged data: {e}", exc_info=True)
         return pd.DataFrame()
 
-    def export_activity_report(self, export_type="all", start_date_str=None, end_date_str=None):
-        app_logger.info(f"Exporting activity report. Type: {export_type}, Start: {start_date_str}, End: {end_date_str}")
-        data_for_report_df = self.get_all_logged_data(start_date_str, end_date_str)
+    def export_activity_report(self, data_for_report_df):
+        app_logger.info(f"Exporting activity report. Received DataFrame with {len(data_for_report_df) if data_for_report_df is not None else 'None'} rows.")
 
-        if data_for_report_df.empty:
-            messagebox.showinfo("No Data", "No data available for the selected criteria to generate a report.", parent=None)
+        if data_for_report_df is None or data_for_report_df.empty:
+            messagebox.showinfo("No Data", "No data available to generate a report.", parent=None)
+            app_logger.warning("Export activity report: No data provided or DataFrame is empty.")
             return
 
-        summary_report_df = data_for_report_df.groupby(['date_text', 'category'], as_index=False)['total_time_minutes'].sum()
-
+        # The aggregation is now expected to be handled by the UI layer if a summary is needed.
+        # This method will export the DataFrame as-is (which could be detailed or pre-summarized).
 
         file_path = filedialog.asksaveasfilename(
             defaultextension=".csv",
@@ -601,7 +601,8 @@ class Logger:
         )
         if file_path:
             try:
-                summary_report_df.to_csv(file_path, index=False)
+                # Directly use the passed DataFrame
+                data_for_report_df.to_csv(file_path, index=False)
                 messagebox.showinfo("Report Exported", f"Report successfully exported to:\n{file_path}", parent=None)
                 app_logger.info(f"Report exported to {file_path}")
             except Exception as e:
