@@ -303,8 +303,8 @@ class TimeTrackerUI:
                         break
 
 
-            time.sleep(1.5)
             app_logger.info("Destroying main application window.")
+            time.sleep(2)
             self.root.destroy()
         else:
             app_logger.info("User cancelled exit.")

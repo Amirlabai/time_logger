@@ -10,6 +10,7 @@ from datetime import datetime # Explicitly from datetime module
 
 import config
 from app_logger import app_logger
+from db_utils import get_db_connection
 # from themes import Theme # Theme instance is passed to __init__
 
 class Logger:
@@ -51,7 +52,7 @@ class Logger:
             start_time_epoch, end_time_epoch, percent_text_placeholder
         )
         # Using context manager for connection
-        with self._get_db_connection() as conn:
+        with get_db_connection() as conn:
             if conn:
                 try:
                     cursor = conn.cursor()
@@ -64,7 +65,7 @@ class Logger:
 
     def _load_program_categories_from_db(self):
         categories = {}
-        with self._get_db_connection() as conn:
+        with get_db_connection() as conn:
             if conn:
                 try:
                     cursor = conn.cursor()
@@ -79,7 +80,7 @@ class Logger:
     def save_program_category_to_db(self, program_name, category):
         sql = "INSERT OR REPLACE INTO program_categories (program_name, category) VALUES (?, ?)"
         success = False
-        with self._get_db_connection() as conn:
+        with get_db_connection() as conn:
             if conn:
                 try:
                     cursor = conn.cursor()
@@ -540,7 +541,7 @@ class Logger:
 
     def update_categories_in_log_entries(self, program_name, new_category):
         sql = "UPDATE time_entries SET category = ? WHERE program_name = ?"
-        with self._get_db_connection() as conn:
+        with get_db_connection() as conn:
             if conn:
                 try:
                     cursor = conn.cursor()
@@ -571,7 +572,7 @@ class Logger:
         if conditions: query += " WHERE " + " AND ".join(conditions)
         query += " ORDER BY start_timestamp_epoch ASC"
 
-        with self._get_db_connection() as conn:
+        with get_db_connection() as conn:
             if conn:
                 try:
                     df = pd.read_sql_query(query, conn, params=tuple(params))
