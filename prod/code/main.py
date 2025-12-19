@@ -81,8 +81,13 @@ def main():
 
     # Instantiate other components (these largely remain the same, as they depend on the Logger *instance*)
     try:
+        # Create a queue for thread-safe GUI operations
+        from queue import Queue
+        gui_queue = Queue()
+        
         # category_map is now an attribute of logger_instance, loaded from DB
-        tracker = WindowTracker(logger_instance, logger_instance.log_activity, logger_instance.category_map)
+        # Pass gui_queue to tracker for thread-safe category requests
+        tracker = WindowTracker(logger_instance, logger_instance.log_activity, logger_instance.category_map, gui_queue=gui_queue)
         graph_display = GraphDisplay(logger_instance, theme) # Assuming GraphDisplay uses logger_instance to get data
         ui = TimeTrackerUI(root, tracker, graph_display, theme, logger_instance)
     except Exception as e:
@@ -117,7 +122,7 @@ def main():
     finally:
         # Ensure tracker is stopped if mainloop exits unexpectedly,
         # though on_closing should ideally handle this for graceful exits.
-        if tracker and tracker.is_running: # Check if tracker exists and is_running
+        if 'tracker' in locals() and tracker and tracker.is_running: # Check if tracker exists and is_running
             app_logger.info("Ensuring tracker is stopped due to mainloop exit.")
             tracker.stop_tracking()
         app_logger.info("Application exited.")

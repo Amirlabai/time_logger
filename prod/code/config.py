@@ -103,7 +103,7 @@ if __name__ == "__main__":
     #print(f"Main Log File: {MAIN_LOG_FILE_PATH}")
     #print(f"Historical Log Dir: {HISTORICAL_LOG_DIR_PATH}")
     print(f"Reports Dir: {REPORTS_DIR_PATH}")
-    print(f"User Programs File: {USER_PROGRAMS_FILE_PATH}")
+    #print(f"User Programs File: {USER_PROGRAMS_FILE_PATH}")
     print(f"Timer Icon: {TIMER_ICON_PATH}")
     print(f"Barchart Icon: {BARCHART_ICON_PATH}")
     ensure_directories_exist()

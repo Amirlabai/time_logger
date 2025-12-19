@@ -31,56 +31,49 @@ def apply_sql_statements():
         print(f"Error during database initialization: {e}")
         return
 
-    conn = None
     statements_executed = 0
     try:
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        print(f"Connected to database: {config.DATABASE_FILE_PATH}")
+        with get_db_connection() as conn:
+            cursor = conn.cursor()
+            print(f"Connected to database: {config.DATABASE_FILE_PATH}")
 
-        with open(SQL_FILE_PATH, "r") as f:
-            sql_script = f.read()
+            with open(SQL_FILE_PATH, "r") as f:
+                sql_script = f.read()
 
-        # Splitting statements by semicolon, but being careful about content.
-        # sqlite3.executescript is generally better for running multiple statements.
-        # For this specific case where each line is one INSERT, line-by-line is also fine.
+            # Splitting statements by semicolon, but being careful about content.
+            # sqlite3.executescript is generally better for running multiple statements.
+            # For this specific case where each line is one INSERT, line-by-line is also fine.
 
-        # Using executescript as it's designed for this.
-        # Note: executescript implicitly commits or rollbacks on error.
-        # If explicit commit is needed after all statements, then iterate and execute.
+            # Using executescript as it's designed for this.
+            # Note: executescript implicitly commits or rollbacks on error.
+            # If explicit commit is needed after all statements, then iterate and execute.
 
-        # Let's execute line by line for better control and counting for this scenario
-        lines = sql_script.splitlines()
-        for line_num, sql_statement in enumerate(lines):
-            sql_statement = sql_statement.strip()
-            if sql_statement and not sql_statement.startswith('--'): # Ignore empty lines or comments
-                try:
-                    cursor.execute(sql_statement)
-                    statements_executed += 1
-                except sqlite3.Error as e:
-                    print(f"Error executing SQL statement on line {line_num + 1}: {sql_statement}")
-                    print(f"SQLite error: {e}")
-                    # Decide if you want to stop on error or continue
-                    # conn.rollback() # Rollback this statement if needed, or all at the end
-                    # For now, we'll let it continue and report errors.
+            # Let's execute line by line for better control and counting for this scenario
+            lines = sql_script.splitlines()
+            for line_num, sql_statement in enumerate(lines):
+                sql_statement = sql_statement.strip()
+                if sql_statement and not sql_statement.startswith('--'): # Ignore empty lines or comments
+                    try:
+                        cursor.execute(sql_statement)
+                        statements_executed += 1
+                    except sqlite3.Error as e:
+                        print(f"Error executing SQL statement on line {line_num + 1}: {sql_statement}")
+                        print(f"SQLite error: {e}")
+                        # Decide if you want to stop on error or continue
+                        # For now, we'll let it continue and report errors.
+                        # The context manager will handle rollback on exception
 
-        conn.commit() # Commit all successful statements
-        print(f"Successfully executed {statements_executed} SQL statements.")
+            # Commit is handled by context manager, but we can commit explicitly here if needed
+            # The context manager will auto-commit on successful exit
+            print(f"Successfully executed {statements_executed} SQL statements.")
+            print("Database connection closed.")
 
     except sqlite3.Error as e:
         print(f"SQLite error during SQL application: {e}")
-        if conn:
-            conn.rollback()
     except FileNotFoundError:
         print(f"Error: SQL script file not found at {SQL_FILE_PATH}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-        if conn:
-            conn.rollback()
-    finally:
-        if conn:
-            conn.close()
-            print("Database connection closed.")
 
 if __name__ == "__main__":
     # This is to make sure the script can find other project modules if run directly

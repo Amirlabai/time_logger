@@ -95,11 +95,21 @@ class Logger:
                     app_logger.error(f"Failed to save program category to DB for '{program_name}': {e}", exc_info=True)
         return success
 
-    def get_category(self, window_name_key):
-        # This temp root is not ideal but matches original structure.
-        # Better: pass main app root to be parent of Toplevel.
-        dialog_root = Tk()
-        dialog_root.withdraw()
+    def get_category(self, window_name_key, parent_root=None):
+        """
+        Shows a dialog to get category for a program.
+        Must be called from the main thread.
+        
+        Args:
+            window_name_key: The program name to categorize
+            parent_root: The parent Tk window (optional, creates own if None)
+        """
+        # If no parent provided, create a temporary root (for backward compatibility)
+        if parent_root is None:
+            dialog_root = Tk()
+            dialog_root.withdraw()
+        else:
+            dialog_root = parent_root
 
         category_window = Toplevel(dialog_root) # Original used Toplevel directly
         category_window.configure(bg=self.theme.windowBg())

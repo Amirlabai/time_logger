@@ -1,13 +1,15 @@
 # db_utils.py
 import sqlite3
 from pathlib import Path
+from contextlib import contextmanager
 import config # Assuming this is accessible
 from app_logger import app_logger # Assuming this is accessible
 
 DATABASE_PATH = config.DATABASE_FILE_PATH
 
+@contextmanager
 def get_db_connection():
-    """Establishes a connection to the SQLite database."""
+    """Establishes a connection to the SQLite database with context manager support."""
     conn = None
     try:
         # Ensure the directory for the database file exists
@@ -15,13 +17,21 @@ def get_db_connection():
         conn = sqlite3.connect(DATABASE_PATH)
         conn.row_factory = sqlite3.Row # Access columns by name
         app_logger.debug(f"Database connection established to {DATABASE_PATH}")
+        yield conn
+        conn.commit()
     except sqlite3.Error as e:
-        app_logger.error(f"Error connecting to database {DATABASE_PATH}: {e}", exc_info=True)
-        raise # Or handle more gracefully depending on application needs
-    return conn
+        if conn:
+            conn.rollback()
+        app_logger.error(f"Error in database connection {DATABASE_PATH}: {e}", exc_info=True)
+        raise
+    finally:
+        if conn:
+            conn.close()
+            app_logger.debug(f"Database connection closed: {DATABASE_PATH}")
 
 def create_tables(conn):
     """Creates the necessary tables if they don't already exist."""
+    cursor = None
     try:
         cursor = conn.cursor()
         
@@ -69,13 +79,12 @@ def create_tables(conn):
 def initialize_database():
     """Initializes the database and creates tables if they don't exist."""
     app_logger.info(f"Initializing database at: {DATABASE_PATH}")
-    conn = get_db_connection()
-    if conn:
-        create_tables(conn)
-        conn.close()
-    else:
-        # This case should ideally be handled to prevent app from running without DB
-        app_logger.critical("Failed to establish database connection during initialization.")
+    try:
+        with get_db_connection() as conn:
+            create_tables(conn)
+    except sqlite3.Error as e:
+        app_logger.critical(f"Failed to establish database connection during initialization: {e}", exc_info=True)
+        raise
 
 if __name__ == '__main__':
     # This can be run once to set up the DB, or called at app startup.

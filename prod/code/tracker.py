@@ -3,6 +3,7 @@ import win32gui
 import win32process
 import psutil
 import threading
+from queue import Queue
 # import traceback # CORRECTED: Use logger instead of traceback directly
 # from logger import Logger # CORRECTED: Not needed directly, logger instance passed in __init__
 # import themes # CORRECTED: Not needed in tracker
@@ -15,7 +16,7 @@ from app_logger import app_logger
 
 
 class WindowTracker:
-    def __init__(self, logger_instance, log_activity_callback, category_map, break_time_seconds=None): # CORRECTED: logger_instance
+    def __init__(self, logger_instance, log_activity_callback, category_map, break_time_seconds=None, gui_queue=None): # CORRECTED: logger_instance
         self.logger_instance = logger_instance # Store the passed logger object
         self.log_activity = log_activity_callback
         self.category_map = category_map # This is logger_instance.category_map, passed for direct access
@@ -37,6 +38,11 @@ class WindowTracker:
 
         self.previous_window_exe = None # To display in UI
         self.thread = None
+        
+        # Thread-safe queue for GUI operations from background thread
+        self.gui_queue = gui_queue if gui_queue is not None else Queue()
+        self._pending_category_requests = {}  # Store pending requests: {program_name: (event, result_dict)}
+        
         app_logger.info("WindowTracker initialized.")
 
     @property
@@ -153,10 +159,9 @@ class WindowTracker:
                 self.current_session_total_time_seconds = 0 # Reset time for new window session
 
                 if current_exe not in self.category_map and current_exe != "Unknown" and current_exe != "Idle":
-                    app_logger.info(f"Program '{current_exe}' not found in category map. Requesting user input.")
-                    # Category is obtained via logger_instance method, which updates its own map
-                    category = self.logger_instance.get_category(current_exe)
-                    # self.category_map[current_exe] = category # No need, get_category handles this
+                    app_logger.info(f"Program '{current_exe}' not found in category map. Requesting user input via queue.")
+                    # Use thread-safe queue to request category from main thread
+                    category = self._request_category_from_gui(current_exe)
                     app_logger.info(f"Program '{current_exe}' assigned to category '{category}'.")
             
             # Update total time for the currently active window (even if it hasn't changed)
@@ -211,6 +216,34 @@ class WindowTracker:
             app_logger.warning("start_tracking called, but a tracking thread is already running.")
 
 
+    def _request_category_from_gui(self, program_name):
+        """
+        Thread-safe method to request category from GUI.
+        Puts request on queue and waits for main thread to process it.
+        Returns the category string.
+        """
+        # Create synchronization objects
+        result_event = threading.Event()
+        result_dict = {"category": "Misc"}  # Default category
+        
+        # Store the request
+        self._pending_category_requests[program_name] = (result_event, result_dict)
+        
+        # Put request on queue for main thread to process
+        self.gui_queue.put(("request_category", program_name))
+        
+        # Wait for result (with timeout to prevent hanging)
+        if result_event.wait(timeout=300):  # 5 minute timeout
+            category = result_dict["category"]
+            # Clean up
+            del self._pending_category_requests[program_name]
+            return category
+        else:
+            app_logger.warning(f"Timeout waiting for category for '{program_name}'. Using default 'Misc'.")
+            if program_name in self._pending_category_requests:
+                del self._pending_category_requests[program_name]
+            return "Misc"
+    
     def stop_tracking(self):
         app_logger.info("stop_tracking called.")
         self.running = False

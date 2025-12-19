@@ -11,6 +11,7 @@ __pycache__/
 # Ignore timeLog directory
 timeLog/
 build/
+installer_files_250701/
 
 .venv/
 

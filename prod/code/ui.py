@@ -19,6 +19,10 @@ class TimeTrackerUI:
         self.pause_image = None
         
         self.setup_ui()
+        
+        # Start queue processing for thread-safe GUI operations (after UI is set up)
+        self._process_gui_queue()
+        
         app_logger.info("TimeTrackerUI initialized (SQLite mode).")
 
     def setup_ui(self):
@@ -103,14 +107,6 @@ class TimeTrackerUI:
             self.tracker.reset_break_timer_countdown()
             app_logger.info("Break countdown timer reset via UI button.")
 
-        def flag_breaktime():
-            if self.tracker.is_running_break_time:
-                self.tracker.is_running_break_time = False
-                if self.run_image: self.run_countdown_button.config(image=self.run_image)
-            else:
-                self.tracker.is_running_break_time = True
-                if self.pause_image: self.run_countdown_button.config(image=self.pause_image)
-
         break_timer_frame = tk.Frame(self.root, bg=self.theme.windowBg())
         break_timer_frame.pack(pady=(10, 5), expand=True)
 
@@ -130,7 +126,7 @@ class TimeTrackerUI:
         if os.path.exists(pause_image_path_str): self.pause_image = tk.PhotoImage(file=pause_image_path_str)
 
         self.run_countdown_button = tk.Button(break_timer_frame, image=self.run_image if not self.tracker.is_running_break_time else self.pause_image, 
-                                             width=30, height=30, bg=self.theme.buttonBg(), command=flag_breaktime)
+                                             width=30, height=30, bg=self.theme.buttonBg(), command=self.flag_breaktime)
         if self.run_image: self.run_countdown_button.image = self.run_image 
         self.run_countdown_button.grid(row=0, rowspan=2, column=2, padx=5, pady=5)
 
@@ -153,6 +149,7 @@ class TimeTrackerUI:
                                  activebackground=self.theme.closeActiveButtonBg(), activeforeground="white", borderwidth=2)
         close_button.pack(pady=(5, 10))
 
+        self._break_message_shown_this_cycle = False  # Instance variable, not class variable
         self.root.deiconify()
         self.update_ui_elements()
         app_logger.debug("UI setup complete (SQLite mode).")
@@ -223,7 +220,6 @@ class TimeTrackerUI:
         tk.Button(dialog, text="Generate and Export", command=do_export, bg=self.theme.buttonBg(), fg="white").pack(pady=20)
         dialog.protocol("WM_DELETE_WINDOW", dialog.destroy)
 
-
     def update_category_list(self):
         self.categories_listbox.delete(0, tk.END)
         all_log_data_df = self.logger.get_all_logged_data() 
@@ -242,8 +238,6 @@ class TimeTrackerUI:
             self.categories_listbox.insert(tk.END, "No activity logged yet or no categories found.")
         app_logger.debug("Category listbox updated from DB data.")
 
-    _break_message_shown_this_cycle = False 
-
     def update_ui_elements(self):
         current_app_time_seconds = self.tracker.current_session_total_time_seconds
         h, rem = divmod(int(current_app_time_seconds), 3600)
@@ -261,18 +255,61 @@ class TimeTrackerUI:
         self.break_countdown_label.config(text=f"Time Until Next Break: {self.tracker.break_time_counter_display}")
 
         if self.tracker.should_take_break():
-            if not TimeTrackerUI._break_message_shown_this_cycle:
+            if not self._break_message_shown_this_cycle:
                 app_logger.info("Break time reached. Showing notification.")
                 messagebox.showinfo("Break Time!", "It's time to take a break.")
-                TimeTrackerUI._break_message_shown_this_cycle = True
+                self._break_message_shown_this_cycle = True
                 self.tracker.reset_break_timer_countdown()
+                self.flag_breaktime()
+
                 self.update_category_list() 
         else:
-            TimeTrackerUI._break_message_shown_this_cycle = False
+            self._break_message_shown_this_cycle = False
         
         if self.tracker.is_running: 
             self.root.after(1000, self.update_ui_elements)
+    
+    def _process_gui_queue(self):
+        """
+        Process GUI requests from the background tracking thread.
+        This method polls the queue and handles category requests on the main thread.
+        """
+        try:
+            while not self.tracker.gui_queue.empty():
+                try:
+                    request_type, data = self.tracker.gui_queue.get_nowait()
+                    
+                    if request_type == "request_category":
+                        program_name = data
+                        app_logger.debug(f"Processing category request for '{program_name}' on main thread.")
+                        
+                        # Get category using GUI (this runs on main thread)
+                        category = self.logger.get_category(program_name, parent_root=self.root)
+                        
+                        # Notify the background thread of the result
+                        if program_name in self.tracker._pending_category_requests:
+                            event, result_dict = self.tracker._pending_category_requests[program_name]
+                            result_dict["category"] = category
+                            event.set()  # Signal that result is ready
+                    else:
+                        app_logger.warning(f"Unknown GUI queue request type: {request_type}")
+                        
+                except Exception as e:
+                    app_logger.error(f"Error processing GUI queue request: {e}", exc_info=True)
+        except Exception as e:
+            app_logger.error(f"Error in _process_gui_queue: {e}", exc_info=True)
+        
+        # Schedule next check (poll every 100ms)
+        if self.tracker.is_running:
+            self.root.after(100, self._process_gui_queue)
 
+    def flag_breaktime(self):
+        if self.tracker.is_running_break_time:
+            self.tracker.is_running_break_time = False
+            if self.run_image: self.run_countdown_button.config(image=self.run_image)
+        else:
+            self.tracker.is_running_break_time = True
+            if self.pause_image: self.run_countdown_button.config(image=self.pause_image)
 
     def show_graph_ui(self):
         app_logger.info("Show graph button clicked.")
@@ -286,7 +323,6 @@ class TimeTrackerUI:
                     break
         
         self.graph_display.show_graph() 
-
 
     def close_program(self):
         app_logger.info("Close program sequence initiated by UI.")
@@ -302,10 +338,8 @@ class TimeTrackerUI:
                         self.graph_display.is_open = False 
                         break
 
-
             app_logger.info("Destroying main application window.")
-            time.sleep(2)
-            self.root.destroy()
+            self.root.quit()
         else:
             app_logger.info("User cancelled exit.")
             if not self.tracker.is_running:
