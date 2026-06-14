@@ -1,6 +1,20 @@
 # CHANGELOG
 
 
+## v0.2.0 (2026-06-14)
+
+### Features
+
+- **ui**: Lift window and add update checks
+  ([`4dc7b92`](https://github.com/Amirlabai/time_logger/commit/4dc7b92e4090599cf9f4dce986f28934b73171a7))
+
+Category prompt must surface above the active app during tracking.
+
+Fetch latest.json from main; CI commits manifest after installer build.
+
+Co-authored-by: Cursor <cursoragent@cursor.com>
+
+
 ## v0.1.0 (2026-06-14)
 
 ### Continuous Integration
