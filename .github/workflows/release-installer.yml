@@ -1,7 +1,7 @@
 name: Build and Release Installer
 
-# Build installer on Windows after Semantic Release, upload to matching tag.
-# release:published does not fire for GITHUB_TOKEN releases — chain via workflow_run.
+# Build installer on Windows after Semantic Release, upload to matching tag,
+# refresh latest.json on main for in-app update checks.
 
 on:
   workflow_run:
@@ -87,11 +87,23 @@ jobs:
         if: steps.meta.outputs.skip != 'true'
         run: python prod/gen_exe.py
 
+      - name: Write latest.json
+        if: steps.meta.outputs.skip != 'true'
+        shell: bash
+        run: |
+          python scripts/publish_public_release.py \
+            --version "${{ steps.meta.outputs.version }}" \
+            --installer "${{ steps.meta.outputs.installer }}" \
+            --write-manifest latest.json \
+            --notes "Release ${{ steps.meta.outputs.version }}"
+
       - uses: actions/upload-artifact@v4
         if: steps.meta.outputs.skip != 'true'
         with:
-          name: release-installer
-          path: ${{ steps.meta.outputs.installer }}
+          name: release-files
+          path: |
+            latest.json
+            ${{ steps.meta.outputs.installer }}
 
       - name: Upload installer to GitHub Release
         if: steps.meta.outputs.skip != 'true'
@@ -102,3 +114,30 @@ jobs:
           gh release upload "${{ steps.meta.outputs.tag }}" \
             "${{ steps.meta.outputs.installer }}" \
             --clobber
+
+  manifest:
+    needs: build
+    if: needs.build.outputs.skip != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: release-files
+          path: .
+
+      - name: Commit latest.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add latest.json
+          if git diff --staged --quiet; then
+            echo "latest.json unchanged"
+          else
+            git commit -m "chore: update latest.json for ${{ needs.build.outputs.version }}"
+            git push
+          fi

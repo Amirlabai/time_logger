@@ -10,7 +10,11 @@
 <body>
   <div id="app">
     <header class="app-header">
-      <h1>Time Tracker</h1>
+      <div class="header-row">
+        <h1>Time Tracker</h1>
+        <span id="app-version" class="app-version"></span>
+      </div>
+      <button type="button" id="btn-check-updates" class="btn btn-small">Check for Updates</button>
     </header>
 
     <main id="view-dashboard" class="view active">
@@ -64,6 +68,24 @@
 
   <div id="startup-overlay" class="startup-overlay">
     <p>Starting Time Tracker...</p>
+  </div>
+
+  <div id="update-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="update-modal-title">
+    <div class="modal update-modal-box">
+      <div class="modal-header">
+        <h2 id="update-modal-title">Update Available</h2>
+      </div>
+      <div class="modal-body">
+        <p id="update-modal-version"></p>
+        <p id="update-modal-notes"></p>
+        <p class="hint">Download the installer and run setup manually.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn" id="update-download">Download</button>
+        <button type="button" class="btn" id="update-later">Later</button>
+        <button type="button" class="btn" id="update-skip">Skip this version</button>
+      </div>
+    </div>
   </div>
 
   <script src="app.js"></script>

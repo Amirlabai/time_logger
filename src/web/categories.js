@@ -15,8 +15,13 @@
     return d.innerHTML;
   }
 
-  window.on_category_prompt = function (data) {
+  window.on_category_prompt = async function (data) {
     if (!data || !data.program) return;
+    try {
+      if (api().focus_app_window) await api().focus_app_window();
+    } catch (e) {
+      /* focus is best-effort */
+    }
     showPromptModal(data.program, data.categories || categoryNames);
   };
 

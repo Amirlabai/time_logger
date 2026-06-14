@@ -27,9 +27,31 @@ body {
 }
 
 .app-header h1 {
-  margin: 0 0 12px;
+  margin: 0;
   font-size: 18px;
   font-weight: 700;
+}
+
+.header-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.app-version {
+  font-size: 11px;
+  opacity: 0.75;
+}
+
+.btn-small {
+  font-size: 11px;
+  padding: 4px 10px;
+}
+
+.update-modal-box {
+  max-width: 420px;
 }
 
 .panel {

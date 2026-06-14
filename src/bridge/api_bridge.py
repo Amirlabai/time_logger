@@ -4,13 +4,18 @@ from __future__ import annotations
 
 import json
 import os
+import sys
+import webbrowser
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 from utils import config
+from utils import update_check
 from utils.app_logger import app_logger
 from utils.core_functions import asset_file_uri, migrate_legacy_data_if_needed
 from utils.db_utils import initialize_database
+from utils.user_config import load_config, save_config
 from models.category_coordinator import CategoryCoordinator
 from models.graph_service import GraphService
 from models.logger_service import LoggerService
@@ -51,10 +56,36 @@ class TimeTrackerApi:
         except Exception:
             app_logger.debug(f"Failed to emit JS event {handler}", exc_info=True)
 
+    def _lift_window(self) -> None:
+        if not self._window:
+            return
+        try:
+            self._window.restore()
+        except Exception:
+            pass
+        try:
+            previous_on_top = bool(getattr(self._window, "on_top", False))
+            self._window.on_top = True
+            self._window.show()
+            self._window.on_top = previous_on_top
+        except Exception:
+            try:
+                self._window.show()
+            except Exception:
+                app_logger.debug("Could not lift application window", exc_info=True)
+
+    def focus_app_window(self) -> dict:
+        self._lift_window()
+        return self._ok()
+
     def _emit_category_prompt(self, program_name: str) -> None:
+        self._lift_window()
         self._emit_event(
             "on_category_prompt",
-            {"program": program_name, "categories": self._logger.get_CATEGORIES() if self._logger else []},
+            {
+                "program": program_name,
+                "categories": self._logger.get_CATEGORIES() if self._logger else [],
+            },
         )
 
     def _save_default_category(self, program_name: str, category: str) -> None:
@@ -89,8 +120,11 @@ class TimeTrackerApi:
     def get_initial_data(self) -> dict:
         if not self._logger or not self._tracker:
             return self._err("Application not initialized")
+        from _version import __version__
+
         return self._ok(
             {
+                "version": __version__,
                 "categories_summary": self._logger.get_category_summary(),
                 "category_names": self._logger.get_CATEGORIES(),
                 "program_categories": self._logger.get_program_categories(),
@@ -112,6 +146,7 @@ class TimeTrackerApi:
             return self._err("Application not initialized")
         state = self._tracker.get_dashboard_state()
         if state.pop("break_reminder", False):
+            self._lift_window()
             self._emit_event("on_break_reminder", {"message": "It's time to take a break."})
             self._tracker.reset_break_timer_countdown()
             self._tracker.set_break_timer_running(True)
@@ -249,6 +284,32 @@ class TimeTrackerApi:
 
     def log_js(self, message: str) -> dict:
         app_logger.warning(f"JS: {message}")
+        return self._ok()
+
+    def check_for_updates(self, force: bool = False) -> dict:
+        from _version import __version__
+
+        cfg = load_config()
+        result = update_check.check_for_update(__version__, cfg, force=bool(force))
+        now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        cfg.setdefault("updates", {})["update_last_check_at"] = now
+        save_config(cfg)
+        return self._ok(result)
+
+    def open_update_download(self, url: str) -> dict:
+        url = (url or "").strip()
+        if not url:
+            return self._err("No download URL provided")
+        if sys.platform == "win32":
+            os.startfile(url)
+        else:
+            webbrowser.open(url)
+        return self._ok()
+
+    def dismiss_update_notice(self, latest_version: str, action: str = "later") -> dict:
+        cfg = load_config()
+        update_check.apply_snooze(cfg, action, latest_version)
+        save_config(cfg)
         return self._ok()
 
     def exit_app(self) -> dict:

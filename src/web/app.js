@@ -6,6 +6,7 @@
   let modalResolve = null;
   let modalReject = null;
   let focusTrapHandler = null;
+  let updateInfo = null;
 
   function api() {
     return window.pywebview && window.pywebview.api;
@@ -118,6 +119,89 @@
     }
   };
 
+  function showUpdateModal(info) {
+    updateInfo = info;
+    const overlay = document.getElementById('update-modal');
+    document.getElementById('update-modal-version').textContent =
+      'Version ' +
+      info.latest_version +
+      ' is available (you have ' +
+      (info.current_version || 'unknown') +
+      ').';
+    document.getElementById('update-modal-notes').textContent = info.notes || '';
+    if (overlay) {
+      overlay.classList.remove('hidden');
+      overlay.setAttribute('aria-hidden', 'false');
+    }
+  }
+
+  function hideUpdateModal() {
+    const overlay = document.getElementById('update-modal');
+    if (overlay) {
+      overlay.classList.add('hidden');
+      overlay.setAttribute('aria-hidden', 'true');
+    }
+    updateInfo = null;
+  }
+
+  async function checkForUpdates(force) {
+    try {
+      const r = await api().check_for_updates(!!force);
+      if (!r || r.status !== 'success') {
+        showAlert((r && r.message) || 'Update check failed', 'error');
+        return;
+      }
+      if (r.available || r.update_available) {
+        showUpdateModal(r);
+      } else if (force) {
+        const msgs = {
+          up_to_date: 'You are up to date.',
+          recently_checked: 'Checked recently. Try again later.',
+          snooze: 'Update snoozed.',
+          skipped: 'This version was skipped.',
+          offline: 'Could not reach update server.',
+          disabled: 'Update checks are disabled.',
+        };
+        showAlert(msgs[r.reason] || 'No update available.', r.reason === 'offline' ? 'error' : 'info');
+      }
+    } catch (e) {
+      showAlert('Update check error: ' + e, 'error');
+    }
+  }
+
+  function setupUpdateHandlers() {
+    const btn = document.getElementById('btn-check-updates');
+    if (btn) btn.addEventListener('click', function () { checkForUpdates(true); });
+
+    const downloadBtn = document.getElementById('update-download');
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', async function () {
+        if (!updateInfo) return;
+        const url = updateInfo.installer_url || updateInfo.release_page;
+        await api().open_update_download(url);
+        hideUpdateModal();
+      });
+    }
+
+    const laterBtn = document.getElementById('update-later');
+    if (laterBtn) {
+      laterBtn.addEventListener('click', async function () {
+        if (!updateInfo) return;
+        await api().dismiss_update_notice(updateInfo.latest_version, 'later');
+        hideUpdateModal();
+      });
+    }
+
+    const skipBtn = document.getElementById('update-skip');
+    if (skipBtn) {
+      skipBtn.addEventListener('click', async function () {
+        if (!updateInfo) return;
+        await api().dismiss_update_notice(updateInfo.latest_version, 'skip');
+        hideUpdateModal();
+      });
+    }
+  }
+
   window.addEventListener('pywebviewready', async function () {
     const startup = document.getElementById('startup-overlay');
     try {
@@ -129,16 +213,22 @@
       }
       if (startup) startup.classList.add('hidden');
 
+      setupUpdateHandlers();
+
       const data = await api().get_initial_data();
       if (data.status !== 'success') {
         showAlert(data.message || 'Failed to load initial data', 'error');
         return;
       }
 
+      const versionEl = document.getElementById('app-version');
+      if (versionEl && data.version) versionEl.textContent = 'v' + data.version;
+
       if (window.DashboardUI) await window.DashboardUI.init(data);
       if (window.CategoriesUI) window.CategoriesUI.init(data);
       if (window.GraphUI) window.GraphUI.init();
       if (window.ExportUI) window.ExportUI.init();
+      await checkForUpdates(false);
     } catch (e) {
       showAlert('Startup error: ' + e, 'error');
       if (startup) startup.innerHTML = '<p>Startup error.</p>';

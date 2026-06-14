@@ -22,6 +22,9 @@ time-tracker = "web_app:main"
 
 
 [tool.semantic_release]
+version_variables = [
+    "src/_version.py:__version__",
+]
 version_toml = [
     "pyproject.toml:project.version",
 ]

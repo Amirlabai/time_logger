@@ -2,6 +2,7 @@
 *.log
 *.txt
 *.json
+!latest.json
 nuitka-crash-report.xml
 
 # Python cache

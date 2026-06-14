@@ -18,7 +18,9 @@ Python owns: SQLite, window tracking (pywin32/psutil), native save dialog, backg
 
 HTML/JS owns: dashboard, modals, Chart.js graphs, 1s polling via `get_dashboard_state()`.
 
-Category prompts: tracker thread blocks on `CategoryCoordinator`; bridge pushes `on_category_prompt` to JS; JS calls `submit_category()`.
+Category prompts: tracker thread blocks on `CategoryCoordinator`; bridge lifts window and pushes `on_category_prompt` to JS.
+
+Update checks: `latest.json` on main; **Check for Updates** in header; startup poll (24h throttle) via `utils/update_check.py`.
 
 ## Key paths
 
