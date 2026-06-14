@@ -7,7 +7,7 @@
 - [x] `CategoryCoordinator` for thread-safe category prompts
 - [x] Bridge API (`TimeTrackerApi`) and HTML/JS/CSS frontend
 - [x] Deprecated Tkinter entry (`prod/code/main.py` redirect)
-- [x] PyInstaller + Inno Setup build (`prod/gen_exe.py`, `prod/create_installer.iss`)
+- [x] GitHub Actions: semantic release + installer build/tag upload
 
 ## Next steps
 

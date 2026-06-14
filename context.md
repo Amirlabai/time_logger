@@ -43,16 +43,23 @@ pywebview, pandas, psutil, pywin32 (Windows only).
 
 ## Packaging
 
+Local build:
+
 ```powershell
 .\.venv\Scripts\python.exe -m pip install -e ".[dev]"
 .\.venv\Scripts\python.exe prod\gen_exe.py
 ```
 
-Output: `prod/installers/TimeTracker_Setup_<version>.exe` (version from `pyproject.toml`).
+CI release pipeline (same pattern as Video-Editor):
 
-Scripts: `prod/gen_exe.py` (PyInstaller + Inno), `prod/create_installer.iss`.
+1. Push to `main` with Conventional Commits → **Semantic Release** bumps `pyproject.toml`, tags `vX.Y.Z`, creates GitHub Release.
+2. **Build and Release Installer** runs after Semantic Release → Windows build → uploads `TimeTracker_Setup_X.Y.Z.exe` to that tag.
 
-Requires Inno Setup 6 (`ISCC.exe`) or set `INNO_SETUP_PATH`.
+Backfill an existing tag: Actions → **Build and Release Installer** → Run workflow → version `X.Y.Z`.
+
+Workflows: `.github/workflows/release.yml`, `.github/workflows/release-installer.yml`.
+
+Requires Inno Setup 6 locally (`INNO_SETUP_PATH`) or use CI.
 
 ## Conventions
 
