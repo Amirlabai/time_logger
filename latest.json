@@ -1,7 +1,7 @@
 {
-  "version": "0.1.0",
-  "published_at": "2026-06-14T00:00:00Z",
-  "installer_url": "https://github.com/Amirlabai/time_logger/releases/download/v0.1.0/TimeTracker_Setup_0.1.0.exe",
-  "release_page": "https://github.com/Amirlabai/time_logger/releases/tag/v0.1.0",
-  "notes": "Initial PyWebView release"
+  "version": "0.2.0",
+  "published_at": "2026-06-14T20:09:26Z",
+  "installer_url": "https://github.com/Amirlabai/time_logger/releases/download/v0.2.0/TimeTracker_Setup_0.2.0.exe",
+  "release_page": "https://github.com/Amirlabai/time_logger/releases/tag/v0.2.0",
+  "notes": "Release 0.2.0"
 }
