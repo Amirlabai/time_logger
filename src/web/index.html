@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <h1>Time Tracker</h1>
+    </header>
+
+    <main id="view-dashboard" class="view active">
+      <section class="panel">
+        <h2>Categories Tracked</h2>
+        <p class="hint">Activity count and percentage of entries</p>
+        <ul id="categories-list" class="categories-list"></ul>
+        <button type="button" id="btn-edit-categories" class="btn">Edit Program Categories</button>
+      </section>
+
+      <section class="panel live-stats">
+        <p id="current-app-time">Current App Time: 00:00:00</p>
+        <p id="active-window" class="active-window">Active Window: None</p>
+        <p id="previous-window" class="previous-window">Previous Window: None</p>
+      </section>
+
+      <section class="panel break-panel">
+        <div class="break-row">
+          <button type="button" id="btn-set-break" class="btn">Set Break Interval</button>
+          <span id="break-interval-label">Break Interval: --</span>
+        </div>
+        <div class="break-row">
+          <button type="button" id="btn-reset-break" class="btn">Reset Countdown</button>
+          <span id="break-countdown-label">Time Until Next Break: --</span>
+          <button type="button" id="btn-toggle-break" class="btn-icon" title="Start/pause break timer">
+            <img id="break-toggle-icon" src="" alt="Break timer" width="28" height="28">
+          </button>
+        </div>
+      </section>
+
+      <section class="panel actions">
+        <button type="button" id="btn-show-graph" class="btn">Show Usage Graph</button>
+        <button type="button" id="btn-export" class="btn">Export Activity Report</button>
+        <button type="button" id="btn-close" class="btn btn-close">Close Time Tracker</button>
+      </section>
+    </main>
+
+    <div id="alert-region" class="alert-region hidden" role="alert"></div>
+  </div>
+
+  <div id="modal-overlay" class="modal-overlay hidden" aria-hidden="true">
+    <div id="modal" class="modal" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <h2 id="modal-title"></h2>
+        <button type="button" id="modal-close" class="modal-close" aria-label="Close">&times;</button>
+      </div>
+      <div id="modal-body" class="modal-body"></div>
+      <div id="modal-footer" class="modal-footer"></div>
+    </div>
+  </div>
+
+  <div id="startup-overlay" class="startup-overlay">
+    <p>Starting Time Tracker...</p>
+  </div>
+
+  <script src="app.js"></script>
+  <script src="dashboard.js"></script>
+  <script src="categories.js"></script>
+  <script src="graph.js"></script>
+  <script src="export.js"></script>
+</body>
+</html>

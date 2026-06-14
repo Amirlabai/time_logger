@@ -11,7 +11,10 @@ __pycache__/
 # Ignore timeLog directory
 timeLog/
 build/
-installer_files_250701/
+installer_files_*/
+prod/installers/
+!prod/installers/.gitkeep
+dist/
 
 .venv/
 
@@ -22,3 +25,6 @@ Dockerfile
 user_programs.json
 user_programs.txt
 config.json
+.pytest_cache/
+*.egg-info/
+prod/*.spec

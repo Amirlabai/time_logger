@@ -1,0 +1,27 @@
+[project]
+name = "time-tracker"
+version = "2.0.0"
+description = "Windows desktop time tracker with PyWebView UI"
+requires-python = ">=3.10"
+dependencies = [
+    "pywebview>=5.4",
+    "pandas",
+    "psutil",
+    "pywin32",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "pyinstaller",
+]
+
+[project.scripts]
+time-tracker = "web_app:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]

@@ -1,0 +1,1 @@
+"""Time Tracker PyWebView application."""
