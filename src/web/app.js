@@ -160,6 +160,10 @@
     return null;
   }
 
+  window.isModalOpen = function () {
+    return blockingLayers.modal > 0;
+  };
+
   window.showLoading = function (show, message) {
     const overlay = document.getElementById('loading-overlay');
     const textEl = document.getElementById('loading-message');
@@ -192,6 +196,12 @@
       const closeBtn = document.getElementById('modal-close');
       if (!overlay || !modal) {
         reject(new Error('Modal elements missing'));
+        return;
+      }
+
+      if (blockingLayers.modal > 0) {
+        uiLog('showModal rejected: modal already open');
+        reject(new Error('Modal already open'));
         return;
       }
 

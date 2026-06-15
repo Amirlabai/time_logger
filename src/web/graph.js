@@ -106,6 +106,7 @@
     const canvas = document.getElementById('usage-chart');
     if (canvas) {
       canvas.setAttribute('role', 'img');
+      canvas.setAttribute('aria-label', 'Category time percentage bar chart');
       canvas.setAttribute('aria-describedby', 'graph-stats graph-chart-summary');
     }
   }
@@ -179,12 +180,13 @@
   }
 
   async function loadGraphData(filterCategory) {
-    const r = await api().graph_get_data(filterCategory || 'All Categories');
-    if (r.status !== 'success') {
+    return api().graph_get_data(filterCategory || 'All Categories');
+  }
+
+  function showGraphLoadError(r) {
+    if (r && r.status !== 'success') {
       showAlert(r.message || 'No data to display', 'info');
-      return null;
     }
-    return r;
   }
 
   window.GraphUI = {
@@ -198,7 +200,10 @@
       } finally {
         showLoading(false);
       }
-      if (!data) return;
+      if (!data || data.status !== 'success') {
+        showGraphLoadError(data);
+        return;
+      }
 
       const categoryOptions = (data.available_categories || ['All Categories'])
         .map(function (c) {
@@ -237,12 +242,17 @@
           };
           document.getElementById('graph-category-filter').onchange = async function (e) {
             showLoading(true, 'Refreshing graph...');
+            let refreshed;
             try {
-              const refreshed = await loadGraphData(e.target.value);
-              if (refreshed) refreshGraphView(refreshed);
+              refreshed = await loadGraphData(e.target.value);
             } finally {
               showLoading(false);
             }
+            if (!refreshed || refreshed.status !== 'success') {
+              showGraphLoadError(refreshed);
+              return;
+            }
+            refreshGraphView(refreshed);
           };
         },
       }).then(function () {

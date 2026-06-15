@@ -15,6 +15,7 @@
 
   function showCategoryPrompt(data) {
     if (!data || !data.program || promptOpen) return;
+    if (window.isModalOpen && window.isModalOpen()) return;
     promptOpen = true;
     showPromptModal(data.program, data.categories || categoryNames);
   }
@@ -199,6 +200,7 @@
       footerEl.innerHTML =
         '<button type="button" class="btn" id="hist-no">No</button>' +
         '<button type="button" class="btn" id="hist-yes">Yes</button>';
+      return;
     }
   }
 
@@ -288,21 +290,22 @@
         showEditTableView();
       }
       showLoading(true, 'Saving categories...');
+      let r;
       try {
-        const r = await api().save_program_categories({
+        r = await api().save_program_categories({
           categories: editDraft,
           update_historical: updateHistorical,
         });
-        if (r.status === 'success') {
-          showAlert('Program categories saved.', 'success');
-          programCategories = Object.assign({}, editDraft);
-          hideModal(true);
-        } else {
-          showAlert(r.message || 'Save failed', 'error');
-          showEditTableView();
-        }
       } finally {
         showLoading(false);
+      }
+      if (r.status === 'success') {
+        showAlert('Program categories saved.', 'success');
+        programCategories = Object.assign({}, editDraft);
+        hideModal(true);
+      } else {
+        showAlert(r.message || 'Save failed', 'error');
+        showEditTableView();
       }
     };
   }

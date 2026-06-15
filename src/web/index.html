@@ -56,11 +56,11 @@
         <button type="button" id="btn-close" class="btn btn-close">Close Time Tracker</button>
       </section>
     </main>
+  </div>
 
-    <div id="alert-region" class="alert-region hidden" role="status" aria-live="polite" aria-atomic="true">
-      <span id="alert-message"></span>
-      <button type="button" id="alert-dismiss" class="alert-dismiss" aria-label="Dismiss notification">&times;</button>
-    </div>
+  <div id="alert-region" class="alert-region hidden" role="status" aria-live="polite" aria-atomic="true">
+    <span id="alert-message"></span>
+    <button type="button" id="alert-dismiss" class="alert-dismiss" aria-label="Dismiss notification">&times;</button>
   </div>
 
   <div id="modal-overlay" class="modal-overlay hidden" aria-hidden="true">
@@ -82,7 +82,7 @@
        role="alertdialog" aria-modal="true"
        aria-labelledby="loading-message"
        aria-busy="false" aria-hidden="true">
-    <p id="loading-message" aria-live="assertive" aria-atomic="true" tabindex="-1">Working...</p>
+    <p id="loading-message" aria-live="assertive" aria-atomic="true" tabindex="0">Working...</p>
   </div>
 
   <script src="app.js"></script>

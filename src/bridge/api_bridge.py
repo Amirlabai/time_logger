@@ -133,7 +133,7 @@ class TimeTrackerApi:
     def get_dashboard_state(self) -> dict:
         if not self._tracker or not self._logger:
             return self._err("Application not initialized")
-        program = self._coordinator.take_ui_prompt()
+        program = self._coordinator.peek_ui_prompt()
         category_prompt = None
         if program:
             category_prompt = {

@@ -18,7 +18,6 @@ class CategoryCoordinator:
         self._timeout = timeout_seconds
         self._pending: dict[str, tuple[threading.Event, dict[str, str]]] = {}
         self._ui_prompt_program: str | None = None
-        self._ui_prompt_sent = False
         self._lock = threading.Lock()
 
     def request_category(self, program_name: str) -> str:
@@ -28,17 +27,13 @@ class CategoryCoordinator:
                 return "Misc"
             self._pending[program_name] = (threading.Event(), {"category": "Misc"})
             self._ui_prompt_program = program_name
-            self._ui_prompt_sent = False
         app_logger.info(f"Queued category prompt for '{program_name}'.")
         return "Misc"
 
-    def take_ui_prompt(self) -> str | None:
-        """Return a program that needs a UI prompt; safe to call from the webview thread."""
+    def peek_ui_prompt(self) -> str | None:
+        """Return pending UI prompt program until submit/dismiss clears it."""
         with self._lock:
-            if self._ui_prompt_program and not self._ui_prompt_sent:
-                self._ui_prompt_sent = True
-                return self._ui_prompt_program
-            return None
+            return self._ui_prompt_program
 
     def submit_category(self, program_name: str, category: str) -> bool:
         with self._lock:
@@ -63,4 +58,3 @@ class CategoryCoordinator:
     def _clear_ui_prompt_locked(self, program_name: str) -> None:
         if self._ui_prompt_program == program_name:
             self._ui_prompt_program = None
-            self._ui_prompt_sent = False

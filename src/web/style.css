@@ -229,7 +229,7 @@ body {
   padding: 10px 40px 10px 14px;
   border-radius: 4px;
   font-size: 13px;
-  z-index: 2000;
+  z-index: 3500;
 }
 
 .alert-dismiss {
@@ -269,8 +269,7 @@ body {
   display: none !important;
 }
 
-.startup-overlay,
-.loading-overlay {
+.startup-overlay {
   position: fixed;
   inset: 0;
   background: var(--window-bg);
@@ -281,7 +280,12 @@ body {
 }
 
 .loading-overlay {
+  position: fixed;
+  inset: 0;
   background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 2500;
 }
 

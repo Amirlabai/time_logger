@@ -91,22 +91,23 @@
             }
 
             showLoading(true, 'Exporting report...');
+            let r;
             try {
-              const r = await api().export_report({
+              r = await api().export_report({
                 path: pick.path,
                 export_type: exportType,
                 start_date: startDate,
                 end_date: endDate,
               });
-
-              if (r.status === 'success') {
-                showAlert('Report exported to ' + r.path, 'success');
-                hideModal(true);
-              } else {
-                showAlert(r.message || 'Export failed', 'error');
-              }
             } finally {
               showLoading(false);
+            }
+
+            if (r.status === 'success') {
+              showAlert('Report exported to ' + r.path, 'success');
+              hideModal(true);
+            } else {
+              showAlert(r.message || 'Export failed', 'error');
             }
           };
         },

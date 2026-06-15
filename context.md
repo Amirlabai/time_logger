@@ -9,7 +9,7 @@ Windows desktop app that tracks foreground window usage, assigns categories to p
 ```
 src/web_app.py          → webview.create_window + webview.start
 src/bridge/api_bridge.py → TimeTrackerApi (JS-callable methods)
-src/web/*               → HTML/CSS/JS UI (Chart.js vendored at web/vendor/)
+src/web/*               → HTML/CSS/JS UI (Chart.js 4.4.1 vendored at web/vendor/chart.umd.min.js)
 src/models/             → LoggerService, GraphService, WindowTracker, CategoryCoordinator
 src/utils/              → config, db_utils, core_functions, app_logger
 ```
@@ -18,7 +18,7 @@ Python owns: SQLite, window tracking (pywin32/psutil), native save dialog, backg
 
 HTML/JS owns: dashboard, modals, Chart.js graphs, 1s polling via `get_dashboard_state()`.
 
-Category prompts: tracker queues a prompt via `CategoryCoordinator` (non-blocking, provisional `Misc`); `get_dashboard_state()` returns `category_prompt` for JS to show the modal. No `evaluate_js` or window lift from API handlers. Foreground `msedgewebview2` / `python` / `TimeTracker` are ignored (`config.IGNORED_TRACKING_PROGRAMS`).
+Category prompts: tracker queues a prompt via `CategoryCoordinator` (non-blocking, provisional `Misc`); `get_dashboard_state()` returns `category_prompt` via `peek_ui_prompt()` on each poll until submit/dismiss. JS defers prompt with `setTimeout(0)` and skips when `isModalOpen()` so another modal can finish first. No `evaluate_js` or window lift from API handlers. Foreground `msedgewebview2` / `python` / `TimeTracker` are ignored (`config.IGNORED_TRACKING_PROGRAMS`).
 
 Update checks: `latest.json` on main; **Check for Updates** in header; startup poll (24h throttle) via `utils/update_check.py`.
 
@@ -67,7 +67,7 @@ Requires Inno Setup 6 locally (`INNO_SETUP_PATH`) or use CI.
 
 - Bridge methods return `{status: "success"|"error", ...}`
 - Wait for `pywebviewready` before API calls
-- Shared UI: `showModal` (with `onOpen`, `initialFocus`), `showAlert`, `showLoading`, `escapeHtml` in `app.js`
-- Blocking coordinator: `acquireBlocking` / `releaseBlocking` in `app.js` — modal + loading share `aria-hidden` on `#app` and unified focus trap (loading layer wins when both active)
+- Shared UI: `showModal` (with `onOpen`, `initialFocus`), `showAlert`, `showLoading`, `escapeHtml`, `isModalOpen` in `app.js`
+- Blocking coordinator: `acquireBlocking` / `releaseBlocking` in `app.js` — modal + loading share `aria-hidden` on `#app` and unified focus trap (loading layer wins when both active); `#alert-region` sits outside `#app` (z-index above loading)
 - Loading overlay: `role="alertdialog"`, `aria-labelledby="loading-message"` per ui-protocols loading contract
 - No Tkinter in new code path

@@ -11,6 +11,7 @@
 - [x] Fix edit-program category modal (no nested `showModal`)
 - [x] Web UI audit: a11y (modals, alerts, labels, skip link), XSS escape, local Chart.js, loading overlay
 - [x] Web UI round 2: blocking coordinator, modal focus fix, wizard restore, chart a11y table
+- [x] Web UI review fixes: peek_ui_prompt, modal guard, alert layering, loading/alert ordering, poll deferral
 
 ## Next steps
 

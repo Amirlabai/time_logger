@@ -58,7 +58,14 @@
   async function pollDashboard() {
     try {
       const r = await api().get_dashboard_state();
-      if (r.status !== 'success') return;
+      if (r.status !== 'success') {
+        pollFailCount += 1;
+        if (pollFailCount >= 3) {
+          showAlert('Dashboard refresh failed', 'error');
+          pollFailCount = 0;
+        }
+        return;
+      }
 
       pollFailCount = 0;
       setText('current-app-time-value', r.current_app_time || '00:00:00');
@@ -77,7 +84,9 @@
         }
       }
       if (r.category_prompt && window.CategoriesUI && window.CategoriesUI.showCategoryPrompt) {
-        window.CategoriesUI.showCategoryPrompt(r.category_prompt);
+        setTimeout(function () {
+          window.CategoriesUI.showCategoryPrompt(r.category_prompt);
+        }, 0);
       }
     } catch (e) {
       pollFailCount += 1;
@@ -98,6 +107,8 @@
       '<button type="button" class="btn" id="modal-cancel">Cancel</button>' +
       '<button type="button" class="btn" id="modal-ok">Set</button>';
 
+    let minutesValue = null;
+
     showModal({
       title: 'Set Break Interval',
       bodyHtml: bodyHtml,
@@ -108,13 +119,14 @@
           hideModal(false);
         };
         document.getElementById('modal-ok').onclick = function () {
+          const input = document.getElementById('break-minutes');
+          minutesValue = input ? parseInt(input.value, 10) : NaN;
           hideModal(true);
         };
       },
     }).then(async function (ok) {
-      if (!ok) return;
-      const input = document.getElementById('break-minutes');
-      const r = await api().set_break_interval(parseInt(input.value, 10));
+      if (!ok || minutesValue == null || isNaN(minutesValue)) return;
+      const r = await api().set_break_interval(minutesValue);
       if (r.status === 'success') {
         showAlert('Break interval updated.', 'success');
         pollDashboard();
