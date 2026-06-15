@@ -1,6 +1,21 @@
 # CHANGELOG
 
 
+## v0.3.0 (2026-06-15)
+
+### Chores
+
+- Update latest.json for 0.2.1
+  ([`5a00c9a`](https://github.com/Amirlabai/time_logger/commit/5a00c9a68670e8c7aeebb8d0ce8b67128ef69ae0))
+
+### Features
+
+- **web**: A11y hardening and vendored Chart.js
+  ([`f034591`](https://github.com/Amirlabai/time_logger/commit/f0345915837dc5bc65e36e01ab1670ccaa907b88))
+
+Co-authored-by: Cursor <cursoragent@cursor.com>
+
+
 ## v0.2.1 (2026-06-15)
 
 ### Bug Fixes
