@@ -9,7 +9,7 @@ Windows desktop app that tracks foreground window usage, assigns categories to p
 ```
 src/web_app.py          → webview.create_window + webview.start
 src/bridge/api_bridge.py → TimeTrackerApi (JS-callable methods)
-src/web/*               → HTML/CSS/JS UI (Chart.js for graphs)
+src/web/*               → HTML/CSS/JS UI (Chart.js vendored at web/vendor/)
 src/models/             → LoggerService, GraphService, WindowTracker, CategoryCoordinator
 src/utils/              → config, db_utils, core_functions, app_logger
 ```
@@ -67,4 +67,7 @@ Requires Inno Setup 6 locally (`INNO_SETUP_PATH`) or use CI.
 
 - Bridge methods return `{status: "success"|"error", ...}`
 - Wait for `pywebviewready` before API calls
+- Shared UI: `showModal` (with `onOpen`, `initialFocus`), `showAlert`, `showLoading`, `escapeHtml` in `app.js`
+- Blocking coordinator: `acquireBlocking` / `releaseBlocking` in `app.js` — modal + loading share `aria-hidden` on `#app` and unified focus trap (loading layer wins when both active)
+- Loading overlay: `role="alertdialog"`, `aria-labelledby="loading-message"` per ui-protocols loading contract
 - No Tkinter in new code path

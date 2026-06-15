@@ -35,7 +35,7 @@ def main() -> None:
         url=asset_file_uri("web/index.html"),
         js_api=api,
         width=800,
-        height=680,
+        height=800,
         min_size=(450, 400),
         text_select=True,
     )

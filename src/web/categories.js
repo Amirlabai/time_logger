@@ -5,15 +5,12 @@
   let programCategories = {};
   let editDraft = {};
   let promptOpen = false;
+  let editStep = 'table';
+  let editRowContext = { program: '', current: '' };
+  let editShell = { title: '', footerHtml: '' };
 
   function api() {
     return window.pywebview.api;
-  }
-
-  function escapeHtml(text) {
-    const d = document.createElement('div');
-    d.textContent = text;
-    return d.innerHTML;
   }
 
   function showCategoryPrompt(data) {
@@ -35,11 +32,11 @@
       '<p>Enter category for <strong>' +
       escapeHtml(program) +
       '</strong></p>' +
-      '<div class="form-row"><label>Available categories</label>' +
+      '<div class="form-row"><label for="prompt-category-select">Available categories</label>' +
       '<select id="prompt-category-select"><option value="">-- select --</option>' +
       options +
       '</select></div>' +
-      '<div class="form-row"><label>Or enter new category</label>' +
+      '<div class="form-row"><label for="prompt-category-new">Or enter new category</label>' +
       '<input type="text" id="prompt-category-new" placeholder="New category"></div>';
 
     const footerHtml =
@@ -51,35 +48,34 @@
       bodyHtml: bodyHtml,
       footerHtml: footerHtml,
       closable: false,
+      initialFocus: '#prompt-category-new',
+      onOpen: function () {
+        document.getElementById('prompt-dismiss').onclick = async function () {
+          await api().dismiss_category(program);
+          hideModal(true);
+        };
+        document.getElementById('prompt-submit').onclick = async function () {
+          const selected = document.getElementById('prompt-category-select').value;
+          const entered = document.getElementById('prompt-category-new').value.trim();
+          let finalCat = 'Misc';
+          if (entered) {
+            finalCat = entered.replace(/\b\w/g, function (l) {
+              return l.toUpperCase();
+            });
+          } else if (selected) {
+            finalCat = selected;
+          }
+          const r = await api().submit_category(program, finalCat);
+          if (r.status === 'success') {
+            hideModal(true);
+          } else {
+            showAlert(r.message || 'Failed to save category', 'error');
+          }
+        };
+      },
     }).then(function () {
       promptOpen = false;
     });
-
-    setTimeout(function () {
-      document.getElementById('prompt-dismiss').onclick = async function () {
-        await api().dismiss_category(program);
-        hideModal(true);
-      };
-      document.getElementById('prompt-submit').onclick = async function () {
-        const selected = document.getElementById('prompt-category-select').value;
-        const entered = document.getElementById('prompt-category-new').value.trim();
-        let finalCat = 'Misc';
-        if (entered) {
-          finalCat = entered.replace(/\b\w/g, function (l) {
-            return l.toUpperCase();
-          });
-        } else if (selected) {
-          finalCat = selected;
-        }
-        const r = await api().submit_category(program, finalCat);
-        if (r.status === 'success') {
-          hideModal(true);
-        } else {
-          showAlert(r.message || 'Failed to save category', 'error');
-        }
-      };
-      document.getElementById('prompt-category-new').focus();
-    }, 0);
   }
 
   function renderProgramTable() {
@@ -109,11 +105,11 @@
       '<tbody id="program-table-body">' +
       rows +
       '</tbody></table></div>' +
-      '<hr style="border-color:#444;margin:12px 0">' +
+      '<hr class="modal-divider">' +
       '<p><em>Add or update program in list</em></p>' +
-      '<div class="form-row"><label>Program name</label>' +
+      '<div class="form-row"><label for="new-program-name">Program name</label>' +
       '<input type="text" id="new-program-name"></div>' +
-      '<div class="form-row"><label>Category</label>' +
+      '<div class="form-row"><label for="new-program-category">Category</label>' +
       '<select id="new-program-category">' +
       categoryNames
         .map(function (c) {
@@ -125,24 +121,7 @@
     );
   }
 
-  function restoreEditModalShell(savedTitle, savedFooterHtml) {
-    const titleEl = document.getElementById('modal-title');
-    const footerEl = document.getElementById('modal-footer');
-    if (titleEl) titleEl.textContent = savedTitle;
-    if (footerEl) footerEl.innerHTML = savedFooterHtml;
-    refreshEditModalBody();
-    bindEditModalFooter();
-  }
-
-  function editRowCategory(program, current) {
-    const titleEl = document.getElementById('modal-title');
-    const bodyEl = document.getElementById('modal-body');
-    const footerEl = document.getElementById('modal-footer');
-    if (!titleEl || !bodyEl || !footerEl) return;
-
-    const savedTitle = titleEl.textContent;
-    const savedFooterHtml = footerEl.innerHTML;
-
+  function renderRowEditBody(program, current) {
     const options = categoryNames
       .map(function (c) {
         const sel = c === current ? ' selected' : '';
@@ -150,39 +129,88 @@
       })
       .join('');
 
-    titleEl.textContent = 'Set Category for: ' + program;
-    bodyEl.innerHTML =
+    return (
       '<p>Program: <strong>' +
       escapeHtml(program) +
       '</strong></p>' +
-      '<div class="form-row"><label>Select category</label>' +
+      '<div class="form-row"><label for="edit-row-select">Select category</label>' +
       '<select id="edit-row-select">' +
       options +
       '</select></div>' +
-      '<div class="form-row"><label>Or new category</label>' +
-      '<input type="text" id="edit-row-new"></div>';
-    footerEl.innerHTML =
-      '<button type="button" class="btn" id="edit-row-cancel">Cancel</button>' +
-      '<button type="button" class="btn" id="edit-row-ok">OK</button>';
+      '<div class="form-row"><label for="edit-row-new">Or new category</label>' +
+      '<input type="text" id="edit-row-new"></div>'
+    );
+  }
 
-    document.getElementById('edit-row-cancel').onclick = function () {
-      restoreEditModalShell(savedTitle, savedFooterHtml);
-    };
-    document.getElementById('edit-row-ok').onclick = function () {
-      const entered = document.getElementById('edit-row-new').value.trim();
-      const selected = document.getElementById('edit-row-select').value;
-      let newCat = current;
-      if (entered) {
-        newCat = entered.replace(/\b\w/g, function (l) {
-          return l.toUpperCase();
-        });
-        if (categoryNames.indexOf(newCat) === -1) categoryNames.push(newCat);
-      } else if (selected) {
-        newCat = selected;
-      }
-      editDraft[program] = newCat;
-      restoreEditModalShell(savedTitle, savedFooterHtml);
-    };
+  function renderConfirmHistoricalBody() {
+    return (
+      '<p>Update historical log entries for changed programs?</p>' +
+      '<p class="hint">This might take a moment and cannot be undone easily.</p>'
+    );
+  }
+
+  function renderEditStep() {
+    const titleEl = document.getElementById('modal-title');
+    const bodyEl = document.getElementById('modal-body');
+    const footerEl = document.getElementById('modal-footer');
+    if (!titleEl || !bodyEl || !footerEl) return;
+
+    if (editStep === 'table') {
+      titleEl.textContent = editShell.title;
+      bodyEl.innerHTML = renderProgramTable();
+      footerEl.innerHTML = editShell.footerHtml;
+      bindEditModalEvents();
+      bindEditModalFooter();
+      return;
+    }
+
+    if (editStep === 'row') {
+      titleEl.textContent = 'Set Category for: ' + editRowContext.program;
+      bodyEl.innerHTML = renderRowEditBody(editRowContext.program, editRowContext.current);
+      footerEl.innerHTML =
+        '<button type="button" class="btn" id="edit-row-cancel">Cancel</button>' +
+        '<button type="button" class="btn" id="edit-row-ok">OK</button>';
+      document.getElementById('edit-row-cancel').onclick = function () {
+        editStep = 'table';
+        renderEditStep();
+      };
+      document.getElementById('edit-row-ok').onclick = function () {
+        const entered = document.getElementById('edit-row-new').value.trim();
+        const selected = document.getElementById('edit-row-select').value;
+        let newCat = editRowContext.current;
+        if (entered) {
+          newCat = entered.replace(/\b\w/g, function (l) {
+            return l.toUpperCase();
+          });
+          if (categoryNames.indexOf(newCat) === -1) categoryNames.push(newCat);
+        } else if (selected) {
+          newCat = selected;
+        }
+        editDraft[editRowContext.program] = newCat;
+        editStep = 'table';
+        renderEditStep();
+      };
+      return;
+    }
+
+    if (editStep === 'confirm') {
+      titleEl.textContent = 'Update historical entries?';
+      bodyEl.innerHTML = renderConfirmHistoricalBody();
+      footerEl.innerHTML =
+        '<button type="button" class="btn" id="hist-no">No</button>' +
+        '<button type="button" class="btn" id="hist-yes">Yes</button>';
+    }
+  }
+
+  function showEditTableView() {
+    editStep = 'table';
+    renderEditStep();
+  }
+
+  function showEditRowView(program, current) {
+    editStep = 'row';
+    editRowContext = { program: program, current: current };
+    renderEditStep();
   }
 
   function bindEditModalEvents() {
@@ -191,7 +219,7 @@
         const tr = btn.closest('tr');
         const program = tr.getAttribute('data-program');
         const cat = editDraft[program] || 'Misc';
-        editRowCategory(program, cat);
+        showEditRowView(program, cat);
       };
     });
 
@@ -207,16 +235,43 @@
         editDraft[name] = cat;
         if (categoryNames.indexOf(cat) === -1) categoryNames.push(cat);
         document.getElementById('new-program-name').value = '';
-        refreshEditModalBody();
+        const bodyEl = document.getElementById('modal-body');
+        if (bodyEl) {
+          bodyEl.innerHTML = renderProgramTable();
+          bindEditModalEvents();
+        }
       };
     }
   }
 
-  function refreshEditModalBody() {
-    const bodyEl = document.getElementById('modal-body');
-    if (!bodyEl) return;
-    bodyEl.innerHTML = renderProgramTable();
-    bindEditModalEvents();
+  function confirmHistoricalUpdate() {
+    return new Promise(function (resolve) {
+      const titleEl = document.getElementById('modal-title');
+      const bodyEl = document.getElementById('modal-body');
+      const footerEl = document.getElementById('modal-footer');
+      if (!titleEl || !bodyEl || !footerEl) {
+        resolve(false);
+        return;
+      }
+
+      const stepBeforeConfirm = editStep === 'row' ? 'row' : 'table';
+      editStep = 'confirm';
+      renderEditStep();
+
+      document.getElementById('hist-no').onclick = function () {
+        editStep = stepBeforeConfirm;
+        if (editStep === 'row') {
+          renderEditStep();
+        } else {
+          showEditTableView();
+        }
+        resolve(false);
+      };
+      document.getElementById('hist-yes').onclick = function () {
+        showEditTableView();
+        resolve(true);
+      };
+    });
   }
 
   function bindEditModalFooter() {
@@ -228,19 +283,26 @@
       hideModal(false);
     };
     saveBtn.onclick = async function () {
-      const updateHistorical = window.confirm(
-        'Update historical log entries for changed programs?\n(This might take a moment and cannot be undone easily)'
-      );
-      const r = await api().save_program_categories({
-        categories: editDraft,
-        update_historical: updateHistorical,
-      });
-      if (r.status === 'success') {
-        showAlert('Program categories saved.', 'success');
-        programCategories = Object.assign({}, editDraft);
-        hideModal(true);
-      } else {
-        showAlert(r.message || 'Save failed', 'error');
+      const updateHistorical = await confirmHistoricalUpdate();
+      if (editStep !== 'table') {
+        showEditTableView();
+      }
+      showLoading(true, 'Saving categories...');
+      try {
+        const r = await api().save_program_categories({
+          categories: editDraft,
+          update_historical: updateHistorical,
+        });
+        if (r.status === 'success') {
+          showAlert('Program categories saved.', 'success');
+          programCategories = Object.assign({}, editDraft);
+          hideModal(true);
+        } else {
+          showAlert(r.message || 'Save failed', 'error');
+          showEditTableView();
+        }
+      } finally {
+        showLoading(false);
       }
     };
   }
@@ -261,22 +323,29 @@
       }
       categoryNames = r.category_names || [];
       editDraft = Object.assign({}, r.program_categories || {});
+      editStep = 'table';
 
       const footerHtml =
         '<button type="button" class="btn" id="edit-cancel">Cancel</button>' +
         '<button type="button" class="btn" id="edit-save">Save Changes to DB</button>';
 
-      showModal({
+      editShell = {
         title: 'Edit Program Categories',
+        footerHtml: footerHtml,
+      };
+
+      showModal({
+        title: editShell.title,
         bodyHtml: renderProgramTable(),
         footerHtml: footerHtml,
         wide: true,
-      }).then(function () {});
-
-      setTimeout(function () {
-        bindEditModalEvents();
-        bindEditModalFooter();
-      }, 0);
+        onOpen: function () {
+          bindEditModalEvents();
+          bindEditModalFooter();
+        },
+      }).then(function () {
+        editStep = 'table';
+      });
     },
   };
 })();
