@@ -1,7 +1,7 @@
 {
-  "version": "0.2.1",
-  "published_at": "2026-06-15T07:26:13Z",
-  "installer_url": "https://github.com/Amirlabai/time_logger/releases/download/v0.2.1/TimeTracker_Setup_0.2.1.exe",
-  "release_page": "https://github.com/Amirlabai/time_logger/releases/tag/v0.2.1",
-  "notes": "Release 0.2.1"
+  "version": "0.3.0",
+  "published_at": "2026-06-15T07:52:14Z",
+  "installer_url": "https://github.com/Amirlabai/time_logger/releases/download/v0.3.0/TimeTracker_Setup_0.3.0.exe",
+  "release_page": "https://github.com/Amirlabai/time_logger/releases/tag/v0.3.0",
+  "notes": "Release 0.3.0"
 }
