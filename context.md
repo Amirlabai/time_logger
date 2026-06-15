@@ -18,7 +18,7 @@ Python owns: SQLite, window tracking (pywin32/psutil), native save dialog, backg
 
 HTML/JS owns: dashboard, modals, Chart.js graphs, 1s polling via `get_dashboard_state()`.
 
-Category prompts: tracker thread blocks on `CategoryCoordinator`; bridge lifts window and pushes `on_category_prompt` to JS.
+Category prompts: tracker queues a prompt via `CategoryCoordinator` (non-blocking, provisional `Misc`); `get_dashboard_state()` returns `category_prompt` for JS to show the modal. No `evaluate_js` or window lift from API handlers. Foreground `msedgewebview2` / `python` / `TimeTracker` are ignored (`config.IGNORED_TRACKING_PROGRAMS`).
 
 Update checks: `latest.json` on main; **Check for Updates** in header; startup poll (24h throttle) via `utils/update_check.py`.
 

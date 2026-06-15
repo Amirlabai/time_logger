@@ -34,7 +34,7 @@ def main() -> None:
         title="Time Tracker",
         url=asset_file_uri("web/index.html"),
         js_api=api,
-        width=480,
+        width=800,
         height=680,
         min_size=(450, 400),
         text_select=True,

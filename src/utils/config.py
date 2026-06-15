@@ -51,6 +51,16 @@ PAUSE_IMAGE_PATH = ICON_DIR_PATH / PAUSE_IMAGE_NAME
 DEFAULT_BREAK_TIME_SECONDS = 3000
 MIN_BREAK_TIME_SECONDS = 600
 
+# Foreground processes that belong to this app; never track or categorize them.
+IGNORED_TRACKING_PROGRAMS = frozenset(
+    {
+        "msedgewebview2",
+        "python",
+        "pythonw",
+        "TimeTracker",
+    }
+)
+
 
 def ensure_directories_exist() -> None:
     dirs_to_create = [

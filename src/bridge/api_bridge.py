@@ -36,7 +36,6 @@ class TimeTrackerApi:
 
     def set_window(self, window) -> None:
         self._window = window
-        self._coordinator.set_emit_prompt(self._emit_category_prompt)
 
     def _ok(self, payload: dict | None = None) -> dict:
         result: dict[str, Any] = {"status": "success"}
@@ -60,19 +59,9 @@ class TimeTrackerApi:
         if not self._window:
             return
         try:
-            self._window.restore()
-        except Exception:
-            pass
-        try:
-            previous_on_top = bool(getattr(self._window, "on_top", False))
-            self._window.on_top = True
             self._window.show()
-            self._window.on_top = previous_on_top
         except Exception:
-            try:
-                self._window.show()
-            except Exception:
-                app_logger.debug("Could not lift application window", exc_info=True)
+            app_logger.debug("Could not show application window", exc_info=True)
 
     def focus_app_window(self) -> dict:
         self._lift_window()
@@ -144,16 +133,24 @@ class TimeTrackerApi:
     def get_dashboard_state(self) -> dict:
         if not self._tracker or not self._logger:
             return self._err("Application not initialized")
+        program = self._coordinator.take_ui_prompt()
+        category_prompt = None
+        if program:
+            category_prompt = {
+                "program": program,
+                "categories": self._logger.get_CATEGORIES(),
+            }
         state = self._tracker.get_dashboard_state()
-        if state.pop("break_reminder", False):
-            self._lift_window()
-            self._emit_event("on_break_reminder", {"message": "It's time to take a break."})
+        break_reminder = bool(state.pop("break_reminder", False))
+        if break_reminder:
             self._tracker.reset_break_timer_countdown()
             self._tracker.set_break_timer_running(True)
         return self._ok(
             {
                 **state,
                 "categories_summary": self._logger.get_category_summary(),
+                "category_prompt": category_prompt,
+                "break_reminder": break_reminder,
             }
         )
 

@@ -4,6 +4,7 @@
   let categoryNames = [];
   let programCategories = {};
   let editDraft = {};
+  let promptOpen = false;
 
   function api() {
     return window.pywebview.api;
@@ -15,15 +16,13 @@
     return d.innerHTML;
   }
 
-  window.on_category_prompt = async function (data) {
-    if (!data || !data.program) return;
-    try {
-      if (api().focus_app_window) await api().focus_app_window();
-    } catch (e) {
-      /* focus is best-effort */
-    }
+  function showCategoryPrompt(data) {
+    if (!data || !data.program || promptOpen) return;
+    promptOpen = true;
     showPromptModal(data.program, data.categories || categoryNames);
-  };
+  }
+
+  window.on_category_prompt = showCategoryPrompt;
 
   async function showPromptModal(program, categories) {
     const options = (categories || [])
@@ -52,7 +51,9 @@
       bodyHtml: bodyHtml,
       footerHtml: footerHtml,
       closable: false,
-    }).then(function () {});
+    }).then(function () {
+      promptOpen = false;
+    });
 
     setTimeout(function () {
       document.getElementById('prompt-dismiss').onclick = async function () {
@@ -124,7 +125,24 @@
     );
   }
 
-  async function editRowCategory(program, current) {
+  function restoreEditModalShell(savedTitle, savedFooterHtml) {
+    const titleEl = document.getElementById('modal-title');
+    const footerEl = document.getElementById('modal-footer');
+    if (titleEl) titleEl.textContent = savedTitle;
+    if (footerEl) footerEl.innerHTML = savedFooterHtml;
+    refreshEditModalBody();
+    bindEditModalFooter();
+  }
+
+  function editRowCategory(program, current) {
+    const titleEl = document.getElementById('modal-title');
+    const bodyEl = document.getElementById('modal-body');
+    const footerEl = document.getElementById('modal-footer');
+    if (!titleEl || !bodyEl || !footerEl) return;
+
+    const savedTitle = titleEl.textContent;
+    const savedFooterHtml = footerEl.innerHTML;
+
     const options = categoryNames
       .map(function (c) {
         const sel = c === current ? ' selected' : '';
@@ -132,7 +150,8 @@
       })
       .join('');
 
-    const bodyHtml =
+    titleEl.textContent = 'Set Category for: ' + program;
+    bodyEl.innerHTML =
       '<p>Program: <strong>' +
       escapeHtml(program) +
       '</strong></p>' +
@@ -142,17 +161,14 @@
       '</select></div>' +
       '<div class="form-row"><label>Or new category</label>' +
       '<input type="text" id="edit-row-new"></div>';
-
-    const footerHtml =
+    footerEl.innerHTML =
       '<button type="button" class="btn" id="edit-row-cancel">Cancel</button>' +
       '<button type="button" class="btn" id="edit-row-ok">OK</button>';
 
-    showModal({
-      title: 'Set Category for: ' + program,
-      bodyHtml: bodyHtml,
-      footerHtml: footerHtml,
-    }).then(function (ok) {
-      if (!ok) return;
+    document.getElementById('edit-row-cancel').onclick = function () {
+      restoreEditModalShell(savedTitle, savedFooterHtml);
+    };
+    document.getElementById('edit-row-ok').onclick = function () {
       const entered = document.getElementById('edit-row-new').value.trim();
       const selected = document.getElementById('edit-row-select').value;
       let newCat = current;
@@ -165,17 +181,8 @@
         newCat = selected;
       }
       editDraft[program] = newCat;
-      refreshEditModalBody();
-    });
-
-    setTimeout(function () {
-      document.getElementById('edit-row-cancel').onclick = function () {
-        hideModal(false);
-      };
-      document.getElementById('edit-row-ok').onclick = function () {
-        hideModal(true);
-      };
-    }, 0);
+      restoreEditModalShell(savedTitle, savedFooterHtml);
+    };
   }
 
   function bindEditModalEvents() {
@@ -212,11 +219,39 @@
     bindEditModalEvents();
   }
 
+  function bindEditModalFooter() {
+    const cancelBtn = document.getElementById('edit-cancel');
+    const saveBtn = document.getElementById('edit-save');
+    if (!cancelBtn || !saveBtn) return;
+
+    cancelBtn.onclick = function () {
+      hideModal(false);
+    };
+    saveBtn.onclick = async function () {
+      const updateHistorical = window.confirm(
+        'Update historical log entries for changed programs?\n(This might take a moment and cannot be undone easily)'
+      );
+      const r = await api().save_program_categories({
+        categories: editDraft,
+        update_historical: updateHistorical,
+      });
+      if (r.status === 'success') {
+        showAlert('Program categories saved.', 'success');
+        programCategories = Object.assign({}, editDraft);
+        hideModal(true);
+      } else {
+        showAlert(r.message || 'Save failed', 'error');
+      }
+    };
+  }
+
   window.CategoriesUI = {
     init: function (initialData) {
       categoryNames = initialData.category_names || [];
       programCategories = initialData.program_categories || {};
     },
+
+    showCategoryPrompt: showCategoryPrompt,
 
     openEditModal: async function () {
       const r = await api().get_program_categories();
@@ -240,25 +275,7 @@
 
       setTimeout(function () {
         bindEditModalEvents();
-        document.getElementById('edit-cancel').onclick = function () {
-          hideModal(false);
-        };
-        document.getElementById('edit-save').onclick = async function () {
-          const updateHistorical = window.confirm(
-            'Update historical log entries for changed programs?\n(This might take a moment and cannot be undone easily)'
-          );
-          const r = await api().save_program_categories({
-            categories: editDraft,
-            update_historical: updateHistorical,
-          });
-          if (r.status === 'success') {
-            showAlert('Program categories saved.', 'success');
-            programCategories = Object.assign({}, editDraft);
-            hideModal(true);
-          } else {
-            showAlert(r.message || 'Save failed', 'error');
-          }
-        };
+        bindEditModalFooter();
       }, 0);
     },
   };

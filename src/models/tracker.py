@@ -152,6 +152,10 @@ class WindowTracker:
 
             current_exe, current_title = self.get_active_window_info()
 
+            if current_exe in config.IGNORED_TRACKING_PROGRAMS:
+                time.sleep(1)
+                continue
+
             if current_exe and current_exe != self.active_window_exe:
                 app_logger.debug(
                     f"Window changed from '{self.active_window_exe}' to '{current_exe}'."

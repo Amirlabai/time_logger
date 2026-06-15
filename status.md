@@ -7,7 +7,8 @@
 - [x] `CategoryCoordinator` for thread-safe category prompts
 - [x] Bridge API (`TimeTrackerApi`) and HTML/JS/CSS frontend
 - [x] Deprecated Tkinter entry (`prod/code/main.py` redirect)
-- [x] GitHub Actions: semantic release + installer build/tag upload
+- [x] Fix dev crash: ignore self WebView process; category prompts via dashboard poll (not tracker thread UI calls)
+- [x] Fix edit-program category modal (no nested `showModal`)
 
 ## Next steps
 

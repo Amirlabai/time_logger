@@ -55,6 +55,17 @@
       breakTimerRunning = !!r.break_timer_running;
       updateBreakIcon();
       renderCategories(r.categories_summary);
+      if (r.break_reminder) {
+        showAlert("It's time to take a break.", 'info');
+        if (window.DashboardUI && window.DashboardUI.onBreakReminder) {
+          window.DashboardUI.onBreakReminder();
+        }
+      }
+      if (r.category_prompt && window.CategoriesUI && window.CategoriesUI.showCategoryPrompt) {
+        setTimeout(function () {
+          window.CategoriesUI.showCategoryPrompt(r.category_prompt);
+        }, 0);
+      }
     } catch (e) {
       /* ignore transient poll errors */
     }
