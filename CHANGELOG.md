@@ -1,6 +1,25 @@
 # CHANGELOG
 
 
+## v0.3.1 (2026-06-15)
+
+### Bug Fixes
+
+- **web**: Harden modal prompts and alert layering
+  ([`6207491`](https://github.com/Amirlabai/time_logger/commit/62074914e6c1070b9d1e999cb40c9d64c980b39f))
+
+Category prompts were dropped after first poll and could deadlock during get_dashboard_state.
+  peek_ui_prompt retries until dismissed; poll defers showModal. Alerts moved outside aria-hidden
+  #app.
+
+Co-authored-by: Cursor <cursoragent@cursor.com>
+
+### Chores
+
+- Update latest.json for 0.3.0
+  ([`554cbd6`](https://github.com/Amirlabai/time_logger/commit/554cbd63b85b8ab8a72782cf41db96d5d2d41feb))
+
+
 ## v0.3.0 (2026-06-15)
 
 ### Chores
