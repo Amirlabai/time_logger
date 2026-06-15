@@ -1,6 +1,24 @@
 # CHANGELOG
 
 
+## v0.2.1 (2026-06-15)
+
+### Bug Fixes
+
+- **tracker**: Non-blocking category prompts via dashboard poll
+  ([`b3491b0`](https://github.com/Amirlabai/time_logger/commit/b3491b0f790834bab1549794366b9a6ef40b2fb7))
+
+Tracker thread blocking on UI caused deadlocks when foreground was the app. Prompts and break
+  reminders ride get_dashboard_state(); ignore msedgewebview2/python exe.
+
+Co-authored-by: Cursor <cursoragent@cursor.com>
+
+### Chores
+
+- Update latest.json for 0.2.0
+  ([`4999ab9`](https://github.com/Amirlabai/time_logger/commit/4999ab9b647f05f4d4d1cf173fff74ca0e555a75))
+
+
 ## v0.2.0 (2026-06-14)
 
 ### Features
